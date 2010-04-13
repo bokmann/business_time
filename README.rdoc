@@ -2,11 +2,11 @@
 
 ActiveSupport gives us some great helpers so we can do things like:
 
-5.days.ago
+  5.days.ago
 
 and
 
-8.hours.from_now
+  8.hours.from_now
 
 as well as helpers to do that from any provided date or time.
 
@@ -17,7 +17,7 @@ I needed this, but taking into account business hours/days and holidays.
 
 * open up your console
 
-  #if in irb, add these lines:
+  # if in irb, add these lines:
   require 'rubygems'
   require 'active_support'
   require 'business_time'
