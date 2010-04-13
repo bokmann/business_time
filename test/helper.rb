@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'active_support'
 require 'test/unit'
 require 'shoulda'
 
