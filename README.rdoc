@@ -15,6 +15,14 @@ I needed this, but taking into account business hours/days and holidays.
 == Usage
 * install the gem
 
+    gem install business_time
+    
+  or
+  
+    sudo gem install business_time
+    
+  if you require sudo to install gems
+  
 * open up your console
 
     # if in irb, add these lines:
