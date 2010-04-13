@@ -15,6 +15,7 @@ class TestConfig < Test::Unit::TestCase
   end
   
   should "keep track of holidays" do
+    BusinessTime::Config.reset
     assert BusinessTime::Config.holidays.empty?
     daves_birthday = Date.parse("August 4th, 1969")
     BusinessTime::Config.holidays << daves_birthday

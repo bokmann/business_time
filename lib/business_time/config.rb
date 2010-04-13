@@ -9,9 +9,15 @@ module BusinessTime
       attr_accessor :holidays
   
     end
-    self.holidays = []
-    self.beginning_of_workday = "9:00 am"
-    self.end_of_workday = "5:00 pm"
+    
+    def self.reset
+      self.holidays = []
+      self.beginning_of_workday = "9:00 am"
+      self.end_of_workday = "5:00 pm"
+    end
+    
+    self.reset
+    
   end
   
 end
