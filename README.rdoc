@@ -18,11 +18,13 @@ I needed this, but taking into account business hours/days and holidays.
 * open up your console
 
   # if in irb, add these lines:
+  
   require 'rubygems'
   require 'active_support'
   require 'business_time'
 
   # try these examples, using the current time:
+  
   1.business_hour.from_now
   4.business_hours.from_now
   8.business_hours.from_now
