@@ -1,6 +1,66 @@
 = business_time
 
-Description goes here.
+ActiveSupport gives us some great helpers so we can do things like:
+
+5.days.ago
+
+and
+
+8.hours.from_now
+
+as well as helpers to do that from any provided date or time.
+
+I needed this, but taking into account business hours/days and holidays.
+
+== Usage
+* install the gem
+
+* open up your console
+
+  #if in irb, add these lines:
+  require 'rubygems'
+  require 'active_support'
+  require 'business_time'
+
+  # try these examples, using the current time:
+  1.business_hour.from_now
+  4.business_hours.from_now
+  8.business_hours.from_now
+
+  1.business_hour.ago
+  4.business_hours.ago
+  8.business_hours.ago
+
+  1.business_day.from_now
+  4.business_days.from_now
+  8.business_days.from_now
+
+  1.business_day.ago
+  4.business_days.ago
+  8.business_days.ago
+
+  # and we can do it from any Date or Time object.
+  my_birthday = Date.parse("August 4th, 1969")
+  8.business_days.after(my_birthday)
+  8.business_days.before(my_birthday)
+
+  my_birthday = Time.parse("August 4th, 1969, 8:32 am")
+  8.business_days.after(my_birthday)
+  8.business_days.before(my_birthday)
+
+
+  # We can adjust the start and end time of our business hours
+  BusinessTime::Config.beginning_of_workday = "8:30 am"
+  BusinessTime::Config.end_of_workday = "5:30 pm"
+
+  # and we can add holidays that don't count as business days
+  # July 5 in 2010 is a monday that the U.S. takes off because our independence day falls on that Sunday.
+  three_day_weekend = Date.parse("July 5th, 2010")
+  BusinessTime::Config.holidays << three_day_weekend
+  friday_afternoon = Time.parse("July 2nd, 2010, 4:50 pm")
+  tuesday_morning = 1.business_hour.after(friday_afternoon)
+
+
 
 == Note on Patches/Pull Requests
  
@@ -11,6 +71,11 @@ Description goes here.
 * Commit, do not mess with rakefile, version, or history.
   (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.
+
+== TODO
+* I'd like to return ActiveSupport::TimeWithZone just like the equivalent ActiveSupport helpers do.
+* if it doesn't pollute the logic too much, I'd like to vary the days counted as 'business days'.  Bakers often don't work on Mondays, for instance.
+* We don't care much about timezones.  Dunno if thats an issue.
 
 == Copyright
 
