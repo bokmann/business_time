@@ -2,12 +2,12 @@ module BusinessTime
   
   # controls the behavior of the code.  You can change
   # the beginning_of_workday, end_of_workday, and the list of holidays
+  #manually, or with a yaml file and the load method.
   class Config
     class << self
       attr_accessor :beginning_of_workday
       attr_accessor :end_of_workday
       attr_accessor :holidays
-  
     end
     
     def self.reset
@@ -16,8 +16,27 @@ module BusinessTime
       self.end_of_workday = "5:00 pm"
     end
     
-    self.reset
+    # loads the config data from a yaml file written as:
+    # business_time:
+    #   beginning_od_workday: 8:30 am
+    #   end_of_workday: 5:30 pm
+    #   holidays:
+    #     - Jan 1st, 2010
+    #     - July 4th, 2010
+    #     - Dec 25th, 2010
+    def self.load(filename)
+      self.reset
+      data = YAML::load(File.open(filename))
+      self.beginning_of_workday = data["business_time"]["beginning_of_workday"]
+      self.end_of_workday = data["business_time"]["end_of_workday"]
+      data["business_time"]["holidays"].each do |holiday|
+        self.holidays << Date.parse(holiday)
+      end
+      
+    end
     
+    #reset the first time we are loaded.
+    self.reset
   end
   
 end
