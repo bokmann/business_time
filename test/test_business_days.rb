@@ -32,14 +32,14 @@ class TestBusinessDays < Test::Unit::TestCase
   
   should "move forward one week when adding 5 business days" do
     first = Time.parse("April 9th, 2010, 12:33 pm")
-    after = 5.business_day.after(first)
+    after = 5.business_days.after(first)
     expected = Time.parse("April 16th, 2010, 12:33 pm")
     assert expected == after
   end
   
   should "move backward one week when subtracting 5 business days" do
     first = Time.parse("April 16th, 2010, 12:33 pm")
-    before = 5.business_day.before(first)
+    before = 5.business_days.before(first)
     expected = Time.parse("April 9th, 2010, 12:33 pm")
     assert expected == before
   end

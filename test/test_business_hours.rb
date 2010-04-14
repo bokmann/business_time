@@ -29,7 +29,6 @@ class TestBusinessHours < Test::Unit::TestCase
     assert expected == friday_afternoon
   end
   
-  
   should "take into account a holiday" do
     BusinessTime::Config.holidays << Date.parse("July 5th, 2010")
     friday_afternoon = Time.parse("July 2nd 2010, 4:50pm")
@@ -44,6 +43,5 @@ class TestBusinessHours < Test::Unit::TestCase
     expected = Time.parse("April 12th 2010, 12:50 pm")
     assert expected == later
   end
-  
   
 end
