@@ -70,7 +70,21 @@ I needed this, but taking into account business hours/days and holidays.
     friday_afternoon = Time.parse("July 2nd, 2010, 4:50 pm")
     tuesday_morning = 1.business_hour.after(friday_afternoon)
 
+== Usage in Rails
+The code above should work on a rails console without any issue.  You will want to add a line something like:
 
+    config.gem "business_time"
+    
+to your environment.rb file.
+
+This gem also includes a generator so you can bootstrap some stuff in your environment.
+
+    ./script/generate business_time_config
+    
+will add a /config/business_time.yml and a /config/initializers/business_time.rb file that will cause the start of business day, the end of business day, and your holidays to be loaded from the yaml file.  You might want to programatically load your holidays from a database table, but you will want to pay attention to how the initializer works - you will want to make sure that the initializer sets stuff up appropriately so rails instances on mongrels or passenger will have the appropriate data as they come up and down.
+
+== Outside of Rails
+This code does depend on ActiveSupport, but nothing else within rails.  Even then, it would be pretty easy to break that dependency as well (but would add some code bloat and remove some clarity).  Feel free to use it on any ruby project you'd like!
 
 == Note on Patches/Pull Requests
  
