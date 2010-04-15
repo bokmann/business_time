@@ -1,5 +1,3 @@
-require 'rails/generators'
-
 module BusinessTime
   module Generators
     class ConfigGenerator < Rails::Generators::Base # :nodoc:
