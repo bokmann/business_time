@@ -1,5 +1,13 @@
 require 'rubygems'
-require 'active_support'
+
+if RUBY_VERSION >= '1.9'
+  require 'time'
+  require 'date'
+  require 'active_support/time'
+else
+  require 'active_support'
+end
+
 require 'test/unit'
 require 'shoulda'
 
