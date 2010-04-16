@@ -92,6 +92,9 @@ The generator will add a /config/business_time.yml and a /config/initializers/bu
 == Outside of Rails
 This code does depend on ActiveSupport, but nothing else within rails.  Even then, it would be pretty easy to break that dependency as well (but would add some code bloat and remove some clarity).  Feel free to use it on any ruby project you'd like!
 
+== Contributors
+ * David Bock  http://github.com/bokmann
+ * Enrico Bianco  http://github.com/enricob
 == Note on Patches/Pull Requests
  
 * Fork the project.
