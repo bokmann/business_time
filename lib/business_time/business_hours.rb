@@ -14,6 +14,7 @@ module BusinessTime
     end
      
     def after(time)
+      time = time.roll_forward
       @hours.times do 
         time = time + 1.hour  #add an hour
         
@@ -29,8 +30,9 @@ module BusinessTime
     end
             
     def before(time)
+      time = time.roll_forward
       @hours.times do 
-        time = time - 1.hour  #add an hour
+        time = time - 1.hour  #subtract an hour
         
         if (time < time.beginning_of_workday)
           time = time - off_hours  # if that pushes us before business hours,
