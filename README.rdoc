@@ -92,9 +92,20 @@ The generator will add a /config/business_time.yml and a /config/initializers/bu
 == Outside of Rails
 This code does depend on ActiveSupport, but nothing else within rails.  Even then, it would be pretty easy to break that dependency as well (but would add some code bloat and remove some clarity).  Feel free to use it on any ruby project you'd like!
 
+== Timezone support
+This gem strives to be timezone-agnostic.  Due to some complications in the handling of timezones in the built in Time class, and some complexities (bugs?) in the timeWithZone class, this was harder than expected... but here's the idea:
+ * When you configure the gem with something like 9:00am as the start time, this is agnostic of time zone.
+ * When you are dealing with a Time or TimeWithZone class, the timezone is preserved and the beginning and end of times for the business day are referenced in that time zone.
+ 
+This can lead to some wierd looking effects if, say, you are in the Eastern time zone but doing everything in UTC times...  Your business day will appear to start and end at 9:00 and 5:00 UTC.  If this seems perplexing to you, I can almost guarantee you are in over your head with timezones in other ways too, this is just the first place you encountered it.  Timezone relative date handling gets more and more complicated every time you look at it and takes a long time before it starts to seem simple again.  I'm hoping Arild and I write some good blog entries on the subject at http://blog.codesherpas.com.
+
 == Contributors
  * David Bock  http://github.com/bokmann
  * Enrico Bianco  http://github.com/enricob
+ * Arild Shirazi  http://github.com/ashirazi
+ 
+ (Special thanks for Arild on the complexities of dealing with TimeWithZone)
+ 
 == Note on Patches/Pull Requests
  
 * Fork the project.
@@ -108,7 +119,6 @@ This code does depend on ActiveSupport, but nothing else within rails.  Even the
 == TODO
 * I'd like to return ActiveSupport::TimeWithZone just like the equivalent ActiveSupport helpers do.
 * if it doesn't pollute the logic too much, I'd like to vary the days counted as 'business days'.  Bakers often don't work on Mondays, for instance.
-* We don't care much about timezones.  Dunno if thats an issue.
 
 == Copyright
 
