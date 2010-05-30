@@ -7,8 +7,9 @@ class Time
     # Note: It pretends that this day is a workday whether or not it really is a
     # workday.
     def end_of_workday(day)
-      Time.zone.parse day.strftime(
-          "%B %d %Y #{BusinessTime::Config.end_of_workday}")
+      format = "%B %d %Y #{BusinessTime::Config.end_of_workday}"
+      Time.zone ? Time.zone.parse(day.strftime(format)) :
+          Time.parse(day.strftime(format))
     end
 
     # Gives the time at the beginning of the workday, assuming that this time
@@ -16,8 +17,9 @@ class Time
     # Note: It pretends that this day is a workday whether or not it really is a
     # workday.
     def beginning_of_workday(day)
-      Time.zone.parse day.strftime(
-          "%B %d %Y #{BusinessTime::Config.beginning_of_workday}")
+      format = "%B %d %Y #{BusinessTime::Config.beginning_of_workday}"
+      Time.zone ? Time.zone.parse(day.strftime(format)) :
+          Time.parse(day.strftime(format))
     end
 
     # True if this time is on a workday (between 00:00:00 and 23:59:59), even if

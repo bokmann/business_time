@@ -22,6 +22,7 @@ module BusinessTime
       #   BusinessTime::Config.holidays << my_holiday_date_object
       # someplace in the initializers of your application.
       attr_accessor :holidays
+
     end
     
     def self.reset
@@ -45,7 +46,8 @@ module BusinessTime
       self.beginning_of_workday = data["business_time"]["beginning_of_workday"]
       self.end_of_workday = data["business_time"]["end_of_workday"]
       data["business_time"]["holidays"].each do |holiday|
-        self.holidays << Time.zone.parse(holiday)
+        self.holidays <<
+          Time.zone ? Time.zone.parse(holiday) : Time.parse(holiday)
       end
       
     end

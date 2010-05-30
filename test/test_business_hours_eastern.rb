@@ -6,6 +6,9 @@ class TestBusinessHours < Test::Unit::TestCase
     setup do
       Time.zone = 'Eastern Time (US & Canada)'
     end
+    teardown do
+      Time.zone = nil
+    end
 
     should "move to tomorrow if we add 8 business hours" do
       first = Time.zone.parse("Aug 4 2010, 9:35 am")

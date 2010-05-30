@@ -6,11 +6,11 @@ module BusinessTime
     end
 
     def ago
-      before(Time.zone.now)
+      Time.zone ? before(Time.zone.now) : before(Time.now)
     end
 
     def from_now
-      after(Time.zone.now)
+      Time.zone ?  after(Time.zone.now) : after(Time.now)
     end
 
     def after(time)
@@ -54,8 +54,15 @@ module BusinessTime
     private
 
     def off_hours
-      @gap ||= Time.zone.parse(BusinessTime::Config.beginning_of_workday) -
-              (Time.zone.parse(BusinessTime::Config.end_of_workday) - 1.day)
+      return @gap if @gap
+      if Time.zone
+        gap_end = Time.zone.parse(BusinessTime::Config.beginning_of_workday)
+        gap_begin = (Time.zone.parse(BusinessTime::Config.end_of_workday)-1.day)
+      else
+        gap_end = Time.parse(BusinessTime::Config.beginning_of_workday)
+        gap_begin = (Time.parse(BusinessTime::Config.end_of_workday) - 1.day)
+      end
+      @gap = gap_end - gap_begin
     end
   end
 

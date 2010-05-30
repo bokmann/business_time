@@ -3,6 +3,7 @@ require 'helper'
 class TestBusinessDays < Test::Unit::TestCase
   
   context "with a standard Time object" do
+
     should "move to tomorrow if we add a business day" do
       first = Time.parse("April 13th, 2010, 11:00 am")
       later = 1.business_day.after(first)

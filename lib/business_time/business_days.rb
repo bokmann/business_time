@@ -6,7 +6,7 @@ module BusinessTime
     end
 
     def after(time = Time.now)
-      time = Time.zone.parse(time.to_s)
+      time = Time.zone ? Time.zone.parse(time.to_s) : Time.parse(time.to_s)
       @days.times do
         begin
           time = time + 1.day
@@ -19,7 +19,7 @@ module BusinessTime
     alias_method :since, :after
     
     def before(time = Time.now)
-      time = Time.zone.parse(time.to_s)
+      time = Time.zone ? Time.zone.parse(time.to_s) : Time.parse(time.to_s)
       @days.times do
         begin
           time = time - 1.day
