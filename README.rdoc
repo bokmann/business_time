@@ -131,7 +131,7 @@ This can lead to some wierd looking effects if, say, you are in the Eastern time
   regaring the beginning_of_workday and end_of workday times not actually
   being considered inside of the workday.  I'd like to make sure that they
   work as if the beginning_of_workday is included and the end_of_workday is
-  not included, just like the '...' rand operator in Ruby.
+  not included, just like the '...' range operator in Ruby.
 
 == NOT TODO
 
