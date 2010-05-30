@@ -6,6 +6,7 @@ if RUBY_VERSION >= '1.9'
   require 'active_support/time'
 else
   require 'active_support'
+  require 'active_support/core_ext'
 end
 
 require 'test/unit'

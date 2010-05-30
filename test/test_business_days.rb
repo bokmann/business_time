@@ -65,7 +65,7 @@ class TestBusinessDays < Test::Unit::TestCase
     end
   end
   
-  context "with a TimeWithZone object in EDT" do
+  context "with a TimeWithZone object set to the Eastern timezone" do
     setup do
       Time.zone = 'Eastern Time (US & Canada)'
     end
@@ -132,7 +132,7 @@ class TestBusinessDays < Test::Unit::TestCase
     end
   end
   
-  context "with a TimeWithZone object in UTC" do
+  context "with a TimeWithZone object set to UTC" do
     setup do
       Time.zone = 'UTC'
     end
