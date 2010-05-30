@@ -117,9 +117,21 @@ This can lead to some wierd looking effects if, say, you are in the Eastern time
 * Send me a pull request. Bonus points for topic branches.
 
 == TODO
-* I'd like to return ActiveSupport::TimeWithZone just like the equivalent ActiveSupport helpers do.
 * if it doesn't pollute the logic too much, I'd like to vary the days counted as 'business days'.  Bakers often don't work on Mondays, for instance.
 
+== NOT TODO
+* I spent way too much time in my previous java-programmer life building frameworks that worshipped complexity,
+  always trying to give the developer-user ultimate flexibility at the expense of the 'surface area' of the api.
+  Never again - I will sooner limit functionality to 80% so that something stays usable and let people fork.
+* While there have been requests to add 'business minutes' and even 'business seconds' to this gem, I won't
+  entertain a pullup request with such things.  If you find it useful, great.  Most users won't, and they don't
+  need the baggage.
+* I'm torn on the inclusion of some kind of business_duration_between two Times, for the following reasons:
+  * As a duration, it will be in seconds.  This would naturally be business-seconds, which I trimmed out above.
+  * The logic is complex and error prone.
+  * There is no logical place to put it, as most of this gem mirrors the Timehelpers in ActiveSupport.
+  As a result I'm unlikely to add it unless I have an epiphany or someone wows me with an awesome pullup request.
+  
 == Copyright
 
 Copyright (c) 2010 bokmann. See LICENSE for details.
