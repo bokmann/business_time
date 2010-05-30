@@ -10,7 +10,7 @@ module BusinessTime
       @days.times do
         begin
           time = time + 1.day
-        end until time.workday?
+        end until Time.workday?(time)
       end
       time
     end
@@ -23,7 +23,7 @@ module BusinessTime
       @days.times do
         begin
           time = time - 1.day
-        end until time.workday?
+        end until Time.workday?(time)
       end
       time
     end

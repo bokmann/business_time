@@ -49,13 +49,13 @@ class TestBusinessHours < Test::Unit::TestCase
     should "roll forward to 9 am if asked in the early morning" do
       crack_of_dawn_monday = Time.parse("Mon Apr 26, 04:30:00, 2010")
       monday_morning = Time.parse("Mon Apr 26, 09:00:00, 2010")
-      assert_equal monday_morning, crack_of_dawn_monday.roll_forward
+      assert_equal monday_morning, Time.roll_forward(crack_of_dawn_monday)
     end
 
     should "roll forward to the next morning if aftern business hours" do
       monday_evening = Time.parse("Mon Apr 26, 18:00:00, 2010")
       tuesday_morning = Time.parse("Tue Apr 27, 09:00:00, 2010")
-      assert_equal tuesday_morning, monday_evening.roll_forward
+      assert_equal tuesday_morning, Time.roll_forward(monday_evening)
     end
 
     should "consider any time on a weekend as equivalent to monday morning" do

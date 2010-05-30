@@ -185,7 +185,7 @@ class TestBusinessDays < Test::Unit::TestCase
       friday_afternoon = Time.parse("July 2nd, 2010, 4:50 pm")
       tuesday_afternoon = 1.business_day.after(friday_afternoon)
       expected = Time.zone.parse("July 6th, 2010, 4:50 pm")
-      assert (expected == tuesday_afternoon, "Expected #{expected} but received #{tuesday_afternoon}")
+      assert expected == tuesday_afternoon
     end
 
     should "take into account a holiday on a weekend" do

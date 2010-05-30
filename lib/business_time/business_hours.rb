@@ -4,55 +4,59 @@ module BusinessTime
     def initialize(hours)
       @hours = hours
     end
-    
+
     def ago
       before(Time.now)
     end
-    
+
     def from_now
       after(Time.now)
     end
-     
+
     def after(time)
-      time.timezone_fix(time.zone)
-      time = time.roll_forward
-      @hours.times do 
-        time = time + 1.hour  #add an hour
-        
-        if (time.utc > time.end_of_workday.utc)
-          time = time + off_hours  # if that pushes us past business hours,
-        end                        # roll into the next day
-        
-        while !time.workday?
-          time = time + 1.day      # if that pushes us into a non-business day,
-        end                        # find the next business day
+      after_time = Time.roll_forward(time)
+      # Step through the hours, skipping over non-business hours
+      @hours.times do
+        after_time = after_time + 1.hour
+
+        # Ignore hours before opening and after closing
+        if (after_time > Time.end_of_workday(after_time))
+          after_time = after_time + off_hours
+        end
+
+        # Ignore weekends and holidays
+        while !Time.workday?(after_time)
+          after_time = after_time + 1.day
+        end
       end
-      time
+      after_time
     end
-            
+
     def before(time)
-      time.timezone_fix(time.zone)
-      time = time.roll_forward
-      @hours.times do 
-        time = time - 1.hour  #subtract an hour
-        
-        if (time.utc < time.beginning_of_workday.utc)
-          time = time - off_hours  # if that pushes us before business hours,
-        end                        # roll into the previous day
-        
-        while !time.workday?
-          time = time - 1.day      # if that pushes us into a non-business day,
-        end                        # find the previous business day
+      before_time = Time.roll_forward(time)
+      # Step through the hours, skipping over non-business hours
+      @hours.times do
+        before_time = before_time - 1.hour
+
+        # Ignore hours before opening and after closing
+        if (before_time < Time.beginning_of_workday(before_time))
+          before_time = before_time - off_hours
+        end
+
+        # Ignore weekends and holidays
+        while !Time.workday?(before_time)
+          before_time = before_time - 1.day
+        end
       end
-      time
+      before_time
     end
-    
+
     private
-    
+
     def off_hours
-      @gap ||= Time.parse(BusinessTime::Config.beginning_of_workday) - 
+      @gap ||= Time.parse(BusinessTime::Config.beginning_of_workday) -
               (Time.parse(BusinessTime::Config.end_of_workday) - 1.day)
     end
   end
-  
+
 end
