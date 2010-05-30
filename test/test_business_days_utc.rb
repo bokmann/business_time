@@ -52,7 +52,7 @@ class TestBusinessDays < Test::Unit::TestCase
     should "take into account a holiday when adding a day" do
       three_day_weekend = Date.parse("July 5th, 2010")
       BusinessTime::Config.holidays << three_day_weekend
-      friday_afternoon = Time.parse("July 2nd, 2010, 4:50 pm")
+      friday_afternoon = Time.zone.parse("July 2nd, 2010, 4:50 pm")
       tuesday_afternoon = 1.business_day.after(friday_afternoon)
       expected = Time.zone.parse("July 6th, 2010, 4:50 pm")
       assert_equal expected, tuesday_afternoon
