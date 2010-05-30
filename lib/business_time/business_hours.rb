@@ -14,11 +14,12 @@ module BusinessTime
     end
      
     def after(time)
+      time.timezone_fix(time.zone)
       time = time.roll_forward
       @hours.times do 
         time = time + 1.hour  #add an hour
         
-        if (time > time.end_of_workday)
+        if (time.utc > time.end_of_workday.utc)
           time = time + off_hours  # if that pushes us past business hours,
         end                        # roll into the next day
         
@@ -30,11 +31,12 @@ module BusinessTime
     end
             
     def before(time)
+      time.timezone_fix(time.zone)
       time = time.roll_forward
       @hours.times do 
         time = time - 1.hour  #subtract an hour
         
-        if (time < time.beginning_of_workday)
+        if (time.utc < time.beginning_of_workday.utc)
           time = time - off_hours  # if that pushes us before business hours,
         end                        # roll into the previous day
         
