@@ -30,13 +30,13 @@ class TestTimeExtensions < Test::Unit::TestCase
   should "know the beginning of the day for an instance" do
     first = Time.parse("August 17th, 2010, 11:50 am")
     expecting = Time.parse("August 17th, 2010, 9:00 am")
-    assert expecting == Time.beginning_of_workday(first)
+    assert_equal expecting, Time.beginning_of_workday(first)
   end
   
   should "know the end of the day for an instance" do
     first = Time.parse("August 17th, 2010, 11:50 am")
     expecting = Time.parse("August 17th, 2010, 5:00 pm")
-    assert expecting == Time.end_of_workday(first)
+    assert_equal expecting, Time.end_of_workday(first)
   end
   
 end

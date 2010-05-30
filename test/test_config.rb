@@ -3,15 +3,15 @@ require 'helper'
 class TestConfig < Test::Unit::TestCase
   
   should "keep track of the start of the day" do
-    assert BusinessTime::Config.beginning_of_workday == "9:00 am"
+    assert_equal BusinessTime::Config.beginning_of_workday, "9:00 am"
     BusinessTime::Config.beginning_of_workday = "8:30 am"
-    assert BusinessTime::Config.beginning_of_workday == "8:30 am"
+    assert_equal BusinessTime::Config.beginning_of_workday, "8:30 am"
   end
   
   should "keep track of the end of the day" do
-    assert BusinessTime::Config.end_of_workday == "5:00 pm"
+    assert_equal BusinessTime::Config.end_of_workday, "5:00 pm"
     BusinessTime::Config.end_of_workday = "5:30 pm"
-    assert BusinessTime::Config.end_of_workday == "5:30 pm"
+    assert_equal BusinessTime::Config.end_of_workday, "5:30 pm"
   end
   
   should "keep track of holidays" do
