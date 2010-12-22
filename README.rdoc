@@ -112,6 +112,7 @@ This can lead to some wierd looking effects if, say, you are in the Eastern time
  * David Bock  http://github.com/bokmann
  * Enrico Bianco  http://github.com/enricob
  * Arild Shirazi  http://github.com/ashirazi
+ * Piotr Jakubowski https://github.com/piotrj
  
  (Special thanks for Arild on the complexities of dealing with TimeWithZone)
  
