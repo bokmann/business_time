@@ -70,6 +70,11 @@ I needed this, but taking into account business hours/days and holidays.
     friday_afternoon = Time.parse("July 2nd, 2010, 4:50 pm")
     tuesday_morning = 1.business_hour.after(friday_afternoon)
 
+		# you can always calculate business duration between two dates
+		friday = Date.parse("December 24, 2010")
+    monday = Date.parse("December 27, 2010")
+		friday.business_days_until(monday) #=> 1
+
 == Usage in Rails
 The code above should work on a rails console without any issue.  You will want to add a line something like:
 
