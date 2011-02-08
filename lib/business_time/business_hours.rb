@@ -31,6 +31,7 @@ module BusinessTime
       end
       after_time
     end
+    alias_method :since, :after
 
     def before(time)
       before_time = Time.roll_forward(time)
