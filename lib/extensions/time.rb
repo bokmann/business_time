@@ -31,8 +31,7 @@ class Time
 
     # True if this time falls on a weekday.
     def weekday?(day)
-      # TODO AS: Internationalize this!
-      [1,2,3,4,5].include? day.wday
+      BusinessTime::Config.weekdays.include? day.wday
     end
 
     def before_business_hours?(time)

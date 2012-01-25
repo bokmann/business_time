@@ -19,16 +19,40 @@ module BusinessTime
       
       # You can set this yourself, either by the load method below, or
       # by saying
+      #   BusinessTime::Config.work_week = [:sun, :mon, :tue, :wed, :thu]
+      # someplace in the initializers of your application.
+      attr_accessor :work_week
+      
+      # You can set this yourself, either by the load method below, or
+      # by saying
       #   BusinessTime::Config.holidays << my_holiday_date_object
       # someplace in the initializers of your application.
       attr_accessor :holidays
 
     end
     
+    def self.work_week=(days)
+      @work_week = days
+      @weekdays = nil
+    end
+    
+    def self.weekdays
+      return @weekdays unless @weekdays.nil?
+      
+      lowercase_day_names = ::Time::RFC2822_DAY_NAME.map(&:downcase)
+      
+      @weekdays = work_week.each_with_object([]) do |day_name, days|
+        day_num = lowercase_day_names.find_index(day_name.to_s.downcase)
+        days << day_num unless day_num.nil?
+      end
+    end
+    
     def self.reset
       self.holidays = []
       self.beginning_of_workday = "9:00 am"
       self.end_of_workday = "5:00 pm"
+      self.work_week = %w[mon tue wed thu fri]
+      @weekdays = nil
     end
     
     # loads the config data from a yaml file written as:
@@ -45,6 +69,7 @@ module BusinessTime
       data = YAML::load(File.open(filename))
       self.beginning_of_workday = data["business_time"]["beginning_of_workday"]
       self.end_of_workday = data["business_time"]["end_of_workday"]
+      self.work_week = data["business_time"]["work_week"]
       data["business_time"]["holidays"].each do |holiday|
         self.holidays <<
           Time.zone ? Time.zone.parse(holiday) : Time.parse(holiday)

@@ -5,3 +5,9 @@ business_time:
     - Jan 01, 2010
     - July 4th, 2010
     - December 25th, 2010
+  work_week:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri

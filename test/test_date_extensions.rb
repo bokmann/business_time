@@ -1,19 +1,20 @@
 require 'helper'
 
 class TestDateExtensions < Test::Unit::TestCase
-  
-  should "know what a weekend day is"  do
-    assert(Date.parse("April 9, 2010").weekday?)
-    assert(!Date.parse("April 10, 2010").weekday?)
-    assert(!Date.parse("April 11, 2010").weekday?)
-    assert(Date.parse("April 12, 2010").weekday?)
-  end
-  
+    
   should "know a weekend day is not a workday"  do
     assert(Date.parse("April 9, 2010").workday?)
     assert(!Date.parse("April 10, 2010").workday?)
     assert(!Date.parse("April 11, 2010").workday?)
     assert(Date.parse("April 12, 2010").workday?)
+  end
+  
+  should "know a weekend day is not a workday (with a configured work week)"  do
+    BusinessTime::Config.work_week = %w[sun mon tue wed thu]
+    assert(Date.parse("April 8, 2010").weekday?)
+    assert(!Date.parse("April 9, 2010").weekday?)
+    assert(!Date.parse("April 10, 2010").weekday?)
+    assert(Date.parse("April 12, 2010").weekday?)
   end
   
   should "know a holiday is not a workday" do
