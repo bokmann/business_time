@@ -25,3 +25,4 @@ pkg
 ## PROJECT::SPECIFIC
 # for binstubs, since this gem has no executables
 bin
+vendor
