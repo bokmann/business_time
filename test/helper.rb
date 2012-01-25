@@ -1,3 +1,4 @@
+require 'thread'
 require 'rubygems'
 
 if RUBY_VERSION >= '1.9'
