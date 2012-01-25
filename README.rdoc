@@ -69,11 +69,17 @@ I needed this, but taking into account business hours/days and holidays.
     BusinessTime::Config.holidays << three_day_weekend
     friday_afternoon = Time.parse("July 2nd, 2010, 4:50 pm")
     tuesday_morning = 1.business_hour.after(friday_afternoon)
+    
+    # plus, we can change the work week:
+    # July 9th in 2010 is a Friday.
+    BusinessTime::Config.work_week = [:sun, :mon, :tue, :wed, :thu]
+    thursday_afternoon = Time.parse("July 8th, 2010, 4:50 pm")
+    sunday_morning = 1.business_hour.after(thursday_afternoon)
 
-		# you can also calculate business duration between two dates
-		friday = Date.parse("December 24, 2010")
+    # you can also calculate business duration between two dates
+    friday = Date.parse("December 24, 2010")
     monday = Date.parse("December 27, 2010")
-		friday.business_days_until(monday) #=> 1
+    friday.business_days_until(monday) #=> 1
 
 == Usage in Rails
 The code above should work on a rails console without any issue.  You will want to add a line something like:
@@ -112,7 +118,8 @@ This can lead to some wierd looking effects if, say, you are in the Eastern time
  * David Bock  http://github.com/bokmann
  * Enrico Bianco  http://github.com/enricob
  * Arild Shirazi  http://github.com/ashirazi
- * Piotr Jakubowski https://github.com/piotrj
+ * Piotr Jakubowski http://github.com/piotrj
+ * Glenn Vanderburg http://github.com/glv
  
  (Special thanks for Arild on the complexities of dealing with TimeWithZone)
  
@@ -128,11 +135,6 @@ This can lead to some wierd looking effects if, say, you are in the Eastern time
 
 == TODO
 
-* if it doesn't pollute the logic too much, I'd like to vary the days counted as 'business days'.  Bakers often
-  don't work on Mondays, for instance.  I'd do it in something like this:
-  
-    BusinessTime::Config.work_week = [:tue, :wed, :thur, :fri, :sat]
-
 * Arild has pointed out that there may be some logical inconsistencies
   regaring the beginning_of_workday and end_of workday times not actually
   being considered inside of the workday.  I'd like to make sure that they
@@ -147,8 +149,12 @@ This can lead to some wierd looking effects if, say, you are in the Eastern time
 * While there have been requests to add 'business minutes' and even 'business seconds' to this gem, I won't
   entertain a pullup request with such things.  If you find it useful, great.  Most users won't, and they don't
   need the baggage.
-
+* I'm torn on the inclusion of some kind of business_duration_between two Times, for the following reasons:
+  * As a duration, it will be in seconds.  This would naturally be business-seconds, which I trimmed out above.
+  * The logic is complex and error prone.
+  * There is no logical place to put it, as most of this gem mirrors the Timehelpers in ActiveSupport.
+  As a result I'm unlikely to add it unless I have an epiphany or someone wows me with an awesome pullup request.
   
 == Copyright
 
-Copyright (c) 2010 bokmann. See LICENSE for details.
+Copyright (c) 2010,2011,2012 bokmann. See LICENSE for details.

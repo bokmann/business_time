@@ -17,4 +17,7 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'business_time'
 
 class Test::Unit::TestCase
+  def teardown
+    BusinessTime::Config.reset
+  end
 end

@@ -1,0 +1,20 @@
+PATH
+  remote: .
+  specs:
+    business_time (0.4.0)
+      activesupport (>= 2.0.0)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    activesupport (2.3.4)
+    rake (0.9.2.2)
+    shoulda (2.11.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  business_time!
+  rake
+  shoulda
