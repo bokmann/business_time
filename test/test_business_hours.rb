@@ -25,6 +25,13 @@ class TestBusinessHours < Test::Unit::TestCase
       assert_equal expected, monday_morning
     end
 
+    should "take into account a weekend when adding an hour, using the common interface #since" do
+      friday_afternoon = Time.parse("April 9th, 4:50 pm")
+      monday_morning = 1.business_hour.since(friday_afternoon)
+      expected = Time.parse("April 12th 2010, 9:50 am")
+      assert_equal expected, monday_morning
+    end
+
     should "take into account a weekend when subtracting an hour" do
       monday_morning = Time.parse("April 12th 2010, 9:50 am")
       friday_afternoon = 1.business_hour.before(monday_morning)
