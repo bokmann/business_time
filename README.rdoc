@@ -1,5 +1,7 @@
 = business_time
 
+{<img src="https://secure.travis-ci.org/bokmann/business_time.png" />}[http://travis-ci.org/bokmann/business_time]
+
 ActiveSupport gives us some great helpers so we can do things like:
 
   5.days.ago
