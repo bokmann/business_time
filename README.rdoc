@@ -82,6 +82,11 @@ I needed this, but taking into account business hours/days and holidays.
     friday = Date.parse("December 24, 2010")
     monday = Date.parse("December 27, 2010")
     friday.business_days_until(monday) #=> 1
+    
+    # or you can calculate business duration between two Time objects
+    ticket_reported = Time.parse("February 3, 2012, 10:40 am")
+    ticket_resolved = Time.parse("February 4, 2012, 10:50 am")
+    ticket_reported.business_time_until(ticket_resolved) #=> 8.hours + 10.minutes
 
 == Usage in Rails
 The code above should work on a rails console without any issue.  You will want to add a line something like:
