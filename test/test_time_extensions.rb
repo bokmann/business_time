@@ -40,4 +40,55 @@ class TestTimeExtensions < Test::Unit::TestCase
     assert_equal expecting, Time.end_of_workday(first)
   end
   
+  # ===================
+  
+  should "calculate business time between different times on the same date (clockwise)" do
+    time_a = Time.parse('2012-02-01 10:00')
+    time_b = Time.parse('2012-02-01 14:20')
+    assert_equal time_a.business_time_until(time_b), 260.minutes
+  end
+
+  should "calculate business time between different times on the same date (counter clockwise)" do
+    time_a = Time.parse('2012-02-01 10:00')
+    time_b = Time.parse('2012-02-01 14:20')
+    assert_equal time_b.business_time_until(time_a), -260.minutes
+  end
+  
+  should "calculate business time only within business hours even if second endpoint is out of business time" do
+    time_a = Time.parse('2012-02-01 10:00')
+    time_b = Time.parse("2012-02-01 " + BusinessTime::Config.end_of_workday) + 24.minutes
+    first_result = time_a.business_time_until(time_b)
+    time_b = Time.parse('2012-02-01 '+ BusinessTime::Config.end_of_workday)
+    second_result = time_a.business_time_until(time_b)
+    assert_equal first_result, second_result
+    assert_equal first_result, 7.hours
+  end
+
+  should "calculate business time only within business hours even if the first endpoint is out of business time" do
+    time_a = Time.parse("2012-02-01 7:25")
+    time_b = Time.parse("2012-02-01 15:30")
+    first_result = time_a.business_time_until(time_b)
+    assert_equal first_result, 390.minutes
+  end
+    
+  should "return correct time between two consecutive days" do
+    time_a = Time.parse('2012-02-01 10:00')
+    time_b = Time.parse('2012-02-02 10:00')
+    working_hours = Time.parse(BusinessTime::Config.end_of_workday) - Time.parse(BusinessTime::Config.beginning_of_workday)
+    assert_equal time_a.business_time_until(time_b), working_hours
+  end
+  
+  should "calculate proper timing if there are several days between" do
+    time_a = Time.parse('2012-02-01 10:00')
+    time_b = Time.parse('2012-02-09 11:00')
+    duration_of_working_day = Time.parse(BusinessTime::Config.end_of_workday) - Time.parse(BusinessTime::Config.beginning_of_workday)
+    assert_equal time_a.business_time_until(time_b), 6 * duration_of_working_day + 1.hour
+    assert_equal time_b.business_time_until(time_a), -(6 * duration_of_working_day + 1.hour)
+  end
+  
+  should "example provided in the documentation be correct :)" do
+    ticket_reported = Time.parse("February 3, 2012, 10:40 am")
+    ticket_resolved = Time.parse("February 4, 2012, 10:50 am")
+    assert_equal ticket_reported.business_time_until(ticket_resolved), 8.hours + 10.minutes
+  end
 end
