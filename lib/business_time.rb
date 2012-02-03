@@ -1,3 +1,4 @@
+require 'thread'
 require "active_support"
 require "time"
 require "business_time/config"
