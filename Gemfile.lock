@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    business_time (0.4.0)
+    business_time (0.5.0.pre)
       activesupport (>= 2.0.0)
 
 GEM
