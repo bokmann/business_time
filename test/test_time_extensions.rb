@@ -86,9 +86,9 @@ class TestTimeExtensions < Test::Unit::TestCase
     assert_equal time_b.business_time_until(time_a), -(6 * duration_of_working_day + 1.hour)
   end
   
-  should "example provided in the documentation be correct :)" do
+  should "calculate proper duration even if the end date is on a weekend" do
     ticket_reported = Time.parse("February 3, 2012, 10:40 am")
-    ticket_resolved = Time.parse("February 4, 2012, 10:50 am")
-    assert_equal ticket_reported.business_time_until(ticket_resolved), 8.hours + 10.minutes
+    ticket_resolved = Time.parse("February 4, 2012, 10:40 am") #will roll over to Monday morning, 9:00am
+    assert_equal ticket_reported.business_time_until(ticket_resolved), 6.hours + 20.minutes
   end
 end
