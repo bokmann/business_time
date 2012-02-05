@@ -71,10 +71,8 @@ module BusinessTime
       self.end_of_workday = data["business_time"]["end_of_workday"]
       self.work_week = data["business_time"]["work_week"]
       data["business_time"]["holidays"].each do |holiday|
-        self.holidays <<
-          Time.zone ? Time.zone.parse(holiday) : Time.parse(holiday)
-      end
-      
+        self.holidays << Date.parse(holiday)
+      end 
     end
     
     #reset the first time we are loaded.

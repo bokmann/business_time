@@ -35,4 +35,11 @@ class TestConfig < Test::Unit::TestCase
     assert_equal [2,3], BusinessTime::Config.weekdays
   end
   
+  should "load holidays from the configuration YAML file" do
+    assert BusinessTime::Config.holidays.empty?
+    BusinessTime::Config.load("#{File.dirname(__FILE__)}/../rails_generators/business_time_config/templates/business_time.yml")
+    expected_result = ["Jan 01, 2010", "July 04, 2010", "December 25th, 2010"].map {|d| Date.parse d }
+    assert_equal BusinessTime::Config.holidays.sort, expected_result.sort;
+  end
+  
 end
