@@ -40,8 +40,6 @@ class TestTimeExtensions < Test::Unit::TestCase
     assert_equal expecting, Time.end_of_workday(first)
   end
   
-  # ===================
-  
   should "calculate business time between different times on the same date (clockwise)" do
     time_a = Time.parse('2012-02-01 10:00')
     time_b = Time.parse('2012-02-01 14:20')
@@ -87,8 +85,8 @@ class TestTimeExtensions < Test::Unit::TestCase
   end
   
   should "example provided in the documentation be correct :)" do
-    ticket_reported = Time.parse("February 3, 2012, 10:40 am")
-    ticket_resolved = Time.parse("February 4, 2012, 10:50 am")
+    ticket_reported = Time.parse("February 2, 2012, 10:40 am")
+    ticket_resolved = Time.parse("February 3, 2012, 10:50 am")
     assert_equal ticket_reported.business_time_until(ticket_resolved), 8.hours + 10.minutes
   end
 end
