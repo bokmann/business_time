@@ -10,11 +10,12 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/bokmann/business_time"
   s.authors = ["bokmann"]
   s.email = "dbock@codesherpas.com"
-  
+
   s.files = `git ls-files -- {lib,rails_generators,LICENSE,README.rdoc}`.split("\n")
 
-  s.add_dependency('activesupport','>= 2.0.0')
+  s.add_dependency('activesupport','>= 3.1.0')
+  s.add_dependency("tzinfo", "~> 0.3.31")
 
-  s.add_development_dependency 'rake'
+  s.add_development_dependency "rake", ">= 0.9.2"
   s.add_development_dependency "shoulda", ">= 0"
 end
