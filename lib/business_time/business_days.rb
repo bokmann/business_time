@@ -1,5 +1,7 @@
-module BusinessTime
+require 'active_support/time'
 
+module BusinessTime
+  
   class BusinessDays
     def initialize(days)
       @days = days
