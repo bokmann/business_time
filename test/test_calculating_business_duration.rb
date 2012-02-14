@@ -21,4 +21,35 @@ class TestCalculatingBusinessDuration < Test::Unit::TestCase
     assert_equal 2, wednesday.business_days_until(monday)
   end
   
+  should "properly calculate business days with respect to work_hours" do
+    friday = Date.parse("December 24, 2010")
+    monday = Date.parse("December 27, 2010")
+    BusinessTime::Config.work_hours = {
+      :fri=>["9:00","17:00"],
+      :sat=>["10:00","15:00"]
+    }
+    assert_equal 2, friday.business_days_until(monday)
+  end
+
+  should "properly calculate business time with respect to work_hours" do
+    friday = Time.parse("December 24, 2010 15:00")
+    monday = Time.parse("December 27, 2010 11:00")
+    BusinessTime::Config.work_hours = {
+      :mon=>["9:00","17:00"],
+      :fri=>["9:00","17:00"],
+      :sat=>["10:00","15:00"]
+    }
+    assert_equal 9.hours, friday.business_time_until(monday)
+  end
+
+  should "properly calculate business time with respect to work_hours with 00:24" do
+    friday = Time.parse("December 24, 2010 15:00")
+    monday = Time.parse("December 27, 2010 11:00")
+    BusinessTime::Config.work_hours = {
+      :mon=>["0:00","0:00"],
+      :fri=>["0:00","0:00"],
+      :sat=>["11:00","15:00"]
+    }
+    assert_equal 24.hours, friday.business_time_until(monday)
+  end
 end
