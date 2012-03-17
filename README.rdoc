@@ -1,5 +1,7 @@
 = business_time
 
+{<img src="https://secure.travis-ci.org/bokmann/business_time.png" />}[http://travis-ci.org/bokmann/business_time]
+
 ActiveSupport gives us some great helpers so we can do things like:
 
   5.days.ago
@@ -80,6 +82,21 @@ I needed this, but taking into account business hours/days and holidays.
     friday = Date.parse("December 24, 2010")
     monday = Date.parse("December 27, 2010")
     friday.business_days_until(monday) #=> 1
+    
+    # or you can calculate business duration between two Time objects
+    ticket_reported = Time.parse("February 3, 2012, 10:40 am")
+    ticket_resolved = Time.parse("February 4, 2012, 10:50 am")
+    ticket_reported.business_time_until(ticket_resolved) #=> 8.hours + 10.minutes
+
+    # note that counterintuitively, durations might not be quite what you expect when involving weekends.
+    # Consider the following example:
+    ticket_reported = Time.parse("February 3, 2012, 10:40 am")
+    ticket_resolved = Time.parse("February 4, 2012, 10:40 am")
+    ticket_reported.business_time_until(ticket_resolved) # will equal 6 hours and 20 minutes!
+
+    # why does this happen?  Feb 4 2012 is a Saturday.  That time will roll over to
+    # Monday, Feb 6th 2012, 9:00am.  The business time between 10:40am friday and 9am monday is
+    # 6 hours and 20 minutes. From a quick inspection of the code, it looks like it should be 8 hours.
 
 == Usage in Rails
 The code above should work on a rails console without any issue.  You will want to add a line something like:
@@ -113,6 +130,13 @@ This gem strives to be timezone-agnostic.  Due to some complications in the hand
   referenced in that time zone.
  
 This can lead to some wierd looking effects if, say, you are in the Eastern time zone but doing everything in UTC times...  Your business day will appear to start and end at 9:00 and 5:00 UTC.  If this seems perplexing to you, I can almost guarantee you are in over your head with timezones in other ways too, this is just the first place you encountered it.  Timezone relative date handling gets more and more complicated every time you look at it and takes a long time before it starts to seem simple again.  I'm hoping Arild and I write some good blog entries on the subject at http://blog.codesherpas.com.
+
+== Integration with the Holidays gem
+
+	Chris Wise wrote up a great article[http://murmurinfo.wordpress.com/2012/01/11/handling-holidays-and-business-hours/] on using the business_time gem with the holidays[https://github.com/HealthyWeb/holidays] gem. It boils down to this:
+
+  Holidays.between(Date.civil(2011, 1, 1), 2.years.from_now, :ca_on, :o bserved).map{|holiday| BusinessTime::Config.holidays << holiday[:date]}
+
 
 == Contributors
  * David Bock  http://github.com/bokmann
@@ -149,11 +173,7 @@ This can lead to some wierd looking effects if, say, you are in the Eastern time
 * While there have been requests to add 'business minutes' and even 'business seconds' to this gem, I won't
   entertain a pullup request with such things.  If you find it useful, great.  Most users won't, and they don't
   need the baggage.
-* I'm torn on the inclusion of some kind of business_duration_between two Times, for the following reasons:
-  * As a duration, it will be in seconds.  This would naturally be business-seconds, which I trimmed out above.
-  * The logic is complex and error prone.
-  * There is no logical place to put it, as most of this gem mirrors the Timehelpers in ActiveSupport.
-  As a result I'm unlikely to add it unless I have an epiphany or someone wows me with an awesome pullup request.
+
   
 == Copyright
 
