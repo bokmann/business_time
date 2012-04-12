@@ -1,3 +1,5 @@
+require 'active_support/core_ext'
+
 module BusinessTime
   
   # controls the behavior of this gem.  You can change
