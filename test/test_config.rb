@@ -53,6 +53,18 @@ class TestConfig < Test::Unit::TestCase
     assert_equal [Time.parse('2012-12-25')], BusinessTime::Config.holidays
   end
 
+  should "include holidays read from YAML config files" do
+    yaml = <<-YAML
+    business_time:
+      holidays:
+        - May 7th, 2012
+    YAML
+    assert Time.workday?(Time.parse('2012-05-07'))
+    config_file = StringIO.new(yaml.gsub!(/^    /, ''))
+    BusinessTime::Config.load(config_file)
+    assert !Time.workday?(Time.parse('2012-05-07'))
+  end
+
   should "use defaults for values missing in YAML file" do
     yaml = <<-YAML
     business_time:

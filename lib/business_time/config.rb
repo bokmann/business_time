@@ -74,7 +74,7 @@ module BusinessTime
       self.end_of_workday = config["end_of_workday"] if config["end_of_workday"]
       self.work_week = config["work_week"] if config["work_week"]
       (config["holidays"] || []).each do |holiday|
-        self.holidays << (Time.zone ? Time.zone.parse(holiday) : Time.parse(holiday))
+        self.holidays << Date.parse(holiday)
       end
 
     end
