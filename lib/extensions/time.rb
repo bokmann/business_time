@@ -7,9 +7,8 @@ class Time
     # Note: It pretends that this day is a workday whether or not it really is a
     # workday.
     def end_of_workday(day)
-      format = "%B %d %Y #{BusinessTime::Config.end_of_workday(day)}"
-      Time.zone ? Time.zone.parse(day.strftime(format)) :
-          Time.parse(day.strftime(format))
+      end_of_workday = Time.parse(BusinessTime::Config.end_of_workday(day))
+      change_time(day,end_of_workday.hour,end_of_workday.min,end_of_workday.sec)
     end
 
     # Gives the time at the beginning of the workday, assuming that this time
@@ -17,9 +16,8 @@ class Time
     # Note: It pretends that this day is a workday whether or not it really is a
     # workday.
     def beginning_of_workday(day)
-      format = "%B %d %Y #{BusinessTime::Config.beginning_of_workday(day)}"
-      Time.zone ? Time.zone.parse(day.strftime(format)) :
-          Time.parse(day.strftime(format))
+      beginning_of_workday = Time.parse(BusinessTime::Config.beginning_of_workday(day))
+      change_time(day,beginning_of_workday.hour,beginning_of_workday.min,beginning_of_workday.sec)
     end
 
     # True if this time is on a workday (between 00:00:00 and 23:59:59), even if
@@ -61,6 +59,16 @@ class Time
       next_business_time
     end
     
+    private
+
+    def change_time time, hour, min=0, sec=0
+      if Time.zone
+        time.in_time_zone(Time.zone).change(:hour => hour, :min => min, :sec => sec)
+      else
+        time.change(:hour => hour, :min => min, :sec => sec)
+      end
+    end
+
   end
 end
 
@@ -95,7 +103,6 @@ class Time
     time_c = time_a
     while time_c.to_i < time_b.to_i do
       end_of_workday = Time.end_of_workday(time_c)
-      hours = BusinessTime::Config.end_of_workday(time_c)
       if time_c.to_date == time_b.to_date
         if end_of_workday < time_b
           result += end_of_workday - time_c
@@ -108,7 +115,7 @@ class Time
         result += end_of_workday - time_c
         time_c = Time::roll_forward(end_of_workday)
       end
-      result += 1 if hours == "23:59:59"
+      result += 1 if end_of_workday.to_s =~ /23:59:59/
     end
     # Make sure that sign is correct
     result *= direction

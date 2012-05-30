@@ -67,12 +67,12 @@ class TestCalculatingBusinessDuration < Test::Unit::TestCase
     assert_equal 24.hours, friday.business_time_until(monday)
   end
 
-  should "properly calculate business time with respect to work_hours with all 00:24" do
+  should "properly calculate business time with respect to work_hours with all days as 00:24" do
     friday = Time.parse("December 24, 2010 15:00")
     monday = Time.parse("December 27, 2010 11:00")
     BusinessTime::Config.work_hours = {
-      :mon=>["0:00","0:00"],
-      :fri=>["0:00","0:00"],
+      :mon=>["00:00","00:00"],
+      :fri=>["00:00","00:00"],
       :sat=>["00:00","00:00"],
       :sun=>["00:00","00:00"]
     }
