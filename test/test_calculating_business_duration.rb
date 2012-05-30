@@ -42,6 +42,20 @@ class TestCalculatingBusinessDuration < Test::Unit::TestCase
     assert_equal 9.hours, friday.business_time_until(monday)
   end
 
+  should "properly calculate business time with respect to work_hours with UTC time zone" do
+    Time.zone = 'UTC'
+
+    monday = Time.parse("May 28 11:04:26 +0300 2012")
+    tuesday = Time.parse("May 29 17:56:45 +0300 2012")
+    BusinessTime::Config.work_hours = {
+      :mon=>["9:00","18:00"],
+      :tue=>["9:00","18:00"],
+      :wed=>["9:00","18:00"]
+    }
+    assert_equal 53805.0, monday.business_time_until(tuesday)
+    Time.zone = nil
+  end
+
   should "properly calculate business time with respect to work_hours with some 00:24 days" do
     friday = Time.parse("December 24, 2010 15:00")
     monday = Time.parse("December 27, 2010 11:00")

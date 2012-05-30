@@ -35,11 +35,11 @@ class Time
     end
 
     def before_business_hours?(time)
-      time < beginning_of_workday(time)
+      time.to_i < beginning_of_workday(time).to_i
     end
 
     def after_business_hours?(time)
-      time > end_of_workday(time)
+      time.to_i > end_of_workday(time).to_i
     end
 
     # Rolls forward to the next beginning_of_workday
@@ -48,7 +48,7 @@ class Time
 
       if (Time.before_business_hours?(time) || !Time.workday?(time))
         next_business_time = Time.beginning_of_workday(time)
-      elsif Time.after_business_hours?(time)
+      elsif Time.after_business_hours?(time) || Time.end_of_workday(time) == time
         next_business_time = Time.beginning_of_workday(time + 1.day)
       else
         next_business_time = time.clone
@@ -60,7 +60,7 @@ class Time
 
       next_business_time
     end
-
+    
   end
 end
 
@@ -93,9 +93,9 @@ class Time
 
     # All days in between
     time_c = time_a
-    while time_c < time_b do
+    while time_c.to_i < time_b.to_i do
+      end_of_workday = Time.end_of_workday(time_c)
       hours = BusinessTime::Config.end_of_workday(time_c)
-      end_of_workday = Time.parse(time_c.strftime('%Y-%m-%d ') + hours)
       if time_c.to_date == time_b.to_date
         if end_of_workday < time_b
           result += end_of_workday - time_c
@@ -106,7 +106,7 @@ class Time
         end
       else
         result += end_of_workday - time_c
-        time_c = Time::roll_forward(end_of_workday + 1.second)
+        time_c = Time::roll_forward(end_of_workday)
       end
       result += 1 if hours == "23:59:59"
     end
