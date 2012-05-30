@@ -30,9 +30,32 @@ module BusinessTime
       #   BusinessTime::Config.holidays << my_holiday_date_object
       # someplace in the initializers of your application.
       attr_accessor :holidays
-
+      
+      # working hours for each day - if not set using global variables :beginning_of_workday 
+      # and end_of_workday. Keys will be added ad weekdays.
+      # Example:
+      #    {:mon => ["9:00","17:00"],:tue => ["9:00","17:00"].....}
+      attr_accessor :work_hours
     end
     
+    def self.end_of_workday(day=nil)
+      if day
+        wday = @work_hours[self.int_to_wday(day.wday)]
+        wday ? (wday.last =~ /0{1,2}\:0{1,2}/ ? "23:59:59" : wday.last) : @end_of_workday
+      else
+        @end_of_workday
+      end
+    end
+
+    def self.beginning_of_workday(day=nil)
+      if day
+        wday = @work_hours[self.int_to_wday(day.wday)]
+        wday ? wday.first : @beginning_of_workday
+      else
+        @beginning_of_workday
+      end
+    end
+
     def self.work_week=(days)
       @work_week = days
       @weekdays = nil
@@ -41,19 +64,27 @@ module BusinessTime
     def self.weekdays
       return @weekdays unless @weekdays.nil?
       
-      lowercase_day_names = ::Time::RFC2822_DAY_NAME.map(&:downcase)
-      
-      @weekdays = work_week.each_with_object([]) do |day_name, days|
-        day_num = lowercase_day_names.find_index(day_name.to_s.downcase)
+      @weekdays = (!work_hours.empty? ? work_hours.keys : work_week).each_with_object([]) do |day_name, days|
+        day_num = self.wday_to_int(day_name)
         days << day_num unless day_num.nil?
       end
     end
     
+    def self.wday_to_int day_name
+      lowercase_day_names = ::Time::RFC2822_DAY_NAME.map(&:downcase)
+      lowercase_day_names.find_index(day_name.to_s.downcase)
+    end
+
+    def self.int_to_wday num
+      ::Time::RFC2822_DAY_NAME.map(&:downcase).map(&:to_sym)[num]
+    end
+
     def self.reset
       self.holidays = []
       self.beginning_of_workday = "9:00 am"
       self.end_of_workday = "5:00 pm"
       self.work_week = %w[mon tue wed thu fri]
+      self.work_hours = {}
       @weekdays = nil
     end
     

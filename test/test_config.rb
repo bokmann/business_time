@@ -35,4 +35,19 @@ class TestConfig < Test::Unit::TestCase
     assert_equal [2,3], BusinessTime::Config.weekdays
   end
   
+  should "keep track of the start of the day using work_hours" do
+    assert_equal({},BusinessTime::Config.work_hours)
+    BusinessTime::Config.work_hours = {
+      :mon=>["9:00","17:00"],
+      :tue=>["9:00","17:00"],
+      :thu=>["9:00","17:00"],
+      :fri=>["9:00","17:00"]
+    }
+    assert_equal({:mon=>["9:00","17:00"],
+      :tue=>["9:00","17:00"],
+      :thu=>["9:00","17:00"],
+      :fri=>["9:00","17:00"]
+    }, BusinessTime::Config.work_hours)
+    assert_equal([1,2,4,5], BusinessTime::Config.weekdays.sort)
+  end
 end

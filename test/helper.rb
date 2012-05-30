@@ -1,6 +1,5 @@
 require 'thread'
 require 'rubygems'
-
 if RUBY_VERSION >= '1.9'
   require 'time'
   require 'date'
