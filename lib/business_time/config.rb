@@ -70,13 +70,16 @@ module BusinessTime
       self.reset
       data = YAML::load(file.respond_to?(:read) ? file : File.open(file))
       config = (data["business_time"] || {})
-      self.beginning_of_workday = config["beginning_of_workday"] if config["beginning_of_workday"]
-      self.end_of_workday = config["end_of_workday"] if config["end_of_workday"]
-      self.work_week = config["work_week"] if config["work_week"]
+
+      # load each config variable from the file, if it's present and valid
+      config_vars = %w(beginning_of_workday end_of_workday work_week)
+      config_vars.each do |var|
+        send("#{var}=", config[var]) if config[var] && respond_to?("#{var}=")
+      end
+
       (config["holidays"] || []).each do |holiday|
         self.holidays << Date.parse(holiday)
       end
-
     end
 
     #reset the first time we are loaded.
