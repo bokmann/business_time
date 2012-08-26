@@ -61,6 +61,24 @@ class Time
       next_business_time
     end
 
+    # Rolls backwards to the previous end_of_workday when the time is outside
+    # of business hours
+    def roll_backward(time)
+      if (Time.before_business_hours?(time) || !Time.workday?(time))
+        prev_business_time = Time.end_of_workday(time) - 1.day
+      elsif Time.after_business_hours?(time)
+        prev_business_time = Time.end_of_workday(time)
+      else
+        prev_business_time = time.clone
+      end
+
+      while !Time.workday?(prev_business_time)
+        prev_business_time -= 1.day
+      end
+
+      prev_business_time
+    end
+
   end
 end
 
@@ -78,25 +96,25 @@ class Time
       time_b = self
       direction = -1
     end
-    
+
     # Align both times to the closest business hours
     time_a = Time::roll_forward(time_a)
     time_b = Time::roll_forward(time_b)
-    
+
     # If same date, then calculate difference straight forward
     if time_a.to_date == time_b.to_date
       result = time_b - time_a
       return result *= direction
     end
-    
+
     # Both times are in different dates
     result = Time.parse(time_a.strftime('%Y-%m-%d ') + BusinessTime::Config.end_of_workday) - time_a   # First day
     result += time_b - Time.parse(time_b.strftime('%Y-%m-%d ') + BusinessTime::Config.beginning_of_workday) # Last day
-    
+
     # All days in between
     duration_of_working_day = Time.parse(BusinessTime::Config.end_of_workday) - Time.parse(BusinessTime::Config.beginning_of_workday)
     result += (time_a.to_date.business_days_until(time_b.to_date) - 1) * duration_of_working_day
-    
+
     # Make sure that sign is correct
     result *= direction
   end
