@@ -9,10 +9,10 @@ module BusinessTime
 
     def after(time = Time.now)
       time = Time.zone ? Time.zone.parse(time.to_s) : Time.parse(time.to_s)
-      @days.times do
-        begin
-          time = time + 1.day
-        end until Time.workday?(time)
+      days = @days
+      while days > 0 || !Time.workday?(time)
+        days -= 1 if Time.workday?(time)
+        time = time + 1.day
       end
       time
     end
@@ -22,10 +22,10 @@ module BusinessTime
     
     def before(time = Time.now)
       time = Time.zone ? Time.zone.parse(time.to_s) : Time.parse(time.to_s)
-      @days.times do
-        begin
-          time = time - 1.day
-        end until Time.workday?(time)
+      days = @days
+      while days > 0 || !Time.workday?(time)
+        days -= 1 if Time.workday?(time)
+        time = time - 1.day
       end
       time
     end
