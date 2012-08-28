@@ -1,5 +1,3 @@
-require 'active_support/time'
-
 module BusinessTime
   
   class BusinessDays
