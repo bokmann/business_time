@@ -16,6 +16,7 @@ Gem::Specification.new do |s|
   s.add_dependency('activesupport','>= 2.0.0')
   s.add_dependency("tzinfo", "~> 0.3.31")
 
+  s.add_development_dependency "appraisal", ">= 0"
   s.add_development_dependency "rake", ">= 0.9.2"
   s.add_development_dependency "shoulda", ">= 0"
   s.add_development_dependency "rdoc", ">= 0"

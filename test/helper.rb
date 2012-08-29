@@ -1,10 +1,11 @@
 require 'thread'
 require 'rubygems'
+require 'active_support/version'
 
 if RUBY_VERSION >= '1.9'
   require 'time'
   require 'date'
-  require 'active_support/time'
+  require 'active_support/time' if ActiveSupport::VERSION::MAJOR > 2
 else
   require 'active_support'
   require 'active_support/core_ext'
