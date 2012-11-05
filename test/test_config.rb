@@ -35,6 +35,22 @@ class TestConfig < Test::Unit::TestCase
     assert_equal [2,3], BusinessTime::Config.weekdays
   end
 
+  should "keep track of the start of the day using work_hours" do
+    assert_equal({},BusinessTime::Config.work_hours)
+    BusinessTime::Config.work_hours = {
+      :mon=>["9:00","17:00"],
+      :tue=>["9:00","17:00"],
+      :thu=>["9:00","17:00"],
+      :fri=>["9:00","17:00"]
+    }
+    assert_equal({:mon=>["9:00","17:00"],
+      :tue=>["9:00","17:00"],
+      :thu=>["9:00","17:00"],
+      :fri=>["9:00","17:00"]
+    }, BusinessTime::Config.work_hours)
+    assert_equal([1,2,4,5], BusinessTime::Config.weekdays.sort)
+  end
+
   should "load config from YAML files" do
     yaml = <<-YAML
     business_time:
@@ -50,7 +66,7 @@ class TestConfig < Test::Unit::TestCase
     assert_equal "11:00 am", BusinessTime::Config.beginning_of_workday
     assert_equal "2:00 pm", BusinessTime::Config.end_of_workday
     assert_equal ['mon'], BusinessTime::Config.work_week
-    assert_equal [Time.parse('2012-12-25')], BusinessTime::Config.holidays
+    assert_equal [Date.parse('2012-12-25')], BusinessTime::Config.holidays
   end
 
   should "include holidays read from YAML config files" do

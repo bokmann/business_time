@@ -59,16 +59,6 @@ class Time
       next_business_time
     end
 
-    private
-
-    def change_time time, hour, min=0, sec=0
-      if Time.zone
-        time.in_time_zone(Time.zone).change(:hour => hour, :min => min, :sec => sec)
-      else
-        time.change(:hour => hour, :min => min, :sec => sec)
-      end
-    end
-
     # Rolls backwards to the previous end_of_workday when the time is outside
     # of business hours
     def roll_backward(time)
@@ -86,6 +76,17 @@ class Time
 
       prev_business_time
     end
+
+    private
+
+    def change_time time, hour, min=0, sec=0
+      if Time.zone
+        time.in_time_zone(Time.zone).change(:hour => hour, :min => min, :sec => sec)
+      else
+        time.change(:hour => hour, :min => min, :sec => sec)
+      end
+    end
+
 
   end
 end
@@ -116,8 +117,10 @@ class Time
     end
 
     # Both times are in different dates
-    result = Time.parse(time_a.strftime('%Y-%m-%d ') + BusinessTime::Config.end_of_workday) - time_a   # First day
-    result += time_b - Time.parse(time_b.strftime('%Y-%m-%d ') + BusinessTime::Config.beginning_of_workday) # Last day
+    #result = Time.parse(time_a.strftime('%Y-%m-%d ') + BusinessTime::Config.end_of_workday) - time_a   # First day
+    #result += time_b - Time.parse(time_b.strftime('%Y-%m-%d ') + BusinessTime::Config.beginning_of_workday) # Last day
+
+    result = 0
 
     # All days in between
     time_c = time_a

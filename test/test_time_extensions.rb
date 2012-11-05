@@ -97,21 +97,21 @@ class TestTimeExtensions < Test::Unit::TestCase
   should "roll to the end of the same day when after hours on a workday" do
     time = Time.parse("11pm UTC, Wednesday 9th May, 2012")
     workday_end = BusinessTime::Config.end_of_workday
-    expected_time = Time.parse("#{workday_end}, Wednesday 9th May, 2012")
+    expected_time = Time.parse("#{workday_end} UTC, Wednesday 9th May, 2012")
     assert_equal Time.roll_backward(time), expected_time
   end
 
   should "roll to the end of the previous day when before hours on a workday" do
     time = Time.parse("04am UTC, Wednesday 9th May, 2012")
     workday_end = BusinessTime::Config.end_of_workday
-    expected_time = Time.parse("#{workday_end}, Tuesday 8th May, 2012")
+    expected_time = Time.parse("#{workday_end} UTC, Tuesday 8th May, 2012")
     assert_equal Time.roll_backward(time), expected_time
   end
 
   should "rolls to the end of the previous workday on non-working days" do
     time = Time.parse("12pm UTC, Sunday 6th May, 2012")
     workday_end = BusinessTime::Config.end_of_workday
-    expected_time = Time.parse("#{workday_end}, Friday 4th May, 2012")
+    expected_time = Time.parse("#{workday_end} UTC, Friday 4th May, 2012")
     assert_equal Time.roll_backward(time), expected_time
   end
 
