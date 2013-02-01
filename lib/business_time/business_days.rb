@@ -1,10 +1,20 @@
 require 'active_support/time'
 
 module BusinessTime
-  
+
   class BusinessDays
+    attr_reader :days
+
     def initialize(days)
       @days = days
+    end
+
+    def +(other)
+      self.class.new(@days + other.days)
+    end
+
+    def -(other)
+      self.class.new(@days - other.days)
     end
 
     def after(time = Time.now)
@@ -16,10 +26,10 @@ module BusinessTime
       end
       time
     end
-    
+
     alias_method :from_now, :after
     alias_method :since, :after
-    
+
     def before(time = Time.now)
       time = Time.zone ? Time.zone.parse(time.to_s) : Time.parse(time.to_s)
       days = @days
@@ -29,10 +39,10 @@ module BusinessTime
       end
       time
     end
-    
+
     alias_method :ago, :before
     alias_method :until, :before
-  
-  end  
-  
+
+  end
+
 end
