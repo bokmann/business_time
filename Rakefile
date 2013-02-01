@@ -1,5 +1,7 @@
 require 'rubygems'
+require 'bundler/setup'
 require 'rake'
+require 'appraisal'
 
 require "bundler/gem_tasks"
 
@@ -8,6 +10,16 @@ Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'test'
   test.pattern = 'test/**/test_*.rb'
   test.verbose = true
+end
+
+desc 'Test all supported Rails versions.'
+task :all do |t|
+  if ENV['BUNDLE_GEMFILE']
+    exec('rake test')
+  else
+    Rake::Task["appraisal:install"].execute
+    exec('rake appraisal test')
+  end
 end
 
 begin

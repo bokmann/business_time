@@ -1,6 +1,9 @@
 require 'thread'
 require 'active_support'
-require 'active_support/time'
+require 'active_support/version'
+if ActiveSupport::VERSION::MAJOR > 2
+  require 'active_support/time'
+end
 require 'time'
 
 require 'business_time/config'
