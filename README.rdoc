@@ -78,6 +78,16 @@ I needed this, but taking into account business hours/days and holidays.
     thursday_afternoon = Time.parse("July 8th, 2010, 4:50 pm")
     sunday_morning = 1.business_hour.after(thursday_afternoon)
 
+    # as alternative we also can change the business hours for each work day:
+    BusinessTime::Config.work_hours = {
+      :mon=>["9:00","17:00"],
+      :fri=>["9:00","17:00"],
+      :sat=>["10:00","15:00"]
+    }
+    friday = Time.parse("December 24, 2010 15:00")
+    monday = Time.parse("December 27, 2010 11:00")
+    working_hours = friday.business_time_until(monday) # 9.hours
+
     # you can also calculate business duration between two dates
     friday = Date.parse("December 24, 2010")
     monday = Date.parse("December 27, 2010")
