@@ -64,6 +64,21 @@ class TestBusinessDays < Test::Unit::TestCase
       expected = Time.parse("July 5th, 2010, 4:50 pm")
       assert_equal expected, monday_afternoon
     end
+
+    should "move to tuesday if we add one business day during a weekend" do
+      saturday = Time.parse("April 10th, 2010, 11:00 am")
+      later = 1.business_days.after(saturday)
+      expected = Time.parse("April 13th, 2010, 11:00 am")
+      assert_equal expected, later
+    end
+
+    should "move to thursday if we subtract one business day during a weekend" do
+      saturday = Time.parse("April 10th, 2010, 11:00 am")
+      before = 1.business_days.before(saturday)
+      expected = Time.parse("April 8th, 2010, 11:00 am")
+      assert_equal expected, before
+    end
+
   end
   
 end
