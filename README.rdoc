@@ -133,7 +133,7 @@ This can lead to some wierd looking effects if, say, you are in the Eastern time
 
 == Integration with the Holidays gem
 
-	Chris Wise wrote up a great article[http://murmurinfo.wordpress.com/2012/01/11/handling-holidays-and-business-hours/] on using the business_time gem with the holidays[https://github.com/HealthyWeb/holidays] gem. It boils down to this:
+	Chris Wise wrote up a great article[http://murmurinfo.wordpress.com/2012/01/11/handling-holidays-and-business-hours/] on using the business_time gem with the holidays[https://github.com/alexdunae/holidays] gem. It boils down to this:
 
   Holidays.between(Date.civil(2011, 1, 1), 2.years.from_now, :ca_on, :o bserved).map{|holiday| BusinessTime::Config.holidays << holiday[:date]}
 
