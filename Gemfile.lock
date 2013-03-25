@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    business_time (0.6.0)
+    business_time (0.6.1)
       activesupport (>= 3.1.0)
       tzinfo (~> 0.3.31)
 
