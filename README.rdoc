@@ -16,23 +16,31 @@ I needed this, but taking into account business hours/days and holidays.
 * install the gem
 
     gem install business_time
-    
+
   or
-  
+
     sudo gem install business_time
-    
+
   if you require sudo to install gems
-  
+
 * open up your console
 
     # if in irb, add these lines:
-  
+
     require 'rubygems'
     require 'active_support'
     require 'business_time'
 
     # try these examples, using the current time:
-  
+
+    1.business_minute.from_now
+    4.business_minutes.from_now
+    8.business_minutes.from_now
+
+    1.business_minute.ago
+    4.business_minutes.ago
+    8.business_minutes.ago
+
     1.business_hour.from_now
     4.business_hours.from_now
     8.business_hours.from_now
@@ -87,11 +95,11 @@ to your environment.rb file. Or if you're using bundler, add this line to your G
 This gem also includes a generator so you can bootstrap some stuff in your environment:
 
     ./script/generate business_time_config
-    
+
 Or in Rails 3:
 
     script/rails generate business_time:config
-    
+
 The generator will add a /config/business_time.yml and a /config/initializers/business_time.rb file that will cause the start of business day, the end of business day, and your holidays to be loaded from the yaml file.  You might want to programatically load your holidays from a database table, but you will want to pay attention to how the initializer works - you will want to make sure that the initializer sets stuff up appropriately so rails instances on mongrels or passenger will have the appropriate data as they come up and down.
 
 == Outside of Rails
@@ -105,7 +113,7 @@ This gem strives to be timezone-agnostic.  Due to some complications in the hand
 * When you are dealing with a Time or TimeWithZone class, the timezone is
   preserved and the beginning and end of times for the business day are
   referenced in that time zone.
- 
+
 This can lead to some wierd looking effects if, say, you are in the Eastern time zone but doing everything in UTC times...  Your business day will appear to start and end at 9:00 and 5:00 UTC.  If this seems perplexing to you, I can almost guarantee you are in over your head with timezones in other ways too, this is just the first place you encountered it.  Timezone relative date handling gets more and more complicated every time you look at it and takes a long time before it starts to seem simple again.  I'm hoping Arild and I write some good blog entries on the subject at http://blog.codesherpas.com.
 
 == Contributors
@@ -113,11 +121,11 @@ This can lead to some wierd looking effects if, say, you are in the Eastern time
  * Enrico Bianco  http://github.com/enricob
  * Arild Shirazi  http://github.com/ashirazi
  * Piotr Jakubowski https://github.com/piotrj
- 
+
  (Special thanks for Arild on the complexities of dealing with TimeWithZone)
- 
+
 == Note on Patches/Pull Requests
- 
+
 * Fork the project.
 * Make your feature addition or bug fix.
 * Add tests for it. This is important so I don't break it in a
@@ -130,7 +138,7 @@ This can lead to some wierd looking effects if, say, you are in the Eastern time
 
 * if it doesn't pollute the logic too much, I'd like to vary the days counted as 'business days'.  Bakers often
   don't work on Mondays, for instance.  I'd do it in something like this:
-  
+
     BusinessTime::Config.work_week = [:tue, :wed, :thur, :fri, :sat]
 
 * Arild has pointed out that there may be some logical inconsistencies
