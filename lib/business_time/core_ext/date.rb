@@ -1,7 +1,7 @@
 # Add workday and weekday concepts to the Date class
 class Date
-  def workday?
-    self.weekday? && !BusinessTime::Config.holidays.include?(self)
+  def workday?(type = :common)
+    self.weekday? && !BusinessTime::Config.is_holiday?(self, type)
   end
   
   def weekday?

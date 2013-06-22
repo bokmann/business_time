@@ -81,7 +81,7 @@ module BusinessTime
     end
 
     def self.reset
-      self.holidays = []
+      self.prepare_holidays
       self.beginning_of_workday = "9:00 am"
       self.end_of_workday = "5:00 pm"
       self.work_week = %w[mon tue wed thu fri]
@@ -98,6 +98,16 @@ module BusinessTime
     #       - Jan 1st, 2010
     #       - July 4th, 2010
     #       - Dec 25th, 2010
+    #
+    # if you want to put holidays that are specific (like July 1st is a holiday only in Canada and not US)
+    # you can do
+    #     holidays:
+    #       common:
+    #         - Jan 1st, 2010
+    #         - July 4th, 2010
+    #         - Dec 25th, 2010
+    #       CA:
+    #         - July 1st, 2010
     def self.load(file)
       self.reset
       data = YAML::load(file.respond_to?(:read) ? file : File.open(file))
@@ -109,8 +119,31 @@ module BusinessTime
         send("#{var}=", config[var]) if config[var] && respond_to?("#{var}=")
       end
 
-      (config["holidays"] || []).each do |holiday|
-        self.holidays << Date.parse(holiday)
+      case config["holidays"]
+      when Array
+        config["holidays"].each do |holiday|
+          self.holidays[:common] << Date.parse(holiday)
+        end
+      when Hash
+        config["holidays"].each_pair do |country, holidays|
+          holidays.each do |holiday|
+            self.holidays[country.to_sym] << Date.parse(holiday)
+          end
+        end
+      end
+    end
+
+    def self.is_holiday?(date, type = :common)
+      BusinessTime::Config.holidays[type.to_sym].include?(date) || BusinessTime::Config.holidays[:common].include?(date)
+    end
+
+    def self.prepare_holidays
+      self.holidays = Hash.new {|h,k| h[k] = []}
+      # for backwards compatibility
+      class << self.holidays
+        def <<(holiday)
+          self[:common] << holiday
+        end
       end
     end
 
