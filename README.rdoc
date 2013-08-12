@@ -147,6 +147,8 @@ This can lead to some wierd looking effects if, say, you are in the Eastern time
 
   Holidays.between(Date.civil(2011, 1, 1), 2.years.from_now, :ca_on, :o bserved).map{|holiday| BusinessTime::Config.holidays << holiday[:date]}
 
+== Releases
+0.6.2 - rchady pointed out that issue #14 didn't appear to be released.  This fixes that, as well as confirms that all tests run as expected on Ruby 2.0.0p195
 
 == Contributors
  * David Bock  http://github.com/bokmann
@@ -187,4 +189,4 @@ This can lead to some wierd looking effects if, say, you are in the Eastern time
   
 == Copyright
 
-Copyright (c) 2010,2011,2012 bokmann. See LICENSE for details.
+Copyright (c) 2010,2011,2012,2013 bokmann. See LICENSE for details.
