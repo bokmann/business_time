@@ -54,6 +54,13 @@ class TestBusinessHours < Test::Unit::TestCase
       assert_equal expected, later
     end
 
+    should "stay on the same day at the intersection" do
+      monday_morning = Time.parse("April 12th 2010, 9:00 am")
+      later = 8.business_hours.after(monday_morning)
+      expected = Time.parse("April 12th 2010, 17:00 pm")
+      assert_equal expected, later
+    end
+
     should "roll forward to 9 am if asked in the early morning" do
       crack_of_dawn_monday = Time.parse("Mon Apr 26, 04:30:00, 2010")
       monday_morning = Time.parse("Mon Apr 26, 09:00:00, 2010")
