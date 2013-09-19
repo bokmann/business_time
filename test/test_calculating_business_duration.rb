@@ -42,6 +42,14 @@ class TestCalculatingBusinessDuration < Test::Unit::TestCase
     assert_equal 9.hours, friday.business_time_until(monday)
   end
 
+  should "properly calculate business time with respect to work_hours when no param is given" do
+    friday = Time.parse("December 24, 2010 15:00")
+    BusinessTime::Config.work_hours = {
+      :fri=>["9:00","17:00"]
+    }
+    assert_equal 2.hours, friday.business_time_until
+  end
+
   should "properly calculate business time with respect to work_hours with UTC time zone" do
     Time.zone = 'UTC'
 
