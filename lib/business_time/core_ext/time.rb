@@ -93,7 +93,9 @@ end
 
 class Time
 
-  def business_time_until(to_time)
+  def business_time_until(to_time=nil)
+
+    to_time = Time.parse(self.strftime('%Y-%m-%d ') + BusinessTime::Config.end_of_workday) if to_time.nil?
 
     # Make sure that we will calculate time from A to B "clockwise"
     direction = 1
