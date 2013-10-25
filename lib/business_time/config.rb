@@ -114,6 +114,39 @@ module BusinessTime
       end
     end
 
+    def self.holidays_count_between(start_date, end_date)
+      Config.holidays.select {|d| d.between?(start_date, end_date)}.count
+    end
+
+    def self.business_day_duration_in_hours
+       @business_day_duration_in_hours ||= (Time.parse(BusinessTime::Config.end_of_workday) - Time.parse(BusinessTime::Config.beginning_of_workday)) / 1.hour
+    end
+
+    def self.business_days_in_a_week
+      return @business_days_in_a_week if @business_days_in_a_week
+      if work_hours.any?
+        @business_days_in_a_week = work_hours.count
+      else
+        @business_days_in_a_week = work_week.count
+      end
+
+      @business_days_in_a_week
+    end
+
+    def self.business_hours_in_a_week
+      return @business_hours_in_a_week if @business_hours_in_a_week
+
+      if work_hours.any?
+        total_hours = 0
+        work_hours.each do |_, hours|
+          @business_hours_in_a_week += Time.parse(hours[1]) - Time.parse(hours[0])
+        end
+      else
+        @business_hours_in_a_week ||= business_day_duration_in_hours * business_days_in_a_week
+      end
+      @business_hours_in_a_week
+    end
+
     #reset the first time we are loaded.
     self.reset
   end

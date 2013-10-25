@@ -15,20 +15,14 @@ module BusinessTime
 
     def after(time)
       after_time = Time.roll_forward(time)
-      # Step through the hours, skipping over non-business hours
-      @hours.times do
-        after_time = after_time + 1.hour
 
-        # Ignore hours before opening and after closing
-        if (after_time > Time.end_of_workday(after_time))
-          after_time = after_time + off_hours
-        end
+      number_of_weeks = @hours / BusinessTime::Config.business_hours_in_a_week
+      remaining_hours = ((number_of_weeks % 1) * BusinessTime::Config.business_hours_in_a_week).round
+      business_weeks = number_of_weeks.floor
 
-        # Ignore weekends and holidays
-        while !Time.workday?(after_time)
-          after_time = after_time + 1.day
-        end
-      end
+      after_time = (business_weeks * BusinessTime::Config.business_days_in_a_week).business_days.after(after_time)
+      after_time = BusinessHours.travel_business_hours_in_future(after_time, remaining_hours)
+
       after_time
     end
     alias_method :since, :after
@@ -41,7 +35,7 @@ module BusinessTime
 
         # Ignore hours before opening and after closing
         if (before_time < Time.beginning_of_workday(before_time))
-          before_time = before_time - off_hours
+          before_time = before_time - self.class.off_hours
         end
 
         # Ignore weekends and holidays
@@ -52,9 +46,27 @@ module BusinessTime
       before_time
     end
 
-    private
+    def self.travel_business_hours_in_future(time, hours)
+      after_time = time
 
-    def off_hours
+      # Step through the hours, skipping over non-business hours
+      hours.times do
+        after_time = after_time + 1.hour
+
+        # Ignore hours before opening and after closing
+        if (after_time > Time.end_of_workday(after_time))
+          after_time = after_time + off_hours
+        end
+
+        # Ignore weekends
+        while !Time.workday?(after_time)
+          after_time = after_time + 1.day
+        end
+      end
+      after_time
+    end
+
+    def self.off_hours
       return @gap if @gap
       if Time.zone
         gap_end = Time.zone.parse(BusinessTime::Config.beginning_of_workday)
