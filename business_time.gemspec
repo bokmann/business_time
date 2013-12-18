@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.files = `git ls-files -- {lib,rails_generators,LICENSE,README.rdoc}`.split("\n")
 
   s.add_dependency('activesupport','>= 3.1.0')
-  s.add_dependency("tzinfo", "~> 0.3.31")
+  s.add_dependency("tzinfo", "~> 1.1.0")
 
   s.add_development_dependency "rake", ">= 0.9.2"
   s.add_development_dependency "shoulda", ">= 0"
