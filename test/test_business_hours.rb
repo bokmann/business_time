@@ -71,6 +71,50 @@ class TestBusinessHours < Test::Unit::TestCase
       monday = Time.parse("Mon Apr 26, 09:00:00, 2010")
       assert_equal 1.business_hour.before(monday), 1.business_hour.before(sunday)
     end
+
+    should "respect work_hours" do
+      friday = Time.parse("December 24, 2010 15:00")
+      monday = Time.parse("December 27, 2010 11:00")
+      BusinessTime::Config.work_hours = {
+        :mon=>["9:00","17:00"],
+        :fri=>["9:00","17:00"],
+        :sat=>["10:00","15:00"]
+      }
+      assert_equal monday, 9.business_hours.after(friday)
+    end
+
+    should "respect work_hours when starting before beginning of workday" do
+      friday = Time.parse("December 24, 2010 08:00")
+      monday = Time.parse("December 27, 2010 11:00")
+      BusinessTime::Config.work_hours = {
+        :mon=>["9:00","17:00"],
+        :fri=>["9:00","17:00"],
+        :sat=>["10:00","15:00"]
+      }
+      assert_equal monday, 15.business_hours.after(friday)
+    end
+
+    should "respect work_hours with some 24 hour days" do
+      friday = Time.parse("December 24, 2010 15:00")
+      monday = Time.parse("December 27, 2010 11:00")
+      BusinessTime::Config.work_hours = {
+        :mon=>["0:00","0:00"],
+        :fri=>["0:00","0:00"],
+        :sat=>["11:00","15:00"]
+      }
+      assert_equal monday, 24.business_hours.after(friday)
+    end
+
+    should "respect work_hours with some 24 hour days when starting before beginning of workday" do
+      saturday = Time.parse("December 25, 2010 08:00")
+      monday = Time.parse("December 27, 2010 11:00")
+      BusinessTime::Config.work_hours = {
+        :mon=>["0:00","0:00"],
+        :fri=>["0:00","0:00"],
+        :sat=>["11:00","15:00"]
+      }
+      assert_equal monday, 15.business_hours.after(saturday)
+    end
   end
 
 end
