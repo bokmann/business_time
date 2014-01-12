@@ -147,7 +147,8 @@ This can lead to some wierd looking effects if, say, you are in the Eastern time
 
   Holidays.between(Date.civil(2013, 1, 1), 2.years.from_now, :ca_on, :observed).map do |holiday|
     BusinessTime::Config.holidays << holiday[:date]
-    BusinessTime::Config.holidays << holiday[:date].next_week if [6,0].include?(holiday[:date].wday)
+    # Implement long weekends if they apply to the region, eg:
+    # BusinessTime::Config.holidays << holiday[:date].next_week if !holiday[:date].weekday?
   end
 
 == Releases
