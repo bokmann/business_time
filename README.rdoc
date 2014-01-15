@@ -18,23 +18,15 @@ I needed this, but taking into account business hours/days and holidays.
 * install the gem
 
     gem install business_time
-    
-  or
-  
-    sudo gem install business_time
-    
-  if you require sudo to install gems
-  
+
 * open up your console
 
     # if in irb, add these lines:
-  
-    require 'rubygems'
-    require 'active_support'
+
     require 'business_time'
 
     # try these examples, using the current time:
-  
+
     1.business_hour.from_now
     4.business_hours.from_now
     8.business_hours.from_now
@@ -71,7 +63,7 @@ I needed this, but taking into account business hours/days and holidays.
     BusinessTime::Config.holidays << three_day_weekend
     friday_afternoon = Time.parse("July 2nd, 2010, 4:50 pm")
     tuesday_morning = 1.business_hour.after(friday_afternoon)
-    
+
     # plus, we can change the work week:
     # July 9th in 2010 is a Friday.
     BusinessTime::Config.work_week = [:sun, :mon, :tue, :wed, :thu]
@@ -92,7 +84,7 @@ I needed this, but taking into account business hours/days and holidays.
     friday = Date.parse("December 24, 2010")
     monday = Date.parse("December 27, 2010")
     friday.business_days_until(monday) #=> 1
-    
+
     # or you can calculate business duration between two Time objects
     ticket_reported = Time.parse("February 3, 2012, 10:40 am")
     ticket_resolved = Time.parse("February 4, 2012, 10:50 am")
@@ -108,42 +100,40 @@ I needed this, but taking into account business hours/days and holidays.
     # Monday, Feb 6th 2012, 9:00am.  The business time between 10:40am friday and 9am monday is
     # 6 hours and 20 minutes. From a quick inspection of the code, it looks like it should be 8 hours.
 
-== Usage in Rails
-The code above should work on a rails console without any issue.  You will want to add a line something like:
+== Rails generator
 
-    config.gem "business_time"
+    rails generate business_time:config
 
-to your environment.rb file. Or if you're using bundler, add this line to your Gemfile:
+The generator will add a ./config/business_time.yml and a ./config/initializers/business_time.rb
+file that will cause the start of business day, the end of business day, and your holidays to be loaded from the yaml file.
 
-    gem "business_time"
-
-This gem also includes a generator so you can bootstrap some stuff in your environment:
-
-    ./script/generate business_time_config
-    
-Or in Rails 3:
-
-    script/rails generate business_time:config
-    
-The generator will add a /config/business_time.yml and a /config/initializers/business_time.rb file that will cause the start of business day, the end of business day, and your holidays to be loaded from the yaml file.  You might want to programatically load your holidays from a database table, but you will want to pay attention to how the initializer works - you will want to make sure that the initializer sets stuff up appropriately so rails instances on mongrels or passenger will have the appropriate data as they come up and down.
-
-== Outside of Rails
-This code does depend on ActiveSupport, but nothing else within rails.  Even then, it would be pretty easy to break that dependency as well (but would add some code bloat and remove some clarity).  Feel free to use it on any ruby project you'd like!
+You might want to programatically load your holidays from a database table,
+but you will want to pay attention to how the initializer works -
+you will want to make sure that the initializer sets stuff up appropriately so
+rails instances on mongrels or passenger will have the appropriate data as they come up and down.
 
 == Timezone support
-This gem strives to be timezone-agnostic.  Due to some complications in the handling of timezones in the built in Time class, and some complexities (bugs?) in the timeWithZone class, this was harder than expected... but here's the idea:
+This gem strives to be timezone-agnostic.
+Due to some complications in the handling of timezones in the built in Time class,
+and some complexities (bugs?) in the timeWithZone class, this was harder than expected... but here's the idea:
 
 * When you configure the gem with something like 9:00am as the start time,
   this is agnostic of time zone.
 * When you are dealing with a Time or TimeWithZone class, the timezone is
   preserved and the beginning and end of times for the business day are
   referenced in that time zone.
- 
-This can lead to some wierd looking effects if, say, you are in the Eastern time zone but doing everything in UTC times...  Your business day will appear to start and end at 9:00 and 5:00 UTC.  If this seems perplexing to you, I can almost guarantee you are in over your head with timezones in other ways too, this is just the first place you encountered it.  Timezone relative date handling gets more and more complicated every time you look at it and takes a long time before it starts to seem simple again.  I'm hoping Arild and I write some good blog entries on the subject at http://blog.codesherpas.com.
+
+This can lead to some wierd looking effects if, say, you are in the Eastern time zone but doing everything in UTC times...
+Your business day will appear to start and end at 9:00 and 5:00 UTC.
+If this seems perplexing to you, I can almost guarantee you are in over your head with timezones in other ways too,
+this is just the first place you encountered it.
+Timezone relative date handling gets more and more complicated every time you look at it and takes a long time before it starts to seem simple again.
+I'm hoping Arild and I write some good blog entries on the subject at http://blog.codesherpas.com.
 
 == Integration with the Holidays gem
 
-	Chris Wise wrote up a great article[http://murmurinfo.wordpress.com/2012/01/11/handling-holidays-and-business-hours/] on using the business_time gem with the holidays[https://github.com/alexdunae/holidays] gem. It boils down to this:
+	Chris Wise wrote up a great article[http://murmurinfo.wordpress.com/2012/01/11/handling-holidays-and-business-hours/]
+	on using the business_time gem with the holidays[https://github.com/alexdunae/holidays] gem. It boils down to this:
 
   Holidays.between(Date.civil(2013, 1, 1), 2.years.from_now, :ca_on, :observed).map{|holiday| BusinessTime::Config.holidays << holiday[:date]}
 
@@ -156,11 +146,11 @@ This can lead to some wierd looking effects if, say, you are in the Eastern time
  * Arild Shirazi  http://github.com/ashirazi
  * Piotr Jakubowski http://github.com/piotrj
  * Glenn Vanderburg http://github.com/glv
- 
+
  (Special thanks for Arild on the complexities of dealing with TimeWithZone)
- 
+
 == Note on Patches/Pull Requests
- 
+
 * Fork the project.
 * Make your feature addition or bug fix.
 * Add tests for it. This is important so I don't break it in a
@@ -183,10 +173,10 @@ This can lead to some wierd looking effects if, say, you are in the Eastern time
   always trying to give the developer-user ultimate flexibility at the expense of the 'surface area' of the api.
   Never again - I will sooner limit functionality to 80% so that something stays usable and let people fork.
 * While there have been requests to add 'business minutes' and even 'business seconds' to this gem, I won't
-  entertain a pullup request with such things.  If you find it useful, great.  Most users won't, and they don't
+  entertain a pull request with such things.  If you find it useful, great.  Most users won't, and they don't
   need the baggage.
 
-  
+
 == Copyright
 
 Copyright (c) 2010,2011,2012,2013 bokmann. See LICENSE for details.
