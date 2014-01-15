@@ -1,19 +1,19 @@
-require 'helper'
+require File.expand_path('../helper', __FILE__)
 
-class TestCalculatingBusinessDuration < Test::Unit::TestCase 
-  should "properly calculate business duration over weekends" do
+describe "calculating business duration" do
+  it "properly calculate business duration over weekends" do
     friday = Date.parse("December 24, 2010")
     monday = Date.parse("December 27, 2010")
     assert_equal 1, friday.business_days_until(monday)
   end
-  
-  should "properly calculate business duration without weekends" do
+
+  it "properly calculate business duration without weekends" do
     monday = Date.parse("December 20, 2010")
     wednesday = Date.parse("December 22, 2010")
     assert_equal 2, monday.business_days_until(wednesday)
   end
-  
-  should "properly calculate business duration with respect to holidays" do
+
+  it "properly calculate business duration with respect to holidays" do
     free_friday = Date.parse("December 17, 2010")
     wednesday = Date.parse("December 15,2010")
     monday = Date.parse("December 20, 2010")
@@ -21,7 +21,7 @@ class TestCalculatingBusinessDuration < Test::Unit::TestCase
     assert_equal 2, wednesday.business_days_until(monday)
   end
 
-  should "properly calculate business days with respect to work_hours" do
+  it "properly calculate business days with respect to work_hours" do
     friday = Date.parse("December 24, 2010")
     monday = Date.parse("December 27, 2010")
     BusinessTime::Config.work_hours = {
@@ -31,7 +31,7 @@ class TestCalculatingBusinessDuration < Test::Unit::TestCase
     assert_equal 2, friday.business_days_until(monday)
   end
 
-  should "properly calculate business time with respect to work_hours" do
+  it "properly calculate business time with respect to work_hours" do
     friday = Time.parse("December 24, 2010 15:00")
     monday = Time.parse("December 27, 2010 11:00")
     BusinessTime::Config.work_hours = {
@@ -42,7 +42,7 @@ class TestCalculatingBusinessDuration < Test::Unit::TestCase
     assert_equal 9.hours, friday.business_time_until(monday)
   end
 
-  should "properly calculate business time with respect to work_hours with UTC time zone" do
+  it "properly calculate business time with respect to work_hours with UTC time zone" do
     Time.zone = 'UTC'
 
     monday = Time.parse("May 28 11:04:26 +0300 2012")
@@ -56,7 +56,7 @@ class TestCalculatingBusinessDuration < Test::Unit::TestCase
     Time.zone = nil
   end
 
-  should "properly calculate business time with respect to work_hours some 00:24 days" do
+  it "properly calculate business time with respect to work_hours some 00:24 days" do
     friday = Time.parse("December 24, 2010 15:00")
     monday = Time.parse("December 27, 2010 11:00")
     BusinessTime::Config.work_hours = {
@@ -67,7 +67,7 @@ class TestCalculatingBusinessDuration < Test::Unit::TestCase
     assert_equal 24.hours, friday.business_time_until(monday)
   end
 
-  should "properly calculate business time with respect to work_hours with all days as 00:24" do
+  it "properly calculate business time with respect to work_hours with all days as 00:24" do
     friday = Time.parse("December 24, 2010 15:00")
     monday = Time.parse("December 27, 2010 11:00")
     BusinessTime::Config.work_hours = {
@@ -78,5 +78,4 @@ class TestCalculatingBusinessDuration < Test::Unit::TestCase
     }
     assert_equal 68.hours, friday.business_time_until(monday)
   end
-
 end
