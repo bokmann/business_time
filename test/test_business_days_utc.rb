@@ -1,7 +1,7 @@
 require 'helper'
 
 class TestBusinessDays < Test::Unit::TestCase
-  
+
   context "with a TimeWithZone object set to UTC" do
     setup do
       Time.zone = 'UTC'
@@ -9,7 +9,7 @@ class TestBusinessDays < Test::Unit::TestCase
     teardown do
       Time.zone = nil
     end
-    
+
     should "move to tomorrow if we add a business day" do
       first = Time.zone.parse("April 13th, 2010, 11:00 am")
       later = 1.business_day.after(first)
@@ -62,7 +62,6 @@ class TestBusinessDays < Test::Unit::TestCase
     end
 
     should "take into account a holiday on a weekend" do
-      BusinessTime::Config.reset
       july_4 = Date.parse("July 4th, 2010")
       BusinessTime::Config.holidays << july_4
       friday_afternoon = Time.zone.parse("July 2nd, 2010, 4:50 pm")

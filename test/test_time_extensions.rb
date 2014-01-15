@@ -18,8 +18,6 @@ class TestTimeExtensions < Test::Unit::TestCase
   end
 
   should "know a holiday is not a workday" do
-    BusinessTime::Config.reset
-
     BusinessTime::Config.holidays << Date.parse("July 4, 2010")
     BusinessTime::Config.holidays << Date.parse("July 5, 2010")
 
