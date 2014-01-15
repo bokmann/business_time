@@ -4,15 +4,13 @@
 #  3.business_days.after(some_date)
 #  4.business_hours.before(some_date_time)
 class Fixnum
-  include BusinessTime
-  
   def business_hours
-    BusinessHours.new(self)
+    BusinessTime::BusinessHours.new(self)
   end
   alias_method :business_hour, :business_hours
-  
+
   def business_days
-    BusinessDays.new(self)
+    BusinessTime::BusinessDays.new(self)
   end
-  alias_method :business_day, :business_days  
+  alias_method :business_day, :business_days
 end
