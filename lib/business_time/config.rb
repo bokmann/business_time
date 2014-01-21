@@ -7,8 +7,14 @@ module BusinessTime
   # manually, or with a yaml file and the load method.
   class Config
     class << self
+      private
+
       def config
         Thread.current[:business_time_config] ||= {}
+      end
+
+      def config=(config)
+        Thread.current[:business_time_config] = config
       end
 
       def threadsafe_cattr_accessor(name)
@@ -109,6 +115,14 @@ module BusinessTime
         (config["holidays"] || []).each do |holiday|
           holidays << Date.parse(holiday)
         end
+      end
+
+      def with(config)
+        old = config().dup
+        config.each { |k,v| send("#{k}=", v) } # calculations are done on setting
+        yield
+      ensure
+        self.config = old
       end
 
       private
