@@ -146,6 +146,7 @@ I'm hoping Arild and I write some good blog entries on the subject at http://blo
  * Arild Shirazi  http://github.com/ashirazi
  * Piotr Jakubowski http://github.com/piotrj
  * Glenn Vanderburg http://github.com/glv
+ * Michael Grosser http://github.com/grosser
 
  (Special thanks for Arild on the complexities of dealing with TimeWithZone)
 
