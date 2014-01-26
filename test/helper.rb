@@ -19,6 +19,6 @@ require 'business_time'
 
 class Test::Unit::TestCase
   def teardown
-    BusinessTime::Config.reset
+    BusinessTime::Config.send(:reset)
   end
 end
