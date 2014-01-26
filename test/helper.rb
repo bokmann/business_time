@@ -1,6 +1,11 @@
 require 'thread'
 require 'rubygems'
 
+if ENV["COV"]
+  require 'simplecov'
+  SimpleCov.start
+end
+
 if RUBY_VERSION >= '1.9'
   require 'time'
   require 'date'
