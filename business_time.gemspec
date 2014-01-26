@@ -1,4 +1,4 @@
-$:.push File.expand_path("../lib", __FILE__)
+$LOAD_PATH.push File.expand_path("../lib", __FILE__)
 require "business_time/version"
 
 Gem::Specification.new do |s|
@@ -16,8 +16,8 @@ Gem::Specification.new do |s|
   s.add_dependency('activesupport','>= 3.1.0')
   s.add_dependency("tzinfo", "~> 1.1.0")
 
-  s.add_development_dependency "rake", ">= 0.9.2"
-  s.add_development_dependency "shoulda", ">= 0"
-  s.add_development_dependency "rdoc", ">= 0"
-  s.add_development_dependency "simplecov"
+  s.add_development_dependency "rake"
+  s.add_development_dependency "rdoc"
+  s.add_development_dependency "minitest"
+  s.add_development_dependency "minitest-rg"
 end
