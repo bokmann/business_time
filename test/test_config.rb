@@ -92,4 +92,53 @@ describe "config" do
     assert_equal %w[mon tue wed thu fri], BusinessTime::Config.work_week
     assert_equal [], BusinessTime::Config.holidays
   end
+
+  it "is threadsafe" do
+    BusinessTime::Config.end_of_workday = "3pm"
+    t = Thread.new do
+      BusinessTime::Config.end_of_workday = "4pm"
+      assert_equal "4pm", BusinessTime::Config.end_of_workday
+    end
+    assert_equal "3pm", BusinessTime::Config.end_of_workday
+    t.join
+  end
+
+  describe "#with" do
+    it "changes config" do
+      ran = false
+      BusinessTime::Config.with(:end_of_workday => "2pm") do
+        assert_equal "2pm", BusinessTime::Config.end_of_workday
+        ran = true
+      end
+      assert ran
+    end
+
+    it "inherits" do
+      ran = false
+      BusinessTime::Config.with(:end_of_workday => "2pm") do
+        BusinessTime::Config.with(:beginning_of_workday => "1pm") do
+          assert_equal "1pm", BusinessTime::Config.beginning_of_workday
+          assert_equal "2pm", BusinessTime::Config.end_of_workday
+          ran = true
+        end
+      end
+      assert ran
+    end
+
+    it "resets config after the block" do
+      ran = false
+      BusinessTime::Config.with(:end_of_workday => "2pm") { ran = true }
+      assert ran
+      assert_equal "5:00 pm", BusinessTime::Config.end_of_workday
+    end
+
+    it "resets config after error" do
+      ran = false
+      assert_raises RuntimeError do
+        BusinessTime::Config.with(:end_of_workday => "2pm") { ran = true; raise }
+      end
+      assert ran
+      assert_equal "5:00 pm", BusinessTime::Config.end_of_workday
+    end
+  end
 end
