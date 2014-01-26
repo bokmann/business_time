@@ -145,7 +145,11 @@ This can lead to some wierd looking effects if, say, you are in the Eastern time
 
 	Chris Wise wrote up a great article[http://murmurinfo.wordpress.com/2012/01/11/handling-holidays-and-business-hours/] on using the business_time gem with the holidays[https://github.com/alexdunae/holidays] gem. It boils down to this:
 
-  Holidays.between(Date.civil(2013, 1, 1), 2.years.from_now, :ca_on, :observed).map{|holiday| BusinessTime::Config.holidays << holiday[:date]}
+  Holidays.between(Date.civil(2013, 1, 1), 2.years.from_now, :ca_on, :observed).map do |holiday|
+    BusinessTime::Config.holidays << holiday[:date]
+    # Implement long weekends if they apply to the region, eg:
+    # BusinessTime::Config.holidays << holiday[:date].next_week if !holiday[:date].weekday?
+  end
 
 == Releases
 0.6.2 - rchady pointed out that issue #14 didn't appear to be released.  This fixes that, as well as confirms that all tests run as expected on Ruby 2.0.0p195
