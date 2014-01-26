@@ -1,14 +1,13 @@
 # Add workday and weekday concepts to the Time class
 class Time
   class << self
-
     # Gives the time at the end of the workday, assuming that this time falls on a
     # workday.
     # Note: It pretends that this day is a workday whether or not it really is a
     # workday.
     def end_of_workday(day)
       end_of_workday = Time.parse(BusinessTime::Config.end_of_workday(day))
-      change_time(day,end_of_workday.hour,end_of_workday.min,end_of_workday.sec)
+      change_business_time(day,end_of_workday.hour,end_of_workday.min,end_of_workday.sec)
     end
 
     # Gives the time at the beginning of the workday, assuming that this time
@@ -17,14 +16,14 @@ class Time
     # workday.
     def beginning_of_workday(day)
       beginning_of_workday = Time.parse(BusinessTime::Config.beginning_of_workday(day))
-      change_time(day,beginning_of_workday.hour,beginning_of_workday.min,beginning_of_workday.sec)
+      change_business_time(day,beginning_of_workday.hour,beginning_of_workday.min,beginning_of_workday.sec)
     end
 
     # True if this time is on a workday (between 00:00:00 and 23:59:59), even if
     # this time falls outside of normal business hours.
     def workday?(day)
       Time.weekday?(day) &&
-          !BusinessTime::Config.holidays.include?(day.to_date)
+        !BusinessTime::Config.holidays.include?(day.to_date)
     end
 
     # True if this time falls on a weekday.
@@ -44,7 +43,7 @@ class Time
     # when the time is outside of business hours
     def roll_forward(time)
 
-      if (Time.before_business_hours?(time) || !Time.workday?(time))
+      if Time.before_business_hours?(time) || !Time.workday?(time)
         next_business_time = Time.beginning_of_workday(time)
       elsif Time.after_business_hours?(time) || Time.end_of_workday(time) == time
         next_business_time = Time.beginning_of_workday(time + 1.day)
@@ -62,12 +61,12 @@ class Time
     # Rolls backwards to the previous end_of_workday when the time is outside
     # of business hours
     def roll_backward(time)
-      if (Time.before_business_hours?(time) || !Time.workday?(time))
-        prev_business_time = Time.end_of_workday(time) - 1.day
+      prev_business_time = if (Time.before_business_hours?(time) || !Time.workday?(time))
+        Time.end_of_workday(time) - 1.day
       elsif Time.after_business_hours?(time)
-        prev_business_time = Time.end_of_workday(time)
+        Time.end_of_workday(time)
       else
-        prev_business_time = time.clone
+        time.clone
       end
 
       while !Time.workday?(prev_business_time)
@@ -79,27 +78,21 @@ class Time
 
     private
 
-    def change_time time, hour, min=0, sec=0
+    def change_business_time time, hour, min=0, sec=0
       if Time.zone
         time.in_time_zone(Time.zone).change(:hour => hour, :min => min, :sec => sec)
       else
         time.change(:hour => hour, :min => min, :sec => sec)
       end
     end
-
-
   end
-end
-
-class Time
 
   def business_time_until(to_time)
-
     # Make sure that we will calculate time from A to B "clockwise"
-    direction = 1
     if self < to_time
       time_a = self
       time_b = to_time
+      direction = 1
     else
       time_a = to_time
       time_b = self
@@ -113,7 +106,7 @@ class Time
     # If same date, then calculate difference straight forward
     if time_a.to_date == time_b.to_date
       result = time_b - time_a
-      return result *= direction
+      return result * direction
     end
 
     # Both times are in different dates
@@ -142,7 +135,6 @@ class Time
     end
 
     # Make sure that sign is correct
-    result *= direction
+    result * direction
   end
-
 end
