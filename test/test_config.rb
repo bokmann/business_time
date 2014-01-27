@@ -1,33 +1,32 @@
-require 'helper'
+require File.expand_path('../helper', __FILE__)
 
-class TestConfig < Test::Unit::TestCase
-
-  should "keep track of the start of the day" do
+describe "config" do
+  it "keep track of the start of the day" do
     assert_equal "9:00 am", BusinessTime::Config.beginning_of_workday
     BusinessTime::Config.beginning_of_workday = "8:30 am"
     assert_equal "8:30 am", BusinessTime::Config.beginning_of_workday
   end
 
-  should "keep track of the end of the day" do
+  it "keep track of the end of the day" do
     assert_equal "5:00 pm", BusinessTime::Config.end_of_workday
     BusinessTime::Config.end_of_workday = "5:30 pm"
     assert_equal "5:30 pm", BusinessTime::Config.end_of_workday
   end
 
-  should "keep track of holidays" do
+  it "keep track of holidays" do
     assert BusinessTime::Config.holidays.empty?
     daves_birthday = Date.parse("August 4th, 1969")
     BusinessTime::Config.holidays << daves_birthday
     assert BusinessTime::Config.holidays.include?(daves_birthday)
   end
 
-  should "keep track of work week" do
+  it "keep track of work week" do
     assert_equal %w[mon tue wed thu fri], BusinessTime::Config.work_week
     BusinessTime::Config.work_week = %w[sun mon tue wed thu]
     assert_equal %w[sun mon tue wed thu], BusinessTime::Config.work_week
   end
 
-  should "map work week to weekdays" do
+  it "map work week to weekdays" do
     assert_equal [1,2,3,4,5], BusinessTime::Config.weekdays
     BusinessTime::Config.work_week = %w[sun mon tue wed thu]
     assert_equal [0,1,2,3,4], BusinessTime::Config.weekdays
@@ -35,7 +34,7 @@ class TestConfig < Test::Unit::TestCase
     assert_equal [2,3], BusinessTime::Config.weekdays
   end
 
-  should "keep track of the start of the day using work_hours" do
+  it "keep track of the start of the day using work_hours" do
     assert_equal({},BusinessTime::Config.work_hours)
     BusinessTime::Config.work_hours = {
       :mon=>["9:00","17:00"],
@@ -51,7 +50,7 @@ class TestConfig < Test::Unit::TestCase
     assert_equal([1,2,4,5], BusinessTime::Config.weekdays.sort)
   end
 
-  should "load config from YAML files" do
+  it "load config from YAML files" do
     yaml = <<-YAML
     business_time:
       beginning_of_workday: 11:00 am
@@ -69,7 +68,7 @@ class TestConfig < Test::Unit::TestCase
     assert_equal [Date.parse('2012-12-25')], BusinessTime::Config.holidays
   end
 
-  should "include holidays read from YAML config files" do
+  it "include holidays read from YAML config files" do
     yaml = <<-YAML
     business_time:
       holidays:
@@ -81,7 +80,7 @@ class TestConfig < Test::Unit::TestCase
     assert !Time.workday?(Time.parse('2012-05-07'))
   end
 
-  should "use defaults for values missing in YAML file" do
+  it "use defaults for values missing in YAML file" do
     yaml = <<-YAML
     business_time:
       missing_values: yup
@@ -94,4 +93,52 @@ class TestConfig < Test::Unit::TestCase
     assert_equal [], BusinessTime::Config.holidays
   end
 
+  it "is threadsafe" do
+    BusinessTime::Config.end_of_workday = "3pm"
+    t = Thread.new do
+      BusinessTime::Config.end_of_workday = "4pm"
+      assert_equal "4pm", BusinessTime::Config.end_of_workday
+    end
+    assert_equal "3pm", BusinessTime::Config.end_of_workday
+    t.join
+  end
+
+  describe "#with" do
+    it "changes config" do
+      ran = false
+      BusinessTime::Config.with(:end_of_workday => "2pm") do
+        assert_equal "2pm", BusinessTime::Config.end_of_workday
+        ran = true
+      end
+      assert ran
+    end
+
+    it "inherits" do
+      ran = false
+      BusinessTime::Config.with(:end_of_workday => "2pm") do
+        BusinessTime::Config.with(:beginning_of_workday => "1pm") do
+          assert_equal "1pm", BusinessTime::Config.beginning_of_workday
+          assert_equal "2pm", BusinessTime::Config.end_of_workday
+          ran = true
+        end
+      end
+      assert ran
+    end
+
+    it "resets config after the block" do
+      ran = false
+      BusinessTime::Config.with(:end_of_workday => "2pm") { ran = true }
+      assert ran
+      assert_equal "5:00 pm", BusinessTime::Config.end_of_workday
+    end
+
+    it "resets config after error" do
+      ran = false
+      assert_raises RuntimeError do
+        BusinessTime::Config.with(:end_of_workday => "2pm") { ran = true; raise }
+      end
+      assert ran
+      assert_equal "5:00 pm", BusinessTime::Config.end_of_workday
+    end
+  end
 end
