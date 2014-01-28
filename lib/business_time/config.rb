@@ -19,7 +19,7 @@ module BusinessTime
       private
 
       def config
-        Thread.current[:business_time_config] ||= deep_dup(DEFAULT_CONFIG)
+        Thread.current[:business_time_config] ||= default_config
       end
 
       def config=(config)
@@ -134,6 +134,10 @@ module BusinessTime
         self.config = old
       end
 
+      def default_config
+        deep_dup(DEFAULT_CONFIG)
+      end
+
       private
 
       def wday_to_int day_name
@@ -146,7 +150,7 @@ module BusinessTime
       end
 
       def reset
-        self.config = deep_dup(DEFAULT_CONFIG)
+        self.config = default_config
       end
 
       def deep_dup(object)
