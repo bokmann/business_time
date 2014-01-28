@@ -1,23 +1,23 @@
 PATH
   remote: .
   specs:
-    business_time (0.6.2)
+    business_time (0.7.0)
       activesupport (>= 3.1.0)
       tzinfo (~> 1.1.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (3.2.13)
-      i18n (= 0.6.1)
+    activesupport (3.2.16)
+      i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
     atomic (1.1.14)
-    i18n (0.6.1)
+    i18n (0.6.9)
     json (1.7.7)
     minitest (5.2.0)
     minitest-rg (5.0.0)
       minitest (~> 5.0)
-    multi_json (1.7.2)
+    multi_json (1.8.4)
     rake (10.0.4)
     rdoc (4.0.0)
       json (~> 1.4)
