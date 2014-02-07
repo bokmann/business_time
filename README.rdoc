@@ -142,6 +142,13 @@ I'm hoping Arild and I write some good blog entries on the subject at http://blo
   end
 
 == Releases
+
+0.7.1 - fixing a multithreaded issue, upgrading some dependencies, loosening the dependency on TZInfo
+
+0.7.0 - major maintenance upgrade on the process of constructing the gem, testing the gem, and updating dependencies.
+        the api has not changed.
+
+
 0.6.2 - rchady pointed out that issue #14 didn't appear to be released.  This fixes that, as well as confirms that all tests run as expected on Ruby 2.0.0p195
 
 == Contributors
