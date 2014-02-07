@@ -6,11 +6,20 @@ module BusinessTime
   # the beginning_of_workday, end_of_workday, and the list of holidays
   # manually, or with a yaml file and the load method.
   class Config
+    DEFAULT_CONFIG = {
+      holidays:              [],
+      beginning_of_workday:  '9:00 am',
+      end_of_workday:        '5:00 pm',
+      work_week:             %w(mon tue wed thu fri),
+      work_hours:            {},
+      _weekdays:             nil,
+    }
+
     class << self
       private
 
       def config
-        Thread.current[:business_time_config] ||= {}
+        Thread.current[:business_time_config] ||= default_config
       end
 
       def config=(config)
@@ -125,6 +134,10 @@ module BusinessTime
         self.config = old
       end
 
+      def default_config
+        deep_dup(DEFAULT_CONFIG)
+      end
+
       private
 
       def wday_to_int day_name
@@ -137,12 +150,11 @@ module BusinessTime
       end
 
       def reset
-        self.holidays = []
-        self.beginning_of_workday = "9:00 am"
-        self.end_of_workday = "5:00 pm"
-        self.work_week = %w[mon tue wed thu fri]
-        self.work_hours = {}
-        self._weekdays = nil
+        self.config = default_config
+      end
+
+      def deep_dup(object)
+        Marshal.load(Marshal.dump(object))
       end
     end
 
