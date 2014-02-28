@@ -116,4 +116,14 @@ describe "time extensions" do
     time = Time.parse("12pm, Tuesday 8th May, 2012")
     assert_equal Time.roll_backward(time), time
   end
+
+  it "respect work_hours" do
+    wednesday = Time.parse("December 22, 2010 12:00")
+    saturday  = Time.parse("December 25, 2010 12:00")
+    BusinessTime::Config.work_hours = {
+      :wed=>["9:00","12:00"],
+      :sat=>["13:00","14:00"]
+    }
+    assert_equal wednesday, Time.roll_backward(saturday)
+  end
 end

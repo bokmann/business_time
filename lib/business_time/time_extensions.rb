@@ -66,7 +66,7 @@ module BusinessTime
       # of business hours
       def roll_backward(time)
         prev_business_time = if (Time.before_business_hours?(time) || !Time.workday?(time))
-                               Time.end_of_workday(time) - 1.day
+                               Time.end_of_workday(time - 1.day)
                              elsif Time.after_business_hours?(time)
                                Time.end_of_workday(time)
                              else
@@ -74,7 +74,7 @@ module BusinessTime
                              end
 
         while !Time.workday?(prev_business_time)
-          prev_business_time -= 1.day
+          prev_business_time = Time.end_of_workday(prev_business_time - 1.day)
         end
 
         prev_business_time
