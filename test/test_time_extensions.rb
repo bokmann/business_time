@@ -117,7 +117,7 @@ describe "time extensions" do
     assert_equal Time.roll_backward(time), time
   end
 
-  it "respect work_hours" do
+  it "respects work hours" do
     wednesday = Time.parse("December 22, 2010 12:00")
     saturday  = Time.parse("December 25, 2010 12:00")
     BusinessTime::Config.work_hours = {
