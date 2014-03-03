@@ -80,6 +80,24 @@ module BusinessTime
         prev_business_time
       end
 
+      def work_hours_total(day)
+        return 0 unless Time.workday?(day)
+
+        day = day.strftime('%a').downcase.to_sym
+
+        if hours = BusinessTime::Config.work_hours[day]
+          BusinessTime::Config.work_hours_total[day] ||= begin
+            hours_last = hours.last
+            hours_last = '24:00' if hours_last == '00:00'
+            Time.parse(hours_last) - Time.parse(hours.first)
+          end
+        else
+          BusinessTime::Config.work_hours_total[:default] ||= begin
+            Time.parse(BusinessTime::Config.end_of_workday) - Time.parse(BusinessTime::Config.beginning_of_workday)
+          end
+        end
+      end
+
       private
 
       def change_business_time time, hour, min=0, sec=0
@@ -107,39 +125,18 @@ module BusinessTime
       time_a = Time::roll_forward(time_a)
       time_b = Time::roll_forward(time_b)
 
-      # If same date, then calculate difference straight forward
       if time_a.to_date == time_b.to_date
-        result = time_b - time_a
-        return result * direction
-      end
+        time_b - time_a
+      else
+        end_of_workday = Time.end_of_workday(time_a)
+        end_of_workday += 1 if end_of_workday.to_s =~ /23:59:59/
 
-      # Both times are in different dates
-      #result = Time.parse(time_a.strftime('%Y-%m-%d ') + BusinessTime::Config.end_of_workday) - time_a   # First day
-      #result += time_b - Time.parse(time_b.strftime('%Y-%m-%d ') + BusinessTime::Config.beginning_of_workday) # Last day
+        first_day       = end_of_workday - time_a
+        days_in_between = ((time_a.to_date + 1)..(time_b.to_date - 1)).sum{ |day| Time::work_hours_total(day) }
+        last_day        = time_b - Time.beginning_of_workday(time_b)
 
-      result = 0
-
-      # All days in between
-      time_c = time_a
-      while time_c.to_i < time_b.to_i do
-        end_of_workday = Time.end_of_workday(time_c)
-        if time_c.to_date == time_b.to_date
-          if end_of_workday < time_b
-            result += end_of_workday - time_c
-            break
-          else
-            result += time_b - time_c
-            break
-          end
-        else
-          result += end_of_workday - time_c
-          time_c = Time::roll_forward(end_of_workday)
-        end
-        result += 1 if end_of_workday.to_s =~ /23:59:59/
-      end
-
-      # Make sure that sign is correct
-      result * direction
+        first_day + days_in_between + last_day
+      end * direction
     end
   end
 end

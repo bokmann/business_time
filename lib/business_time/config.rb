@@ -12,6 +12,7 @@ module BusinessTime
       end_of_workday:        '5:00 pm',
       work_week:             %w(mon tue wed thu fri),
       work_hours:            {},
+      work_hours_total:      {},
       _weekdays:             nil,
     }
 
@@ -65,6 +66,9 @@ module BusinessTime
     # Example:
     #    {:mon => ["9:00","17:00"],:tue => ["9:00","17:00"].....}
     threadsafe_cattr_accessor :work_hours
+
+    # total work hours for a day. Never set, always calculated.
+    threadsafe_cattr_accessor :work_hours_total
 
     threadsafe_cattr_accessor :_weekdays # internal
 
