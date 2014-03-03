@@ -37,14 +37,22 @@ module BusinessTime
     alias_method :since, :after
 
     def before(time)
-      before_time = Time.roll_forward(time)
+      before_time = Time.roll_backward(time)
       # Step through the hours, skipping over non-business hours
       @hours.times do
         before_time = before_time - 1.hour
 
-        # Ignore hours before opening and after closing
-        if (before_time < Time.beginning_of_workday(before_time))
-          before_time = before_time - off_hours
+        if before_time.hour == 0 && before_time.min == 0 && before_time.sec == 0
+          before_time = Time.roll_backward(before_time - 1.second)
+        elsif (before_time <= Time.beginning_of_workday(before_time))
+          # Ignore hours before opening and after closing
+          delta = Time.beginning_of_workday(before_time) - before_time
+
+          # Due to the 23:59:59 end-of-workday exception
+          time_roll_backward = Time.roll_backward(before_time)
+          time_roll_backward += 1.second if time_roll_backward.to_s =~ /23:59:59/
+
+          before_time = time_roll_backward - delta
         end
 
         # Ignore weekends and holidays
@@ -54,20 +62,5 @@ module BusinessTime
       end
       before_time
     end
-
-    private
-
-    def off_hours
-      return @gap if @gap
-      if Time.zone
-        gap_end = Time.zone.parse(BusinessTime::Config.beginning_of_workday)
-        gap_begin = (Time.zone.parse(BusinessTime::Config.end_of_workday)-1.day)
-      else
-        gap_end = Time.parse(BusinessTime::Config.beginning_of_workday)
-        gap_begin = (Time.parse(BusinessTime::Config.end_of_workday) - 1.day)
-      end
-      @gap = gap_end - gap_begin
-    end
   end
-
 end
