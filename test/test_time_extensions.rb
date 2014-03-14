@@ -113,7 +113,7 @@ describe "time extensions" do
   end
 
   it "returns the given time during working hours" do
-    time = Time.parse("12pm, Tuesday 8th May, 2013")
+    time = Time.parse("12pm, Tuesday 8th May, 2012")
     assert_equal Time.roll_backward(time), time
   end
 end
