@@ -113,6 +113,7 @@ describe "business hours" do
         :fri=>["9:00","17:00"]
       }
       assert_equal friday_end, 8.business_hours.after(friday_start)
+      assert_equal friday_start + 1.hours, 8.business_hours.before(friday_end)
     end
 
     it "respect work_hours with some 24 hour days when starting before beginning of workday" do
