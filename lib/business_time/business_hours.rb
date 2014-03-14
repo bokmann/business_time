@@ -19,13 +19,10 @@ module BusinessTime
       @hours.times do
         after_time = after_time + 1.hour
 
-        # Roll back a second if it is midnight so that we check end_of_workday for the right day
         if after_time.hour == 0 && after_time.min == 0 && after_time.sec == 0
-          after_time = after_time - 1.second
-        end
-
-        # Ignore hours before opening and after closing
-        if (after_time >= Time.end_of_workday(after_time))
+          after_time = Time.roll_forward(after_time)
+        elsif (after_time > Time.end_of_workday(after_time))
+          # Ignore hours before opening and after closing
           delta = after_time - Time.end_of_workday(after_time)
           after_time = Time.roll_forward(after_time) + delta
         end

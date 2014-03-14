@@ -103,6 +103,15 @@ describe "business hours" do
       assert_equal monday, 24.business_hours.after(friday)
     end
 
+    it "respect work_hours within same day" do
+      friday_start = Time.parse("December 24, 2010 8:00")
+      friday_end   = Time.parse("December 24, 2010 17:00")
+      BusinessTime::Config.work_hours = {
+        :fri=>["9:00","17:00"]
+      }
+      assert_equal friday_end, 8.business_hours.after(friday_start)
+    end
+
     it "respect work_hours with some 24 hour days when starting before beginning of workday" do
       saturday = Time.parse("December 25, 2010 08:00")
       monday = Time.parse("December 27, 2010 11:00")
