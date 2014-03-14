@@ -88,8 +88,11 @@ module BusinessTime
         if hours = BusinessTime::Config.work_hours[day]
           BusinessTime::Config.work_hours_total[day] ||= begin
             hours_last = hours.last
-            hours_last = '24:00' if hours_last == '00:00'
-            Time.parse(hours_last) - Time.parse(hours.first)
+            if hours_last == '00:00'
+              (Time.parse('23:59') - Time.parse(hours.first)) + 1.minute
+            else
+              Time.parse(hours_last) - Time.parse(hours.first)
+            end
           end
         else
           BusinessTime::Config.work_hours_total[:default] ||= begin
