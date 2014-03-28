@@ -8,6 +8,7 @@ require 'business_time/business_hours'
 require 'business_time/business_days'
 require 'business_time/core_ext/date'
 require 'business_time/core_ext/fixnum'
+require 'business_time/core_ext/float'
 
 require 'business_time/time_extensions'
 require 'business_time/core_ext/time'
