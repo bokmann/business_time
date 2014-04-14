@@ -20,11 +20,11 @@ module BusinessTime
       private
 
       def config
-        Thread.current[:business_time_config] ||= default_config
+        Thread.main[:business_time_config] ||= default_config
       end
 
       def config=(config)
-        Thread.current[:business_time_config] = config
+        Thread.main[:business_time_config] = config
       end
 
       def threadsafe_cattr_accessor(name)
