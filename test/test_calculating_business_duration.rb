@@ -88,7 +88,7 @@ describe "calculating business duration" do
 
     created_at = Time.local(2014, 05, 12, 20, 50) #yesterday night 20:50
     published_at = Time.local(2014, 05, 13, 8, 10) #today morning 08:10
-    # assert created_at.monday?
+    assert created_at.monday?
     assert published_at.tuesday?
 
     assert_equal 10.minutes, created_at.business_time_until(published_at)
