@@ -50,6 +50,18 @@ describe "config" do
     assert_equal([1,2,4,5], BusinessTime::Config.weekdays.sort)
   end
 
+  it 'end of workday not freakout' do
+    BusinessTime::Config.work_hours = {
+      :mon=>["9:00","20:00"],
+      :tue=>["9:00","17:00"],
+      :thu=>["9:00","17:00"],
+      :fri=>["9:00","17:00"]
+    }
+
+    monday = Time.local(2014, 05, 12, 20, 50)
+    assert_equal "20:00", BusinessTime::Config.end_of_workday(monday)
+  end
+
   it "load config from YAML files" do
     yaml = <<-YAML
     business_time:

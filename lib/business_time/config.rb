@@ -76,7 +76,7 @@ module BusinessTime
       def end_of_workday(day=nil)
         if day
           wday = work_hours[int_to_wday(day.wday)]
-          wday ? (wday.last =~ /0{1,2}\:0{1,2}/ ? "23:59:59" : wday.last) : config[:end_of_workday]
+          wday ? (wday.last =~ /^0{1,2}\:0{1,2}$/ ? "23:59:59" : wday.last) : config[:end_of_workday]
         else
           config[:end_of_workday]
         end
