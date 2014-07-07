@@ -152,5 +152,21 @@ describe "config" do
       assert ran
       assert_equal "5:00 pm", BusinessTime::Config.end_of_workday
     end
+
+    it 'is threadsafe' do
+      old_hours                       = { fri: ['10:00', '12:00'] }
+      new_hours                       = { fri: ['10:00', '13:00'] }
+      BusinessTime::Config.work_hours = old_hours
+      t1 = Thread.new do
+        sleep 0.1
+        assert_equal BusinessTime::Config.work_hours, old_hours
+      end
+      Thread.new do
+        BusinessTime::Config.with(work_hours: new_hours) do
+          t1.join
+          assert_equal BusinessTime::Config.work_hours, new_hours
+        end
+      end.join
+    end
   end
 end
