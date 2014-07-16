@@ -9,6 +9,10 @@ class Date
   end
 
   def business_days_until(to_date)
-    (self...to_date).select{ |day| day.workday? }.size
+    business_dates_until(to_date).size
+  end
+
+  def business_dates_until(to_date)
+    (self...to_date).select { |day| day.workday? }
   end
 end
