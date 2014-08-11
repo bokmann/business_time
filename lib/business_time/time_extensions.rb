@@ -62,6 +62,16 @@ module BusinessTime
         next_business_time
       end
 
+      # Returns the time parameter itself if it is a business day
+      # or else returns the next business day
+      def first_business_day(time)
+        while !Time.workday?(time)
+          time = time + 1.day
+        end
+
+        time
+      end
+
       # Rolls backwards to the previous end_of_workday when the time is outside
       # of business hours
       def roll_backward(time)
