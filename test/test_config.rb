@@ -1,6 +1,16 @@
 require File.expand_path('../helper', __FILE__)
 
 describe "config" do
+  it "uses Time.zone when time zone is not set" do
+    Time.zone = "Darwin"
+    assert_equal "Darwin", BusinessTime::Config.time_zone.name
+  end
+
+  it "keep track of time zone" do
+    BusinessTime::Config.time_zone = "Ljubljana"
+    assert_equal "Ljubljana", BusinessTime::Config.time_zone.name
+  end
+
   it "keep track of the start of the day" do
     assert_equal "9:00 am", BusinessTime::Config.beginning_of_workday
     BusinessTime::Config.beginning_of_workday = "8:30 am"

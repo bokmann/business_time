@@ -7,6 +7,7 @@ module BusinessTime
   # manually, or with a yaml file and the load method.
   class Config
     DEFAULT_CONFIG = {
+      time_zone:             nil,
       holidays:              [],
       beginning_of_workday:  '9:00 am',
       end_of_workday:        '5:00 pm',
@@ -36,6 +37,12 @@ module BusinessTime
         end
       end
     end
+
+    # You can set this yourself, either by the load method below, or
+    # by saying
+    #   BusinessTime::Config.time_zone = "UTC"
+    # someplace in the initializers of your application.
+    threadsafe_cattr_accessor :time_zone
 
     # You can set this yourself, either by the load method below, or
     # by saying
@@ -73,6 +80,14 @@ module BusinessTime
     threadsafe_cattr_accessor :_weekdays # internal
 
     class << self
+      def time_zone
+        config[:time_zone] || Time.zone
+      end
+
+      def time_zone=(zone)
+        config[:time_zone] = Time.find_zone!(zone)
+      end
+
       def end_of_workday(day=nil)
         if day
           wday = work_hours[int_to_wday(day.wday)]
