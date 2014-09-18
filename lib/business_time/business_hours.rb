@@ -6,11 +6,11 @@ module BusinessTime
     end
 
     def ago
-      Time.zone ? before(Time.zone.now) : before(Time.now)
+      BusinessTime::Config.time_zone ? before(BusinessTime::Config.time_zone.now) : before(Time.now)
     end
 
     def from_now
-      Time.zone ?  after(Time.zone.now) : after(Time.now)
+      BusinessTime::Config.time_zone ?  after(BusinessTime::Config.time_zone.now) : after(Time.now)
     end
 
     def after(time)
