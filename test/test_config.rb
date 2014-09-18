@@ -75,6 +75,7 @@ describe "config" do
   it "load config from YAML files" do
     yaml = <<-YAML
     business_time:
+      time_zone: UTC
       beginning_of_workday: 11:00 am
       end_of_workday: 2:00 pm
       work_week:
@@ -84,6 +85,7 @@ describe "config" do
     YAML
     config_file = StringIO.new(yaml.gsub!(/^    /, ''))
     BusinessTime::Config.load(config_file)
+    assert_equal "UTC", BusinessTime::Config.time_zone.name
     assert_equal "11:00 am", BusinessTime::Config.beginning_of_workday
     assert_equal "2:00 pm", BusinessTime::Config.end_of_workday
     assert_equal ['mon'], BusinessTime::Config.work_week

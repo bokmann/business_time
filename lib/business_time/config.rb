@@ -135,7 +135,7 @@ module BusinessTime
         config = (data["business_time"] || {})
 
         # load each config variable from the file, if it's present and valid
-        config_vars = %w(beginning_of_workday end_of_workday work_week work_hours)
+        config_vars = %w(time_zone beginning_of_workday end_of_workday work_week work_hours)
         config_vars.each do |var|
           send("#{var}=", config[var]) if config[var] && respond_to?("#{var}=")
         end
