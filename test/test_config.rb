@@ -86,10 +86,10 @@ describe "config" do
       holidays:
         - May 7th, 2012
     YAML
-    assert Time.workday?(Time.parse('2012-05-07'))
+    assert Time.parse('2012-05-07').workday?
     config_file = StringIO.new(yaml.gsub!(/^    /, ''))
     BusinessTime::Config.load(config_file)
-    assert !Time.workday?(Time.parse('2012-05-07'))
+    assert !Time.parse('2012-05-07').workday?
   end
 
   it "use defaults for values missing in YAML file" do
