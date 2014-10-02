@@ -6,8 +6,7 @@ module BusinessTime
       @days = days
     end
 
-    def after(time = Time.now)
-      time = Time.zone ? Time.zone.parse(time.strftime('%Y-%m-%d %H:%M:%S %z')) : Time.parse(time.strftime('%Y-%m-%d %H:%M:%S %z'))
+    def after(time = Time.current)
       days = @days
       while days > 0 || !time.workday?
         days -= 1 if time.workday?
@@ -19,8 +18,7 @@ module BusinessTime
     alias_method :from_now, :after
     alias_method :since, :after
 
-    def before(time = Time.now)
-      time = Time.zone ? Time.zone.parse(time.rfc822) : Time.parse(time.rfc822)
+    def before(time = Time.current)
       days = @days
       while days > 0 || !time.workday?
         days -= 1 if time.workday?
