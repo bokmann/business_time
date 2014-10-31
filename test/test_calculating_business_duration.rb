@@ -17,7 +17,7 @@ describe "calculating business duration" do
     free_friday = Date.parse("December 17, 2010")
     wednesday = Date.parse("December 15,2010")
     monday = Date.parse("December 20, 2010")
-    BusinessTime::Config.holidays << free_friday
+    BusinessTime::Config.add_holiday(free_friday)
     assert_equal 2, wednesday.business_days_until(monday)
   end
 
@@ -84,7 +84,6 @@ describe "calculating business duration" do
       mon: ["08:00","20:00"],
       tue: ["08:00","20:00"],
     }
-    BusinessTime::Config.holidays = []
 
     created_at = Time.local(2014, 05, 12, 20, 50) #yesterday night 20:50
     published_at = Time.local(2014, 05, 13, 8, 10) #today morning 08:10

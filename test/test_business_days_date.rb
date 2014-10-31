@@ -46,7 +46,7 @@ describe "business days" do
 
     it "take into account a holiday when adding a day" do
       three_day_weekend = Date.parse("July 5th, 2010")
-      BusinessTime::Config.holidays << three_day_weekend
+      BusinessTime::Config.add_holiday(three_day_weekend)
       friday_afternoon = Date.parse("July 2nd, 2010")
       tuesday_afternoon = 1.business_day.after(friday_afternoon)
       expected = Date.parse("July 6th, 2010")
@@ -55,7 +55,7 @@ describe "business days" do
 
     it "take into account a holiday on a weekend" do
       july_4 = Date.parse("July 4th, 2010")
-      BusinessTime::Config.holidays << july_4
+      BusinessTime::Config.add_holiday(july_4)
       friday_afternoon = Date.parse("July 2nd, 2010")
       monday_afternoon = 1.business_day.after(friday_afternoon)
       expected = Date.parse("July 5th, 2010")

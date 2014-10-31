@@ -60,7 +60,7 @@ I needed this, but taking into account business hours/days and holidays.
     # and we can add holidays that don't count as business days
     # July 5 in 2010 is a monday that the U.S. takes off because our independence day falls on that Sunday.
     three_day_weekend = Date.parse("July 5th, 2010")
-    BusinessTime::Config.holidays << three_day_weekend
+    BusinessTime::Config.add_holiday(three_day_weekend)
     friday_afternoon = Time.parse("July 2nd, 2010, 4:50 pm")
     tuesday_morning = 1.business_hour.after(friday_afternoon)
 
@@ -136,9 +136,9 @@ I'm hoping Arild and I write some good blog entries on the subject at http://blo
 	on using the business_time gem with the holidays[https://github.com/alexdunae/holidays] gem. It boils down to this:
 
   Holidays.between(Date.civil(2013, 1, 1), 2.years.from_now, :ca_on, :observed).map do |holiday|
-    BusinessTime::Config.holidays << holiday[:date]
+    BusinessTime::Config.add_holiday(holiday[:date])
     # Implement long weekends if they apply to the region, eg:
-    # BusinessTime::Config.holidays << holiday[:date].next_week if !holiday[:date].weekday?
+    # BusinessTime::Config.add_holiday(holiday[:date].next_week) if !holiday[:date].weekday?
   end
 
 == Releases

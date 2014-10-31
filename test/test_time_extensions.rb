@@ -17,8 +17,8 @@ describe "time extensions" do
   end
 
   it "know a holiday is not a workday" do
-    BusinessTime::Config.holidays << Date.parse("July 4, 2010")
-    BusinessTime::Config.holidays << Date.parse("July 5, 2010")
+    BusinessTime::Config.add_holiday(Date.parse("July 4, 2010"))
+    BusinessTime::Config.add_holiday(Date.parse("July 5, 2010"))
 
     assert(!Time.parse("July 4th, 2010 1:15 pm").workday?)
     assert(!Time.parse("July 5th, 2010 2:37 pm").workday?)
