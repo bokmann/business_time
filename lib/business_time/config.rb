@@ -55,12 +55,6 @@ module BusinessTime
     # someplace in the initializers of your application.
     threadsafe_cattr_accessor :work_week
 
-    # You can set this yourself, either by the load method below, or
-    # by saying
-    #   BusinessTime::Config.holidays << my_holiday_date_object
-    # someplace in the initializers of your application.
-    threadsafe_cattr_accessor :holidays
-
     # working hours for each day - if not set using global variables :beginning_of_workday
     # and end_of_workday. Keys will be added ad weekdays.
     # Example:
@@ -105,15 +99,28 @@ module BusinessTime
         end
       end
 
+      def formatted_holiday_date(date)
+        holiday = date.respond_to?(:strftime) ? date : Date.parse(date)
+        holiday.strftime('%d/%m')
+      end
+
+      def add_holiday(date)
+        config[:holidays] << formatted_holiday_date(date)
+      end
+
+      def holidays
+        config[:holidays]
+      end
+
       # loads the config data from a yaml file written as:
       #
       #   business_time:
       #     beginning_od_workday: 8:30 am
       #     end_of_workday: 5:30 pm
       #     holidays:
-      #       - Jan 1st, 2010
-      #       - July 4th, 2010
-      #       - Dec 25th, 2010
+      #       - Jan 1st
+      #       - July 4th
+      #       - Dec 25th
       def load(file)
         reset
         data = YAML::load(file.respond_to?(:read) ? file : File.open(file))
@@ -125,9 +132,7 @@ module BusinessTime
           send("#{var}=", config[var]) if config[var] && respond_to?("#{var}=")
         end
 
-        (config["holidays"] || []).each do |holiday|
-          holidays << Date.parse(holiday)
-        end
+        (config['holidays'] || []).each { |date| add_holiday(date) }
       end
 
       def with(config)

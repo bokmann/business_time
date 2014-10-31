@@ -7,25 +7,25 @@ describe "TimeWithZone extensions" do
     end
 
     it "know what a weekend day is" do
-      assert( Time.weekday?(Time.zone.parse("April 9, 2010 10:30am")))
-      assert(!Time.weekday?(Time.zone.parse("April 10, 2010 10:30am")))
-      assert(!Time.weekday?(Time.zone.parse("April 11, 2010 10:30am")))
-      assert( Time.weekday?(Time.zone.parse("April 12, 2010 10:30am")))
+      assert( Time.zone.parse("April 9, 2010 10:30am").weekday?)
+      assert(!Time.zone.parse("April 10, 2010 10:30am").weekday?)
+      assert(!Time.zone.parse("April 11, 2010 10:30am").weekday?)
+      assert( Time.zone.parse("April 12, 2010 10:30am").weekday?)
     end
 
     it "know a weekend day is not a workday" do
-      assert( Time.workday?(Time.zone.parse("April 9, 2010 10:45 am")))
-      assert(!Time.workday?(Time.zone.parse("April 10, 2010 10:45 am")))
-      assert(!Time.workday?(Time.zone.parse("April 11, 2010 10:45 am")))
-      assert( Time.workday?(Time.zone.parse("April 12, 2010 10:45 am")))
+      assert( Time.zone.parse("April 9, 2010 10:45 am").workday?)
+      assert(!Time.zone.parse("April 10, 2010 10:45 am").workday?)
+      assert(!Time.zone.parse("April 11, 2010 10:45 am").workday?)
+      assert( Time.zone.parse("April 12, 2010 10:45 am").workday?)
     end
 
     it "know a holiday is not a workday" do
-      BusinessTime::Config.holidays << Date.parse("July 4, 2010")
-      BusinessTime::Config.holidays << Date.parse("July 5, 2010")
+      BusinessTime::Config.add_holiday(Date.parse("July 4, 2010"))
+      BusinessTime::Config.add_holiday(Date.parse("July 5, 2010"))
 
-      assert(!Time.workday?(Time.zone.parse("July 4th, 2010 1:15 pm")))
-      assert(!Time.workday?(Time.zone.parse("July 5th, 2010 2:37 pm")))
+      assert(!Time.zone.parse("July 4th, 2010 1:15 pm").workday?)
+      assert(!Time.zone.parse("July 5th, 2010 2:37 pm").workday?)
     end
 
 
@@ -48,25 +48,25 @@ describe "TimeWithZone extensions" do
     end
 
     it "know what a weekend day is" do
-      assert( Time.weekday?(Time.zone.parse("April 9, 2010 10:30am")))
-      assert(!Time.weekday?(Time.zone.parse("April 10, 2010 10:30am")))
-      assert(!Time.weekday?(Time.zone.parse("April 11, 2010 10:30am")))
-      assert( Time.weekday?(Time.zone.parse("April 12, 2010 10:30am")))
+      assert( Time.zone.parse("April 9, 2010 10:30am").weekday?)
+      assert(!Time.zone.parse("April 10, 2010 10:30am").weekday?)
+      assert(!Time.zone.parse("April 11, 2010 10:30am").weekday?)
+      assert( Time.zone.parse("April 12, 2010 10:30am").weekday?)
     end
 
     it "know a weekend day is not a workday" do
-      assert( Time.workday?(Time.zone.parse("April 9, 2010 10:45 am")))
-      assert(!Time.workday?(Time.zone.parse("April 10, 2010 10:45 am")))
-      assert(!Time.workday?(Time.zone.parse("April 11, 2010 10:45 am")))
-      assert( Time.workday?(Time.zone.parse("April 12, 2010 10:45 am")))
+      assert( Time.zone.parse("April 9, 2010 10:45 am").workday?)
+      assert(!Time.zone.parse("April 10, 2010 10:45 am").workday?)
+      assert(!Time.zone.parse("April 11, 2010 10:45 am").workday?)
+      assert( Time.zone.parse("April 12, 2010 10:45 am").workday?)
     end
 
     it "know a holiday is not a workday" do
-      BusinessTime::Config.holidays << Date.parse("July 4, 2010")
-      BusinessTime::Config.holidays << Date.parse("July 5, 2010")
+      BusinessTime::Config.add_holiday(Date.parse("July 4, 2010"))
+      BusinessTime::Config.add_holiday(Date.parse("July 5, 2010"))
 
-      assert(!Time.workday?(Time.zone.parse("July 4th, 2010 1:15 pm")))
-      assert(!Time.workday?(Time.zone.parse("July 5th, 2010 2:37 pm")))
+      assert(!Time.zone.parse("July 4th, 2010 1:15 pm").workday?)
+      assert(!Time.zone.parse("July 5th, 2010 2:37 pm").workday?)
     end
 
 

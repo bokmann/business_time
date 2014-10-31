@@ -38,7 +38,7 @@ describe "business hours" do
     end
 
     it "take into account a holiday" do
-      BusinessTime::Config.holidays << Date.parse("July 5th, 2010")
+      BusinessTime::Config.add_holiday(Date.parse("July 5th, 2010"))
       friday_afternoon = Time.parse("July 2nd 2010, 4:50pm")
       tuesday_morning = 1.business_hour.after(friday_afternoon)
       expected = Time.parse("July 6th 2010, 9:50 am")

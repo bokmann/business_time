@@ -28,7 +28,7 @@ module BusinessTime
         end
 
         # Ignore weekends and holidays
-        while !Time.workday?(after_time)
+        while !after_time.workday?
           after_time = after_time + 1.day
         end
       end
@@ -56,7 +56,7 @@ module BusinessTime
         end
 
         # Ignore weekends and holidays
-        while !Time.workday?(before_time)
+        while !before_time.workday?
           before_time = before_time - 1.day
         end
       end

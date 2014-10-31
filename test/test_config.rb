@@ -16,8 +16,8 @@ describe "config" do
   it "keep track of holidays" do
     assert BusinessTime::Config.holidays.empty?
     daves_birthday = Date.parse("August 4th, 1969")
-    BusinessTime::Config.holidays << daves_birthday
-    assert BusinessTime::Config.holidays.include?(daves_birthday)
+    BusinessTime::Config.add_holiday(daves_birthday)
+    assert BusinessTime::Config.holidays.include?('04/08')
   end
 
   it "keep track of work week" do
@@ -63,33 +63,52 @@ describe "config" do
   end
 
   it "load config from YAML files" do
-    yaml = <<-YAML
-    business_time:
-      beginning_of_workday: 11:00 am
-      end_of_workday: 2:00 pm
-      work_week:
-        - mon
-      holidays:
-        - December 25th, 2012
-    YAML
-    config_file = StringIO.new(yaml.gsub!(/^    /, ''))
-    BusinessTime::Config.load(config_file)
-    assert_equal "11:00 am", BusinessTime::Config.beginning_of_workday
-    assert_equal "2:00 pm", BusinessTime::Config.end_of_workday
-    assert_equal ['mon'], BusinessTime::Config.work_week
-    assert_equal [Date.parse('2012-12-25')], BusinessTime::Config.holidays
+    Timecop.freeze('02/02/2011') do
+      yaml = <<-YAML
+      business_time:
+        beginning_of_workday: 11:00 am
+        end_of_workday: 2:00 pm
+        work_week:
+          - mon
+        holidays:
+          - December 25th
+      YAML
+      config_file = StringIO.new(yaml.gsub!(/^    /, ''))
+      BusinessTime::Config.load(config_file)
+      assert_equal "11:00 am", BusinessTime::Config.beginning_of_workday
+      assert_equal "2:00 pm", BusinessTime::Config.end_of_workday
+      assert_equal ['mon'], BusinessTime::Config.work_week
+      assert_equal ['25/12'], BusinessTime::Config.holidays
+    end
   end
 
   it "include holidays read from YAML config files" do
+    Timecop.freeze('02/02/2011') do
+      yaml = <<-YAML
+      business_time:
+        holidays:
+          - May 10th
+      YAML
+
+      assert Time.parse('2011-05-10').workday?
+      config_file = StringIO.new(yaml.gsub!(/^    /, ''))
+      BusinessTime::Config.load(config_file)
+      assert !Time.parse('2011-05-10').workday?
+    end
+  end
+
+  it "ignore year when check date for holiday" do
     yaml = <<-YAML
-    business_time:
-      holidays:
-        - May 7th, 2012
-    YAML
-    assert Time.workday?(Time.parse('2012-05-07'))
+      business_time:
+        holidays:
+          - May 10th
+      YAML
+
     config_file = StringIO.new(yaml.gsub!(/^    /, ''))
     BusinessTime::Config.load(config_file)
-    assert !Time.workday?(Time.parse('2012-05-07'))
+
+    assert !Time.parse('2011-05-10').workday?
+    assert !Time.parse('2012-05-10').workday?
   end
 
   it "use defaults for values missing in YAML file" do
