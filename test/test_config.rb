@@ -16,8 +16,8 @@ describe "config" do
   it "keep track of holidays" do
     assert BusinessTime::Config.holidays.empty?
     daves_birthday = Date.parse("August 4th, 1969")
-    BusinessTime::Config.holidays << daves_birthday
-    assert BusinessTime::Config.holidays.include?(daves_birthday)
+    BusinessTime::Config.add_holiday(daves_birthday)
+    assert BusinessTime::Config.holidays.include?('04/08')
   end
 
   it "keep track of work week" do
@@ -78,7 +78,7 @@ describe "config" do
       assert_equal "11:00 am", BusinessTime::Config.beginning_of_workday
       assert_equal "2:00 pm", BusinessTime::Config.end_of_workday
       assert_equal ['mon'], BusinessTime::Config.work_week
-      assert_equal [Date.parse('2011-12-25')], BusinessTime::Config.holidays
+      assert_equal ['25/12'], BusinessTime::Config.holidays
     end
   end
 
@@ -97,7 +97,7 @@ describe "config" do
     end
   end
 
-  it "refresh holidays year when year changed" do
+  it "ignore year when check date for holiday" do
     yaml = <<-YAML
       business_time:
         holidays:
@@ -105,17 +105,10 @@ describe "config" do
       YAML
 
     config_file = StringIO.new(yaml.gsub!(/^    /, ''))
+    BusinessTime::Config.load(config_file)
 
-    Timecop.freeze('02/02/2011') do
-      BusinessTime::Config.load(config_file)
-      assert !Time.parse('2011-05-10').workday?
-      assert Time.parse('2012-05-10').workday?
-    end
-
-    Timecop.freeze('02/02/2012') do
-      assert !Time.parse('2012-05-10').workday?
-      assert Time.parse('2011-05-10').workday?
-    end
+    assert !Time.parse('2011-05-10').workday?
+    assert !Time.parse('2012-05-10').workday?
   end
 
   it "use defaults for values missing in YAML file" do

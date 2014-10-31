@@ -23,22 +23,6 @@ module BusinessTime
         Thread.main[:business_time_config] ||= default_config
       end
 
-      def current_time
-        Time.zone || Time
-      end
-
-      def current_year
-        Thread.main[:business_time_current_year] ||= current_time.now.year
-      end
-
-      def fresh_date(date)
-        Date.new(current_year, date.month, date.day)
-      end
-
-      def refresh_current_year!
-        Thread.main[:business_time_current_year] = current_time.now.year
-      end
-
       def config=(config)
         Thread.main[:business_time_config] = config
       end
@@ -70,12 +54,6 @@ module BusinessTime
     #   BusinessTime::Config.work_week = [:sun, :mon, :tue, :wed, :thu]
     # someplace in the initializers of your application.
     threadsafe_cattr_accessor :work_week
-
-    # You can set this yourself, either by the load method below, or
-    # by saying
-    #   BusinessTime::Config.holidays << my_holiday_date_object
-    # someplace in the initializers of your application.
-    threadsafe_cattr_accessor :holidays
 
     # working hours for each day - if not set using global variables :beginning_of_workday
     # and end_of_workday. Keys will be added ad weekdays.
@@ -121,10 +99,17 @@ module BusinessTime
         end
       end
 
+      def formatted_holiday_date(date)
+        holiday = date.respond_to?(:strftime) ? date : Date.parse(date)
+        holiday.strftime('%d/%m')
+      end
+
+      def add_holiday(date)
+        config[:holidays] << formatted_holiday_date(date)
+      end
+
       def holidays
-        return config[:holidays] if current_year == current_time.now.year
-        refresh_current_year!
-        config[:holidays] = config[:holidays].map { |holiday| fresh_date(holiday) }
+        config[:holidays]
       end
 
       # loads the config data from a yaml file written as:
@@ -147,10 +132,7 @@ module BusinessTime
           send("#{var}=", config[var]) if config[var] && respond_to?("#{var}=")
         end
 
-        (config['holidays'] || []).each do |holiday|
-          date = Date.parse(holiday)
-          holidays << fresh_date(date)
-        end
+        (config['holidays'] || []).each { |date| add_holiday(date) }
       end
 
       def with(config)

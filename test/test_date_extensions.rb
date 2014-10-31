@@ -23,8 +23,8 @@ describe "date extensions" do
     assert(!july_4.workday?)
     assert(july_5.workday?)
 
-    BusinessTime::Config.holidays << july_4
-    BusinessTime::Config.holidays << july_5
+    BusinessTime::Config.add_holiday(july_4)
+    BusinessTime::Config.add_holiday(july_5)
 
     assert(!july_4.workday?)
     assert(!july_5.workday?)
