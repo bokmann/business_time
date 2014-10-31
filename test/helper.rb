@@ -1,5 +1,6 @@
 require 'minitest/autorun'
 require 'minitest/rg'
+require 'timecop'
 
 if ENV["COV"]
   require 'simplecov'

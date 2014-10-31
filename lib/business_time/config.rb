@@ -23,6 +23,22 @@ module BusinessTime
         Thread.main[:business_time_config] ||= default_config
       end
 
+      def current_time
+        Time.zone || Time
+      end
+
+      def current_year
+        Thread.main[:business_time_current_year] ||= current_time.now.year
+      end
+
+      def fresh_date(date)
+        Date.new(current_year, date.month, date.day)
+      end
+
+      def refresh_current_year!
+        Thread.main[:business_time_current_year] = current_time.now.year
+      end
+
       def config=(config)
         Thread.main[:business_time_config] = config
       end
@@ -105,15 +121,21 @@ module BusinessTime
         end
       end
 
+      def holidays
+        return config[:holidays] if current_year == current_time.now.year
+        refresh_current_year!
+        config[:holidays] = config[:holidays].map { |holiday| fresh_date(holiday) }
+      end
+
       # loads the config data from a yaml file written as:
       #
       #   business_time:
       #     beginning_od_workday: 8:30 am
       #     end_of_workday: 5:30 pm
       #     holidays:
-      #       - Jan 1st, 2010
-      #       - July 4th, 2010
-      #       - Dec 25th, 2010
+      #       - Jan 1st
+      #       - July 4th
+      #       - Dec 25th
       def load(file)
         reset
         data = YAML::load(file.respond_to?(:read) ? file : File.open(file))
@@ -125,8 +147,9 @@ module BusinessTime
           send("#{var}=", config[var]) if config[var] && respond_to?("#{var}=")
         end
 
-        (config["holidays"] || []).each do |holiday|
-          holidays << Date.parse(holiday)
+        (config['holidays'] || []).each do |holiday|
+          date = Date.parse(holiday)
+          holidays << fresh_date(date)
         end
       end
 
