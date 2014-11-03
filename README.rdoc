@@ -89,6 +89,9 @@ I needed this, but taking into account business hours/days and holidays.
     ticket_reported = Time.parse("February 3, 2012, 10:40 am")
     ticket_resolved = Time.parse("February 4, 2012, 10:50 am")
     ticket_reported.business_time_until(ticket_resolved) #=> 8.hours + 10.minutes
+    
+    # you can also determine if a given time is within business hours
+    Time.parse("February 3, 2012, 10:00 am").during_business_hours?
 
     # note that counterintuitively, durations might not be quite what you expect when involving weekends.
     # Consider the following example:
@@ -162,6 +165,7 @@ I'm hoping Arild and I write some good blog entries on the subject at http://blo
  * Piotr Jakubowski http://github.com/piotrj
  * Glenn Vanderburg http://github.com/glv
  * Michael Grosser http://github.com/grosser
+ * Michael Curtis http://github.com/mcurtis
 
  (Special thanks for Arild on the complexities of dealing with TimeWithZone)
 

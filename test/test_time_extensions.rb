@@ -88,6 +88,11 @@ describe "time extensions" do
     ticket_resolved = Time.parse("February 4, 2012, 10:40 am") #will roll over to Monday morning, 9:00am
     assert_equal ticket_reported.business_time_until(ticket_resolved), 6.hours + 20.minutes
   end
+  
+  it "knows if within business hours" do
+    assert(Time.parse("2013-02-01 10:00").during_business_hours?)
+    assert(!Time.parse("2013-02-01 5:00").during_business_hours?)
+  end
 
   # =================== .roll_backward ======================
 

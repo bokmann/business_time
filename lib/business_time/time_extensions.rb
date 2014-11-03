@@ -141,5 +141,9 @@ module BusinessTime
         first_day + days_in_between + last_day
       end * direction
     end
+    
+    def during_business_hours?
+      Time.workday?(self) && self.to_i.between?(Time.beginning_of_workday(self).to_i, Time.end_of_workday(self).to_i)
+    end
   end
 end
