@@ -1,7 +1,14 @@
 module BusinessTime
   module TimeExtensions
-    def self.included(base)
-      base.extend(ClassMethods)
+    # True if this time is on a workday (between 00:00:00 and 23:59:59), even if
+    # this time falls outside of normal business hours.
+    def workday?
+      weekday? && !BusinessTime::Config.holidays.include?(to_date)
+    end
+
+    # True if this time falls on a weekday.
+    def weekday?
+      BusinessTime::Config.weekdays.include?(wday)
     end
 
     module ClassMethods
@@ -26,13 +33,14 @@ module BusinessTime
       # True if this time is on a workday (between 00:00:00 and 23:59:59), even if
       # this time falls outside of normal business hours.
       def workday?(day)
-        Time.weekday?(day) &&
-          !BusinessTime::Config.holidays.include?(day.to_date)
+        ActiveSupport::Deprecation.warn("`Time.workday?(time)` is deprecated. Please use `time.workday?`")
+        day.workday?
       end
 
       # True if this time falls on a weekday.
       def weekday?(day)
-        BusinessTime::Config.weekdays.include? day.wday
+        ActiveSupport::Deprecation.warn("`Time.weekday?(time)` is deprecated. Please use `time.weekday?`")
+        day.weekday?
       end
 
       def before_business_hours?(time)
@@ -47,7 +55,7 @@ module BusinessTime
       # when the time is outside of business hours
       def roll_forward(time)
 
-        if Time.before_business_hours?(time) || !Time.workday?(time)
+        if Time.before_business_hours?(time) || !time.workday?
           next_business_time = Time.beginning_of_workday(time)
         elsif Time.after_business_hours?(time) || Time.end_of_workday(time) == time
           next_business_time = Time.beginning_of_workday(time + 1.day)
@@ -55,7 +63,7 @@ module BusinessTime
           next_business_time = time.clone
         end
 
-        while !Time.workday?(next_business_time)
+        while !next_business_time.workday?
           next_business_time = Time.beginning_of_workday(next_business_time + 1.day)
         end
 
@@ -75,7 +83,7 @@ module BusinessTime
       # Rolls backwards to the previous end_of_workday when the time is outside
       # of business hours
       def roll_backward(time)
-        prev_business_time = if (Time.before_business_hours?(time) || !Time.workday?(time))
+        prev_business_time = if (Time.before_business_hours?(time) || !time.workday?)
                                Time.end_of_workday(time - 1.day)
                              elsif Time.after_business_hours?(time)
                                Time.end_of_workday(time)
@@ -83,7 +91,7 @@ module BusinessTime
                                time.clone
                              end
 
-        while !Time.workday?(prev_business_time)
+        while !prev_business_time.workday?
           prev_business_time = Time.end_of_workday(prev_business_time - 1.day)
         end
 
@@ -91,7 +99,7 @@ module BusinessTime
       end
 
       def work_hours_total(day)
-        return 0 unless Time.workday?(day)
+        return 0 unless day.workday?
 
         day = day.strftime('%a').downcase.to_sym
 
