@@ -37,6 +37,12 @@ describe "time extensions" do
     assert_equal expecting, Time.end_of_workday(first)
   end
 
+  it "know an additional day is a workday" do
+    BusinessTime::Config.additional_days << Date.parse("January 10, 2014")
+    assert(Time.workday?(Time.parse("January 10th, 2014 1:15 pm")))
+    assert(!Time.workday?(Time.parse("January 11th, 2014 1:15 pm")))
+  end
+
   # ===================
 
   it "calculate business time between different times on the same date (clockwise)" do

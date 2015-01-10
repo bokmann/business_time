@@ -17,7 +17,7 @@ I needed this, but taking into account business hours/days and holidays.
 == Usage
 * install the gem
 
-    gem install business_time
+    gem install business_time, git: 'https://github.com/freestyler/business_time.git'
 
 * open up your console
 

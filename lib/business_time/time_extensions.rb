@@ -23,11 +23,10 @@ module BusinessTime
         change_business_time(day,beginning_of_workday.hour,beginning_of_workday.min,beginning_of_workday.sec)
       end
 
-      # True if this time is on a workday (between 00:00:00 and 23:59:59), even if
+      # True if this time is on a workday or on an additional day (between 00:00:00 and 23:59:59), even if
       # this time falls outside of normal business hours.
       def workday?(day)
-        Time.weekday?(day) &&
-          !BusinessTime::Config.holidays.include?(day.to_date)
+        (Time.weekday?(day) && !BusinessTime::Config.holidays.include?(day.to_date)) || BusinessTime::Config.additional_days.include?(day.to_date)
       end
 
       # True if this time falls on a weekday.
