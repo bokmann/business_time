@@ -14,7 +14,7 @@ module BusinessTime
       work_hours:            {},
       work_hours_total:      {},
       _weekdays:             nil,
-      additional_days:       []
+      additional_workdays:   []
     }
 
     class << self
@@ -74,7 +74,7 @@ module BusinessTime
     threadsafe_cattr_accessor :_weekdays # internal
 
     # Add additional working days.
-    threadsafe_cattr_accessor :additional_days
+    threadsafe_cattr_accessor :additional_workdays
 
     class << self
       def end_of_workday(day=nil)

@@ -38,7 +38,7 @@ describe "time extensions" do
   end
 
   it "know an additional day is a workday" do
-    BusinessTime::Config.additional_days << Date.parse("January 10, 2014")
+    BusinessTime::Config.additional_workdays << Date.parse("January 10, 2014")
     assert(Time.workday?(Time.parse("January 10th, 2014 1:15 pm")))
     assert(!Time.workday?(Time.parse("January 11th, 2014 1:15 pm")))
   end
