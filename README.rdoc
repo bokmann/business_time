@@ -113,13 +113,6 @@ I needed this, but taking into account business hours/days and holidays.
     monday = Time.parse("Mon Aug 11, 18:00:00, 2014")
     Time.first_business_day(saturday) #=> "Mon Aug 11, 18:00:00, 2014"
     Time.first_business_day(monday) #=> "Mon Aug 11, 18:00:00, 2014"
-
-    # similar to Time#first_business_day Time#previous_business_day only cares about
-    # workdays:
-    saturday = Time.parse("Sat Aug 9, 18:00:00, 2014")
-    monday = Time.parse("Mon Aug 11, 18:00:00, 2014")
-    Time.previous_business_day(saturday) #=> "Fri Aug 8, 18:00:00, 2014"
-    Time.previous_business_day(monday) #=> "Mon Aug 11, 18:00:00, 2014"
 == Rails generator
 
     rails generate business_time:config
