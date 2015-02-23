@@ -73,7 +73,7 @@ module BusinessTime
       # Returns the time parameter itself if it is a business day
       # or else returns the next business day
       def first_business_day(time)
-        while !Time.workday?(time)
+        while !Time.workday?(time) || !time.workday?
           time = time + 1.day
         end
 
