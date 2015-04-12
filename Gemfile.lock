@@ -22,8 +22,8 @@ GEM
     rake (10.1.1)
     rdoc (4.1.1)
       json (~> 1.4)
-    thread_safe (0.3.3)
-    tzinfo (1.1.0)
+    thread_safe (0.3.5)
+    tzinfo (1.2.2)
       thread_safe (~> 0.1)
 
 PLATFORMS
