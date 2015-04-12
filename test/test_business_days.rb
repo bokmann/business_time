@@ -75,5 +75,27 @@ describe "business days" do
       expected = Time.parse("April 8th, 2010, 11:00 am")
       assert_equal expected, before
     end
+    
+    it "responds appropriatly to <" do
+      assert 5.business_days < 10.business_days
+      assert !(10.business_days < 5.business_days)
+    end
+    
+    it "responds appropriatly to >" do
+      assert !(5.business_days > 10.business_days)
+      assert 10.business_days > 5.business_days
+    end
+    
+    it "responds appropriatly to ==" do
+      assert 5.business_days == 5.business_days
+      assert 10.business_days != 5.business_days
+    end
+    
+    it "won't compare days to hours" do
+      assert_raises ArgumentError do
+        5.business_days < 5.business_hours
+      end
+    end
+    
   end
 end

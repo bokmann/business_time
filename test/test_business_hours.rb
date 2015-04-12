@@ -149,5 +149,27 @@ describe "business hours" do
       assert_equal monday, 15.business_hours.after(saturday)
       assert_equal saturday + 3.hours, 15.business_hours.before(monday)
     end
+    
+    it "responds appropriatly to <" do
+      assert 5.business_hours < 10.business_hours
+      assert !(10.business_hours < 5.business_hours)
+    end
+    
+    it "responds appropriatly to >" do
+      assert !(5.business_hours > 10.business_hours)
+      assert 10.business_hours > 5.business_hours
+    end
+    
+    it "responds appropriatly to ==" do
+      assert 5.business_hours == 5.business_hours
+      assert 10.business_hours != 5.business_hours
+    end
+    
+    it "won't compare hours and days" do
+      assert_raises ArgumentError do
+        5.business_hours < 5.business_days
+      end
+    end
+    
   end
 end
