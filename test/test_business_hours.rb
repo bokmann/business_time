@@ -75,6 +75,17 @@ describe "business hours" do
       assert_equal monday, Time.first_business_day(monday)
     end
 
+    it "get the first business day before the time that is not a business hour" do
+      saturday = Time.parse("Sat Aug 9, 18:00:00, 2014")
+      friday   = Time.parse("Fri Aug 8, 18:00:00, 2014")
+      assert_equal friday, Time.previous_business_day(saturday)
+    end
+
+    it "get the time itself if it is a business hour" do
+      monday = Time.parse("Mon Aug 11, 18:00:00, 2014")
+      assert_equal monday, Time.previous_business_day(monday)
+    end
+
     it "consider any time on a weekend as equivalent to monday morning" do
       sunday = Time.parse("Sun Apr 25 12:06:56, 2010")
       monday = Time.parse("Mon Apr 26, 09:00:00, 2010")

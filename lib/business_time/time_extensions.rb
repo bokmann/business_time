@@ -98,6 +98,16 @@ module BusinessTime
         prev_business_time
       end
 
+      # Returns the time parameter itself if it is a business day
+      # or else returns the previous business day
+      def previous_business_day(time)
+        while !time.workday?
+          time = time - 1.day
+        end
+
+        time
+      end
+
       def work_hours_total(day)
         return 0 unless day.workday?
 
@@ -159,7 +169,7 @@ module BusinessTime
         first_day + days_in_between + last_day
       end * direction
     end
-    
+
     def during_business_hours?
       self.workday? && self.to_i.between?(Time.beginning_of_workday(self).to_i, Time.end_of_workday(self).to_i)
     end
