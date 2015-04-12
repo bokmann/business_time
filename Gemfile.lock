@@ -20,7 +20,7 @@ GEM
     minitest-rg (5.0.0)
       minitest (~> 5.0)
     rake (10.4.2)
-    rdoc (4.1.1)
+    rdoc (4.2.0)
       json (~> 1.4)
     thread_safe (0.3.5)
     tzinfo (1.2.2)
