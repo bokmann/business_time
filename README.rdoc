@@ -90,6 +90,9 @@ I needed this, but taking into account business hours/days and holidays.
     ticket_resolved = Time.parse("February 4, 2012, 10:50 am")
     ticket_reported.business_time_until(ticket_resolved) #=> 8.hours + 10.minutes
 
+    # you can also determine if a given time is within business hours
+    Time.parse("February 3, 2012, 10:00 am").during_business_hours?
+
     # note that counterintuitively, durations might not be quite what you expect when involving weekends.
     # Consider the following example:
     ticket_reported = Time.parse("February 3, 2012, 10:40 am")
@@ -100,6 +103,16 @@ I needed this, but taking into account business hours/days and holidays.
     # Monday, Feb 6th 2012, 9:00am.  The business time between 10:40am friday and 9am monday is
     # 6 hours and 20 minutes. From a quick inspection of the code, it looks like it should be 8 hours.
 
+    # or you can calculate business dates between two dates
+    monday = Date.parse("December 20, 2010")
+    wednesday = Date.parse("December 22, 2010")
+    monday.business_dates_until(wednesday) #=> [Mon, 20 Dec 2010, Tue, 21 Dec 2010]
+
+    # you can get the first workday after a time or return itself if it is a workday
+    saturday = Time.parse("Sat Aug 9, 18:00:00, 2014")
+    monday = Time.parse("Mon Aug 11, 18:00:00, 2014")
+    Time.first_business_day(saturday) #=> "Mon Aug 11, 18:00:00, 2014"
+    Time.first_business_day(monday) #=> "Mon Aug 11, 18:00:00, 2014"
 == Rails generator
 
     rails generate business_time:config
@@ -158,6 +171,7 @@ I'm hoping Arild and I write some good blog entries on the subject at http://blo
  * Piotr Jakubowski http://github.com/piotrj
  * Glenn Vanderburg http://github.com/glv
  * Michael Grosser http://github.com/grosser
+ * Michael Curtis http://github.com/mcurtis
 
  (Special thanks for Arild on the complexities of dealing with TimeWithZone)
 

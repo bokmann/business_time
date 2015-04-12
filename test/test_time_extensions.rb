@@ -2,26 +2,26 @@ require File.expand_path('../helper', __FILE__)
 
 describe "time extensions" do
   it "know a weekend day is not a workday" do
-    assert( Time.workday?(Time.parse("April 9, 2010 10:45 am")))
-    assert(!Time.workday?(Time.parse("April 10, 2010 10:45 am")))
-    assert(!Time.workday?(Time.parse("April 11, 2010 10:45 am")))
-    assert( Time.workday?(Time.parse("April 12, 2010 10:45 am")))
+    assert( Time.parse("April 9, 2010 10:45 am").workday?)
+    assert(!Time.parse("April 10, 2010 10:45 am").workday?)
+    assert(!Time.parse("April 11, 2010 10:45 am").workday?)
+    assert( Time.parse("April 12, 2010 10:45 am").workday?)
   end
 
   it "know a weekend day is not a workday (with a configured work week)" do
     BusinessTime::Config.work_week = %w[sun mon tue wed thu]
-    assert( Time.weekday?(Time.parse("April 8, 2010 10:30am")))
-    assert(!Time.weekday?(Time.parse("April 9, 2010 10:30am")))
-    assert(!Time.weekday?(Time.parse("April 10, 2010 10:30am")))
-    assert( Time.weekday?(Time.parse("April 11, 2010 10:30am")))
+    assert( Time.parse("April 8, 2010 10:30am").weekday?)
+    assert(!Time.parse("April 9, 2010 10:30am").weekday?)
+    assert(!Time.parse("April 10, 2010 10:30am").weekday?)
+    assert( Time.parse("April 11, 2010 10:30am").weekday?)
   end
 
   it "know a holiday is not a workday" do
     BusinessTime::Config.holidays << Date.parse("July 4, 2010")
     BusinessTime::Config.holidays << Date.parse("July 5, 2010")
 
-    assert(!Time.workday?(Time.parse("July 4th, 2010 1:15 pm")))
-    assert(!Time.workday?(Time.parse("July 5th, 2010 2:37 pm")))
+    assert(!Time.parse("July 4th, 2010 1:15 pm").workday?)
+    assert(!Time.parse("July 5th, 2010 2:37 pm").workday?)
   end
 
 
@@ -87,6 +87,11 @@ describe "time extensions" do
     ticket_reported = Time.parse("February 3, 2012, 10:40 am")
     ticket_resolved = Time.parse("February 4, 2012, 10:40 am") #will roll over to Monday morning, 9:00am
     assert_equal ticket_reported.business_time_until(ticket_resolved), 6.hours + 20.minutes
+  end
+  
+  it "knows if within business hours" do
+    assert(Time.parse("2013-02-01 10:00").during_business_hours?)
+    assert(!Time.parse("2013-02-01 5:00").during_business_hours?)
   end
 
   # =================== .roll_backward ======================
