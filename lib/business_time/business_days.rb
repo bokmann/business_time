@@ -1,5 +1,3 @@
-require 'active_support/time'
-
 module BusinessTime
   class BusinessDays
     def initialize(days)
@@ -9,8 +7,8 @@ module BusinessTime
     def after(time = Time.current)
       days = @days
       while days > 0 || !time.workday?
-        days -= 1 if time.workday?
         time = time + 1.day
+        days -= 1 if time.workday?
       end
       time
     end
@@ -21,8 +19,8 @@ module BusinessTime
     def before(time = Time.current)
       days = @days
       while days > 0 || !time.workday?
-        days -= 1 if time.workday?
         time = time - 1.day
+        days -= 1 if time.workday?
       end
       time
     end
