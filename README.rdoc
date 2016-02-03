@@ -42,6 +42,10 @@ I needed this, but taking into account business hours/days and holidays.
     1.business_day.ago
     4.business_days.ago
     8.business_days.ago
+    
+    Date.today.workday?
+    Date.parse("2015-12-09").workday?
+    Date.parse("2015-12-12").workday?
 
 And we can do it from any Date or Time object.
     my_birthday = Date.parse("August 4th, 1969")
