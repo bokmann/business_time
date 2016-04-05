@@ -1,0 +1,19 @@
+# in 60 characters or less, title this change starting with a present
+# tense action verb. as in:
+# fixes the issue with print stylesheets in chrome.
+# cleans up the formatting of the css files.
+# defines the database tables we'll need for the time-travel device.
+
+
+# Write your diatribe here explaining why, if necessary. As in:
+# After the change to Rails 10.9.8, the new ActiveHyperspace-fu library
+# conflicted with Ruby 8.2.  This commit resolves the failed attempt
+# to store data in the remote Mars web service via generation of
+# gravity waves.
+
+
+# Hopefully, this references a github issue.  If so, reference it here,
+# as in:
+# references | fixes | closes issue #289.
+
+

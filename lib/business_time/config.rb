@@ -20,11 +20,25 @@ module BusinessTime
       private
 
       def config
+        return local_config if local_config?
         Thread.main[:business_time_config] ||= default_config
       end
 
       def config=(config)
+        return self.local_config = config if local_config?
         Thread.main[:business_time_config] = config
+      end
+
+      def local_config
+        Thread.current[:business_time_local_config]
+      end
+
+      def local_config=(config)
+        Thread.current[:business_time_local_config] = config
+      end
+
+      def local_config?
+        !local_config.nil?
       end
 
       def threadsafe_cattr_accessor(name)
@@ -131,11 +145,11 @@ module BusinessTime
       end
 
       def with(config)
-        old = config().dup
+        self.local_config = config().dup
         config.each { |k,v| send("#{k}=", v) } # calculations are done on setting
         yield
       ensure
-        self.config = old
+        self.local_config = nil
       end
 
       def default_config
@@ -154,7 +168,8 @@ module BusinessTime
       end
 
       def reset
-        self.config = default_config
+        self.config       = default_config
+        self.local_config = nil
       end
 
       def deep_dup(object)

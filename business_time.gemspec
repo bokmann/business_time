@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.description = %Q{Have you ever wanted to do things like "6.business_days.from_now" and have weekends and holidays taken into account?  Now you can.}
   s.homepage = "https://github.com/bokmann/business_time"
   s.authors = ["bokmann"]
-  s.email = "dbock@codesherpas.com"
+  s.email = "dbock@javaguy.org"
   s.license = "MIT"
 
   s.files = `git ls-files -- {lib,rails_generators,LICENSE,README.rdoc}`.split("\n")

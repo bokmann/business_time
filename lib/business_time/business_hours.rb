@@ -1,10 +1,20 @@
 module BusinessTime
 
   class BusinessHours
+    include Comparable
+    attr_reader :hours
+    
     def initialize(hours)
       @hours = hours
     end
 
+    def <=>(other)
+      if other.class != self.class
+        raise ArgumentError.new("#{self.class.to_s} can't be compared with #{other.class.to_s}")
+      end
+      self.hours <=> other.hours
+    end
+    
     def ago
       Time.zone ? before(Time.zone.now) : before(Time.now)
     end
