@@ -2,8 +2,9 @@ module BusinessTime
   module TimeExtensions
     # True if this time is on a workday (between 00:00:00 and 23:59:59), even if
     # this time falls outside of normal business hours.
-    def workday?
-      weekday? && !BusinessTime::Config.holidays.include?(to_date)
+    def workday?(options = {})
+      options[:with_holidays] = true unless options.key? :with_holidays
+      weekday? && (!options[:with_holidays] || !BusinessTime::Config.holidays.include?(to_date))
     end
 
     # True if this time falls on a weekday.
@@ -32,9 +33,10 @@ module BusinessTime
 
       # True if this time is on a workday (between 00:00:00 and 23:59:59), even if
       # this time falls outside of normal business hours.
-      def workday?(day)
+      def workday?(day, options = {})
+        options[:with_holidays] = true unless options.key? :with_holidays
         ActiveSupport::Deprecation.warn("`Time.workday?(time)` is deprecated. Please use `time.workday?`")
-        day.workday?
+        day.workday?(with_holidays: options[:with_holidays])
       end
 
       # True if this time falls on a weekday.
@@ -53,9 +55,10 @@ module BusinessTime
 
       # Rolls forward to the next beginning_of_workday
       # when the time is outside of business hours
-      def roll_forward(time)
+      def roll_forward(time, options = {})
+        options[:with_holidays] = true unless options.key? :with_holidays
 
-        if Time.before_business_hours?(time) || !time.workday?
+        if Time.before_business_hours?(time) || !time.workday?(with_holidays: options[:with_holidays])
           next_business_time = Time.beginning_of_workday(time)
         elsif Time.after_business_hours?(time) || Time.end_of_workday(time) == time
           next_business_time = Time.beginning_of_workday(time + 1.day)
@@ -63,7 +66,7 @@ module BusinessTime
           next_business_time = time.clone
         end
 
-        while !next_business_time.workday?
+        while !next_business_time.workday?(with_holidays: options[:with_holidays])
           next_business_time = Time.beginning_of_workday(next_business_time + 1.day)
         end
 
@@ -72,8 +75,9 @@ module BusinessTime
 
       # Returns the time parameter itself if it is a business day
       # or else returns the next business day
-      def first_business_day(time)
-        while !time.workday?
+      def first_business_day(time, options = {})
+        options[:with_holidays] = true unless options.key? :with_holidays
+        while !time.workday?(with_holidays: options[:with_holidays])
           time = time + 1.day
         end
 
@@ -82,8 +86,9 @@ module BusinessTime
 
       # Rolls backwards to the previous end_of_workday when the time is outside
       # of business hours
-      def roll_backward(time)
-        prev_business_time = if (Time.before_business_hours?(time) || !time.workday?)
+      def roll_backward(time, options = {})
+        options[:with_holidays] = true unless options.key? :with_holidays
+        prev_business_time = if (Time.before_business_hours?(time) || !time.workday?(with_holidays: options[:with_holidays]))
                                Time.end_of_workday(time - 1.day)
                              elsif Time.after_business_hours?(time)
                                Time.end_of_workday(time)
@@ -91,7 +96,7 @@ module BusinessTime
                                time.clone
                              end
 
-        while !prev_business_time.workday?
+        while !prev_business_time.workday?(with_holidays: options[:with_holidays])
           prev_business_time = Time.end_of_workday(prev_business_time - 1.day)
         end
 
@@ -100,16 +105,18 @@ module BusinessTime
 
       # Returns the time parameter itself if it is a business day
       # or else returns the previous business day
-      def previous_business_day(time)
-        while !time.workday?
+      def previous_business_day(time, options = {})
+        options[:with_holidays] = true unless options.key? :with_holidays
+        while !time.workday?(with_holidays: options[:with_holidays])
           time = time - 1.day
         end
 
         time
       end
 
-      def work_hours_total(day)
-        return 0 unless day.workday?
+      def work_hours_total(day, options = {})
+        options[:with_holidays] = true unless options.key? :with_holidays
+        return 0 unless day.workday?(with_holidays: options[:with_holidays])
 
         day = day.strftime('%a').downcase.to_sym
 
@@ -170,8 +177,9 @@ module BusinessTime
       end * direction
     end
 
-    def during_business_hours?
-      self.workday? && self.to_i.between?(Time.beginning_of_workday(self).to_i, Time.end_of_workday(self).to_i)
+    def during_business_hours?(options = {})
+      options[:with_holidays] = true unless options.key? :with_holidays
+      self.workday?(with_holidays: options[:with_holidays]) && self.to_i.between?(Time.beginning_of_workday(self).to_i, Time.end_of_workday(self).to_i)
     end
   end
 end

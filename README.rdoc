@@ -42,7 +42,7 @@ I needed this, but taking into account business hours/days and holidays.
     1.business_day.ago
     4.business_days.ago
     8.business_days.ago
-    
+
     Date.today.workday?
     Date.parse("2015-12-09").workday?
     Date.parse("2015-12-12").workday?
@@ -56,7 +56,6 @@ And we can do it from any Date or Time object.
     8.business_days.after(my_birthday)
     8.business_days.before(my_birthday)
 
-
 We can adjust the start and end time of our business hours
     BusinessTime::Config.beginning_of_workday = "8:30 am"
     BusinessTime::Config.end_of_workday = "5:30 pm"
@@ -67,6 +66,10 @@ July 5 in 2010 is a monday that the U.S. takes off because our independence day 
     BusinessTime::Config.holidays << three_day_weekend
     friday_afternoon = Time.parse("July 2nd, 2010, 4:50 pm")
     tuesday_morning = 1.business_hour.after(friday_afternoon)
+
+And we can turn off holiday support.
+    BusinessTime::Config.holidays << Date.parse("2015-12-25")
+    Date.parse("2015-12-25").workday?(with_holidays: false) # true
 
 plus, we can change the work week:
     # July 9th in 2010 is a Friday.

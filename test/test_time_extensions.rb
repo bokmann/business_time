@@ -24,6 +24,12 @@ describe "time extensions" do
     assert(!Time.parse("July 5th, 2010 2:37 pm").workday?)
   end
 
+  it 'allow holidays to be workdays' do
+    BusinessTime::Config.holidays << Date.parse("July 4, 2016")
+
+    assert(!Time.parse("July 4th, 2016 1:15 pm").workday?)
+    assert(Time.parse("July 4th, 2016 1:15 pm").workday?(with_holidays: false))
+  end
 
   it "know the beginning of the day for an instance" do
     first = Time.parse("August 17th, 2010, 11:50 am")
@@ -88,7 +94,7 @@ describe "time extensions" do
     ticket_resolved = Time.parse("February 4, 2012, 10:40 am") #will roll over to Monday morning, 9:00am
     assert_equal ticket_reported.business_time_until(ticket_resolved), 6.hours + 20.minutes
   end
-  
+
   it "knows if within business hours" do
     assert(Time.parse("2013-02-01 10:00").during_business_hours?)
     assert(!Time.parse("2013-02-01 5:00").during_business_hours?)
