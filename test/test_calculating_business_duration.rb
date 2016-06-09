@@ -39,8 +39,8 @@ describe "calculating business duration" do
   it "properly calculate business time with respect to work_hours with UTC time zone" do
     Time.zone = 'UTC'
 
-    monday = Time.parse("May 28 11:04:26 +0300 2012")
-    tuesday = Time.parse("May 29 17:56:45 +0300 2012")
+    monday = Time.zone.parse("May 28 11:04:26 +0300 2012")
+    tuesday = Time.zone.parse("May 29 17:56:45 +0300 2012")
     BusinessTime::Config.work_hours = {
         :mon => ["9:00", "18:00"],
         :tue => ["9:00", "18:00"],
