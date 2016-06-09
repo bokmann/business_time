@@ -167,6 +167,12 @@ I'm hoping Arild and I write some good blog entries on the subject at http://blo
 
 == Releases
 
+0.7.6 - Fixed a defect where timezone was not preserved when dealing with beginning_or_workday and end_of_workday.
+        Thanks bazzargh.
+        
+0.7.2 - 0.7.5 - many pull requests from contributors, and a changelog was not adequately kept.  I regret that.
+                git blame is your friend for diagnosing these dark days.
+                
 0.7.1 - fixing a multithreaded issue, upgrading some dependencies, loosening the dependency on TZInfo
 
 0.7.0 - major maintenance upgrade on the process of constructing the gem, testing the gem, and updating dependencies.
