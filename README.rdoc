@@ -147,12 +147,11 @@ and some complexities (bugs?) in the timeWithZone class, this was harder than ex
   preserved and the beginning and end of times for the business day are
   referenced in that time zone.
 
-This can lead to some wierd looking effects if, say, you are in the Eastern time zone but doing everything in UTC times...
+This can lead to some weird looking effects if, say, you are in the Eastern time zone but doing everything in UTC times...
 Your business day will appear to start and end at 9:00 and 5:00 UTC.
 If this seems perplexing to you, I can almost guarantee you are in over your head with timezones in other ways too,
 this is just the first place you encountered it.
 Timezone relative date handling gets more and more complicated every time you look at it and takes a long time before it starts to seem simple again.
-I'm hoping Arild and I write some good blog entries on the subject at http://blog.codesherpas.com.
 
 == Integration with the Holidays gem
 
@@ -189,6 +188,7 @@ I'm hoping Arild and I write some good blog entries on the subject at http://blo
  * Glenn Vanderburg http://github.com/glv
  * Michael Grosser http://github.com/grosser
  * Michael Curtis http://github.com/mcurtis
+ * Brian Ewins http://github.com/bazzargh
 
  (Special thanks for Arild on the complexities of dealing with TimeWithZone)
 
