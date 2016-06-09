@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    business_time (0.7.5)
+    business_time (0.7.6)
       activesupport (>= 3.1.0)
       tzinfo
 
@@ -35,3 +35,6 @@ DEPENDENCIES
   minitest-rg
   rake
   rdoc
+
+BUNDLED WITH
+   1.11.2
