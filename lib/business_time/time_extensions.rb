@@ -6,6 +6,10 @@ module BusinessTime
       weekday? && !BusinessTime::Config.holidays.include?(to_date)
     end
 
+    def non_working_day?
+      !workday?
+    end
+
     # True if this time falls on a weekday.
     def weekday?
       BusinessTime::Config.weekdays.include?(wday)
@@ -168,6 +172,33 @@ module BusinessTime
 
     def during_business_hours?
       self.workday? && self.to_i.between?(Time.beginning_of_workday(self).to_i, Time.end_of_workday(self).to_i)
+    end
+
+    def consecutive_workdays
+      raise ArgumentError.new('Not a workday') unless workday?
+      consecutive_days(:workday?)
+    end
+
+    def consecutive_non_working_days
+      raise ArgumentError.new('Not a non-working day') unless non_working_day?
+      consecutive_days(:non_working_day?)
+    end
+
+    private
+
+    def consecutive_days(day_type)
+      days = []
+      date = self + 1.day
+      while date.send(day_type)
+        days << date
+        date += 1.day
+      end
+      date = self - 1.day
+      while date.send(day_type)
+        days << date
+        date -= 1.day
+      end
+      (days << self).sort
     end
   end
 end
