@@ -87,5 +87,4 @@ describe "calculating business duration" do
 
     assert_equal 10.minutes, created_at.business_time_until(published_at)
   end
-
 end
