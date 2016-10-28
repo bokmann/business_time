@@ -7,7 +7,7 @@ module BusinessTime
   # manually, or with a yaml file and the load method.
   class Config
     DEFAULT_CONFIG = {
-      holidays:              [],
+      holidays:              SortedSet.new,
       beginning_of_workday:  '9:00 am',
       end_of_workday:        '5:00 pm',
       work_week:             %w(mon tue wed thu fri),
@@ -113,10 +113,11 @@ module BusinessTime
       def weekdays
         return _weekdays unless _weekdays.nil?
 
-        self._weekdays = (!work_hours.empty? ? work_hours.keys : work_week).each_with_object([]) do |day_name, days|
-          day_num = wday_to_int(day_name)
-          days << day_num unless day_num.nil?
-        end
+        days = (!work_hours.empty? ? work_hours.keys : work_week).map do |day_name|
+          wday_to_int(day_name)
+        end.compact
+
+        self._weekdays = SortedSet.new(days)
       end
 
       # loads the config data from a yaml file written as:
