@@ -26,13 +26,11 @@ module BusinessTime
       end
 
       def work_hours=(work_hours)
-        config[:work_hours] = {}
-        work_hours.each do |day, hours|
-          config[:work_hours][day] = hours.map do |time|
+        work_hours.each_with_object(config[:work_hours] = {}) do |(day, hours), c|
+          c[day] = hours.map do |time|
             ParsedTime.parse(time)
           end
         end
-        config[:work_hours]
       end
 
       private
