@@ -20,4 +20,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rdoc"
   s.add_development_dependency "minitest"
   s.add_development_dependency "minitest-rg"
+  s.add_development_dependency "pry"
 end
