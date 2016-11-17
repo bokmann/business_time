@@ -14,6 +14,7 @@ module BusinessTime
       work_hours:            {},
       work_hours_total:      {},
       _weekdays:             nil,
+      fiscal_month_offset:   10,
     }
 
     class << self
@@ -85,6 +86,8 @@ module BusinessTime
     threadsafe_cattr_accessor :work_hours_total
 
     threadsafe_cattr_accessor :_weekdays # internal
+
+    threadsafe_cattr_accessor :fiscal_month_offset
 
     class << self
       def end_of_workday(day=nil)
