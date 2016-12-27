@@ -7,13 +7,13 @@ module BusinessTime
   # manually, or with a yaml file and the load method.
   class Config
     DEFAULT_CONFIG = {
-      holidays:              [],
-      beginning_of_workday:  '9:00 am',
-      end_of_workday:        '5:00 pm',
-      work_week:             %w(mon tue wed thu fri),
-      work_hours:            {},
-      work_hours_total:      {},
-      _weekdays:             nil,
+      :holidays =>              [],
+      :beginning_of_workday =>  '9:00 am',
+      :end_of_workday =>        '5:00 pm',
+      :work_week =>             %w(mon tue wed thu fri),
+      :work_hours =>            {},
+      :work_hours_total =>      {},
+      :_weekdays =>             nil
     }
 
     class << self
@@ -42,10 +42,11 @@ module BusinessTime
       end
 
       def threadsafe_cattr_accessor(name)
-        define_singleton_method name do
+        metaclass = class << self; self; end
+        metaclass.send(:define_method, name) do
           config[name]
         end
-        define_singleton_method "#{name}=" do |value|
+        metaclass.send(:define_method, "#{name}=") do |value|
           config[name] = value
         end
       end
