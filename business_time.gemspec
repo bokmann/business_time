@@ -12,11 +12,8 @@ Gem::Specification.new do |s|
   s.license = "MIT"
 
   s.files = `git ls-files -- {lib,rails_generators,LICENSE,README.rdoc}`.split("\n")
-
-  s.add_dependency('activesupport','>= 3.1.0')
   s.add_dependency("tzinfo")
 
-  s.add_development_dependency "rake"
   s.add_development_dependency "rdoc"
   s.add_development_dependency "minitest"
   s.add_development_dependency "minitest-rg"
