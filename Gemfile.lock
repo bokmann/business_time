@@ -2,23 +2,22 @@ PATH
   remote: .
   specs:
     business_time (0.7.6)
-      activesupport (>= 3.1.0)
+      activesupport (~> 4.2.8)
       tzinfo
 
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (5.0.1)
-      concurrent-ruby (~> 1.0, >= 1.0.2)
+    activesupport (4.2.8)
       i18n (~> 0.7)
       minitest (~> 5.1)
+      thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    concurrent-ruby (1.0.4)
-    i18n (0.7.0)
+    i18n (0.8.1)
     minitest (5.10.1)
-    minitest-rg (5.1.0)
+    minitest-rg (5.2.0)
       minitest (~> 5.0)
-    rake (10.4.2)
+    rake (12.0.0)
     rdoc (5.0.0)
     thread_safe (0.3.5)
     tzinfo (1.2.2)
