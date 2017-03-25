@@ -5,6 +5,7 @@ require 'time'
 require 'yaml'
 
 require 'business_time/parsed_time'
+require 'business_time/version'
 require 'business_time/config'
 require 'business_time/business_hours'
 require 'business_time/business_days'
