@@ -17,7 +17,7 @@ module BusinessTime
       # Note: It pretends that this day is a workday whether or not it really is a
       # workday.
       def end_of_workday(day)
-        end_of_workday = Time.parse(BusinessTime::Config.end_of_workday(day))
+        end_of_workday = BusinessTime::Config.end_of_workday(day)
         change_business_time(day,end_of_workday.hour,end_of_workday.min,end_of_workday.sec)
       end
 
@@ -26,7 +26,7 @@ module BusinessTime
       # Note: It pretends that this day is a workday whether or not it really is a
       # workday.
       def beginning_of_workday(day)
-        beginning_of_workday = Time.parse(BusinessTime::Config.beginning_of_workday(day))
+        beginning_of_workday = BusinessTime::Config.beginning_of_workday(day)
         change_business_time(day,beginning_of_workday.hour,beginning_of_workday.min,beginning_of_workday.sec)
       end
 
@@ -116,15 +116,15 @@ module BusinessTime
         if hours = BusinessTime::Config.work_hours[day]
           BusinessTime::Config.work_hours_total[day] ||= begin
             hours_last = hours.last
-            if hours_last == '00:00'
-              (Time.parse('23:59') - Time.parse(hours.first)) + 1.minute
+            if hours_last == ParsedTime.new(0, 0)
+              (ParsedTime.new(23, 59) - hours.first) + 1.minute
             else
-              Time.parse(hours_last) - Time.parse(hours.first)
+              hours_last - hours.first
             end
           end
         else
           BusinessTime::Config.work_hours_total[:default] ||= begin
-            Time.parse(BusinessTime::Config.end_of_workday) - Time.parse(BusinessTime::Config.beginning_of_workday)
+            BusinessTime::Config.end_of_workday - BusinessTime::Config.beginning_of_workday
           end
         end
       end

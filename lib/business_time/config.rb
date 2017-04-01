@@ -7,9 +7,9 @@ module BusinessTime
   # manually, or with a yaml file and the load method.
   class Config
     DEFAULT_CONFIG = {
-      holidays:              [],
-      beginning_of_workday:  '9:00 am',
-      end_of_workday:        '5:00 pm',
+      holidays:              SortedSet.new,
+      beginning_of_workday:  ParsedTime.parse('9:00 am'),
+      end_of_workday:        ParsedTime.parse('5:00 pm'),
       work_week:             %w(mon tue wed thu fri),
       work_hours:            {},
       work_hours_total:      {},
@@ -17,6 +17,22 @@ module BusinessTime
     }
 
     class << self
+      def beginning_of_workday=(time)
+        config[:beginning_of_workday] = ParsedTime.parse(time)
+      end
+
+      def end_of_workday=(time)
+        config[:end_of_workday] = ParsedTime.parse(time)
+      end
+
+      def work_hours=(work_hours)
+        work_hours.each_with_object(config[:work_hours] = {}) do |(day, hours), c|
+          c[day] = hours.map do |time|
+            ParsedTime.parse(time)
+          end
+        end
+      end
+
       private
 
       def config
@@ -42,9 +58,17 @@ module BusinessTime
       end
 
       def threadsafe_cattr_accessor(name)
+        threadsafe_cattr_reader(name)
+        threadsafe_cattr_setter(name)
+      end
+
+      def threadsafe_cattr_reader(name)
         define_singleton_method name do
           config[name]
         end
+      end
+
+      def threadsafe_cattr_setter(name)
         define_singleton_method "#{name}=" do |value|
           config[name] = value
         end
@@ -55,13 +79,13 @@ module BusinessTime
     # by saying
     #   BusinessTime::Config.beginning_of_workday = "8:30 am"
     # someplace in the initializers of your application.
-    threadsafe_cattr_accessor :beginning_of_workday
+    threadsafe_cattr_reader :beginning_of_workday
 
     # You can set this yourself, either by the load method below, or
     # by saying
     #   BusinessTime::Config.end_of_workday = "5:30 pm"
     # someplace in the initializers of your application.
-    threadsafe_cattr_accessor :end_of_workday
+    threadsafe_cattr_reader :end_of_workday
 
     # You can set this yourself, either by the load method below, or
     # by saying
@@ -79,7 +103,7 @@ module BusinessTime
     # and end_of_workday. Keys will be added ad weekdays.
     # Example:
     #    {:mon => ["9:00","17:00"],:tue => ["9:00","17:00"].....}
-    threadsafe_cattr_accessor :work_hours
+    threadsafe_cattr_reader :work_hours
 
     # total work hours for a day. Never set, always calculated.
     threadsafe_cattr_accessor :work_hours_total
@@ -90,7 +114,7 @@ module BusinessTime
       def end_of_workday(day=nil)
         if day
           wday = work_hours[int_to_wday(day.wday)]
-          wday ? (wday.last =~ /^0{1,2}\:0{1,2}$/ ? "23:59:59" : wday.last) : config[:end_of_workday]
+          wday ? (wday.last == ParsedTime.new(0, 0) ? ParsedTime.new(23, 59, 59) : wday.last) : config[:end_of_workday]
         else
           config[:end_of_workday]
         end
@@ -113,10 +137,11 @@ module BusinessTime
       def weekdays
         return _weekdays unless _weekdays.nil?
 
-        self._weekdays = (!work_hours.empty? ? work_hours.keys : work_week).each_with_object([]) do |day_name, days|
-          day_num = wday_to_int(day_name)
-          days << day_num unless day_num.nil?
-        end
+        days = (!work_hours.empty? ? work_hours.keys : work_week).map do |day_name|
+          wday_to_int(day_name)
+        end.compact
+
+        self._weekdays = SortedSet.new(days)
       end
 
       # loads the config data from a yaml file written as:
