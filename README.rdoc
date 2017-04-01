@@ -230,6 +230,20 @@ Timezone relative date handling gets more and more complicated every time you lo
   need the baggage.
 
 
+== A note on stability and change
+
+Sometimes people ask me why this gem doesn't release more often.  My opinions on that are best discussed in person in a friendly discussion, but I'll attempt some of that here.
+
+First, a big part of the reason is that the projects I do use this gem on are happy with it's current functionality.  It is 'suitable for the purpose' for which I released it, and as such, maintenance I do on this gem is a gift to the community.
+
+Second, out of the ~1.3 million downloads (according to rubygems.org), the number of real 'issues' with this gem have been minimal.  Most of the issues that are opened are really people with slightly different requirements than I have regarding whether 'off hours' work counts as the previous or the next business day, a disagreement on the semantics of days vs. hours, etc.  I take care to try to explain these choices in the open issues, but to my mind, they aren't true issues if it's just a difference of opinion.  Even so, I'll gladly accept pull requests that resolve this difference of opinion as a configuration option... just don't expect me to do your job for you.  I've already given you 90% of what you need.
+
+Third, a business time gem is, well, relevant to businesses.  Many businesses don't move quickly.  My government clients move even more slowly.  Stability is favored in these environments.
+
+Fourth, new features can wait.  To the person that adds them they can be mission critical, but with modern packaging processes, they can use their version without waiting for their changes to be included in the upstream version.  Their changes don't break your code.
+
+I'm proud of the work in this gem; the stability is a big part of that.  This gem has lived longer than many others that have attempted to do the same thing.  I expect it to be here chugging away when Ruby has become the next COBOL.
+
 == Copyright
 
 Copyright (c) 2010-2017 bokmann. See LICENSE for details.
