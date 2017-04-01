@@ -3,7 +3,13 @@
 #  7.business_days.ago
 #  3.business_days.after(some_date)
 #  4.business_hours.before(some_date_time)
+#  10.business_minutes.before(some_date_time)
 class Fixnum
+  def business_minutes
+    BusinessTime::BusinessMinutes.new(self)
+  end
+  alias_method :business_minute, :business_minutes
+
   def business_hours
     BusinessTime::BusinessHours.new(self)
   end
