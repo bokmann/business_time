@@ -166,6 +166,10 @@ Timezone relative date handling gets more and more complicated every time you lo
 
 == Releases
 
+0.8.0 - Ruby 2.4 compatibility
+        Forces a particular date format for Regex
+		A small change to include the version number in the project itself.
+		
 0.7.6 - Fixed a defect where timezone was not preserved when dealing with beginning_or_workday and end_of_workday.
         Thanks bazzargh.
         
