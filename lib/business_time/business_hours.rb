@@ -5,7 +5,8 @@ module BusinessTime
     attr_reader :hours
     
     def initialize(hours)
-      @hours = hours
+      @hours   = hours.to_i
+      @seconds = (hours - @hours).hours
     end
 
     def <=>(other)
@@ -26,9 +27,10 @@ module BusinessTime
     def after(time)
       after_time = Time.roll_forward(time)
       # Step through the hours, skipping over non-business hours
-      @hours.times do
-        after_time = after_time + 1.hour
-
+      @hours.times do |i|
+        after_time = after_time + 1.hour        
+        after_time = after_time + @seconds if i == @hours - 1
+        
         if after_time.hour == 0 && after_time.min == 0 && after_time.sec == 0
           after_time = Time.roll_forward(after_time)
         elsif (after_time > Time.end_of_workday(after_time))
