@@ -19,7 +19,7 @@ rdoc
 pkg
 .bundle
 .rvmrc
-.rbenv-version
+.ruby-version
 .rbenv-gemsets
 
 ## PROJECT::SPECIFIC
