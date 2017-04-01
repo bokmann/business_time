@@ -29,4 +29,15 @@ describe "date extensions" do
     assert(!july_4.workday?)
     assert(!july_5.workday?)
   end
+
+  it 'allow holidays to be workdays' do
+    july_4 = Date.parse('July 4, 2016')
+
+    assert(july_4.workday?)
+
+    BusinessTime::Config.holidays << july_4
+
+    assert(!july_4.workday?)
+    assert(july_4.workday?(with_holidays: false))
+  end
 end

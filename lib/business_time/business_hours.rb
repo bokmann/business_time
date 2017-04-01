@@ -3,7 +3,7 @@ module BusinessTime
   class BusinessHours
     include Comparable
     attr_reader :hours
-    
+
     def initialize(hours)
       @hours = hours
     end
@@ -14,7 +14,7 @@ module BusinessTime
       end
       self.hours <=> other.hours
     end
-    
+
     def ago
       Time.zone ? before(Time.zone.now) : before(Time.now)
     end
@@ -23,7 +23,7 @@ module BusinessTime
       Time.zone ?  after(Time.zone.now) : after(Time.now)
     end
 
-    def after(time)
+    def after(time, with_holidays: true)
       after_time = Time.roll_forward(time)
       # Step through the hours, skipping over non-business hours
       @hours.times do
@@ -38,7 +38,7 @@ module BusinessTime
         end
 
         # Ignore weekends and holidays
-        while !after_time.workday?
+        while !after_time.workday?(with_holidays: with_holidays)
           after_time = after_time + 1.day
         end
       end
@@ -46,7 +46,7 @@ module BusinessTime
     end
     alias_method :since, :after
 
-    def before(time)
+    def before(time, with_holidays: true)
       before_time = Time.roll_backward(time)
       # Step through the hours, skipping over non-business hours
       @hours.times do
@@ -66,7 +66,7 @@ module BusinessTime
         end
 
         # Ignore weekends and holidays
-        while !before_time.workday?
+        while !before_time.workday?(with_holidays: with_holidays)
           before_time = before_time - 1.day
         end
       end

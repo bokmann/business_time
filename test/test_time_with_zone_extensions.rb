@@ -28,6 +28,12 @@ describe "TimeWithZone extensions" do
       assert(!Time.zone.parse("July 5th, 2010 2:37 pm").workday?)
     end
 
+    it 'allow holidays to be workdays' do
+      BusinessTime::Config.holidays << Date.parse("July 4, 2016")
+
+      assert(!Time.zone.parse("July 4th, 2016 1:15 pm").workday?)
+      assert(Time.zone.parse("July 4th, 2016 1:15 pm").workday?(with_holidays: false))
+    end
 
     it "know the beginning of the day for an instance" do
       first = Time.zone.parse("August 17th, 2010, 11:50 am")
@@ -69,6 +75,12 @@ describe "TimeWithZone extensions" do
       assert(!Time.zone.parse("July 5th, 2010 2:37 pm").workday?)
     end
 
+    it 'allow holidays to be workdays' do
+      BusinessTime::Config.holidays << Date.parse("July 4, 2016")
+
+      assert(!Time.zone.parse("July 4th, 2016 1:15 pm").workday?)
+      assert(Time.zone.parse("July 4th, 2016 1:15 pm").workday?(with_holidays: false))
+    end
 
     it "know the beginning of the day for an instance" do
       first = Time.zone.parse("August 17th, 2010, 11:50 am")

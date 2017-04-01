@@ -16,10 +16,10 @@ module BusinessTime
       self.days <=> other.days
     end
 
-    def after(time = Time.current)
+    def after(time = Time.current, with_holidays: true)
       days = @days
-      while days > 0 || !time.workday?
-        days -= 1 if time.workday?
+      while days > 0 || !time.workday?(with_holidays: with_holidays)
+        days -= 1 if time.workday?(with_holidays: with_holidays)
         time += 1.day
       end
       # If we have a Time or DateTime object, we can roll_forward to the
@@ -33,10 +33,10 @@ module BusinessTime
     alias_method :from_now, :after
     alias_method :since, :after
 
-    def before(time = Time.current)
+    def before(time = Time.current, with_holidays: true)
       days = @days
-      while days > 0 || !time.workday?
-        days -= 1 if time.workday?
+      while days > 0 || !time.workday?(with_holidays: with_holidays)
+        days -= 1 if time.workday?(with_holidays: with_holidays)
         time -= 1.day
       end
       # If we have a Time or DateTime object, we can roll_backward to the
