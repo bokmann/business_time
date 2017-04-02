@@ -60,7 +60,7 @@ module BusinessTime
 
           # Due to the 23:59:59 end-of-workday exception
           time_roll_backward = Time.roll_backward(before_time)
-          time_roll_backward += 1.second if time_roll_backward.to_s =~ /23:59:59/
+          time_roll_backward += 1.second if time_roll_backward.iso8601 =~ /23:59:59/
 
           before_time = time_roll_backward - delta
         end

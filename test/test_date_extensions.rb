@@ -42,4 +42,61 @@ describe "date extensions" do
     assert(!july_5.workday?)
     assert(july_5.non_working_day?)
   end
+
+  it "#week" do
+    assert_equal  1, Date.parse("Jan 1, 2017").week
+    assert_equal  1, Date.parse("Jan 7, 2017").week
+    assert_equal  2, Date.parse("Jan 8, 2017").week
+    assert_equal 51, Date.parse("Dec 23, 2017").week
+    assert_equal 52, Date.parse("Dec 24, 2017").week
+    assert_equal 52, Date.parse("Dec 31, 2017").week # There is no 53rd week
+  end
+
+  it "#quarter" do
+    assert_equal 1, Date.parse("Jan 1, 2017").quarter
+    assert_equal 1, Date.parse("Mar 31, 2017").quarter
+    assert_equal 2, Date.parse("Apr 1, 2017").quarter
+    assert_equal 4, Date.parse("Dec 31, 2017").quarter
+  end
+
+  it "#fiscal_year_week" do
+    assert_equal 52, Date.parse("Sep 30, 2017").fiscal_year_week # There is no 53rd week
+    assert_equal  1, Date.parse("Oct 1, 2017").fiscal_year_week
+    assert_equal  5, Date.parse("Nov 1, 2017").fiscal_year_week
+    assert_equal  9, Date.parse("Dec 1, 2017").fiscal_year_week
+    assert_equal 14, Date.parse("Jan 1, 2017").fiscal_year_week
+
+    BusinessTime::Config.fiscal_month_offset = 7 # Australia
+    assert_equal 1, Date.parse("Jul 1, 2017").fiscal_year_week
+  end
+
+  it "#fiscal_year_quarter" do
+    assert_equal 4, Date.parse("Sep 30, 2017").fiscal_year_quarter
+    assert_equal 1, Date.parse("Oct 1, 2017").fiscal_year_quarter
+    assert_equal 4, Date.parse("Sep 30, 2018").fiscal_year_quarter
+
+    BusinessTime::Config.fiscal_month_offset = 7 # Australia
+    assert_equal 4, Date.parse("Jun 30, 2017").fiscal_year_quarter
+    assert_equal 1, Date.parse("Jul 1, 2017").fiscal_year_quarter
+  end
+
+  it "#fiscal_year" do
+    assert_equal 2017, Date.parse("Sep 30, 2017").fiscal_year
+    assert_equal 2018, Date.parse("Oct 1, 2017").fiscal_year
+    assert_equal 2018, Date.parse("Sep 30, 2018").fiscal_year
+
+    BusinessTime::Config.fiscal_month_offset = 7 # Australia
+    assert_equal 2017, Date.parse("Jun 30, 2017").fiscal_year
+    assert_equal 2018, Date.parse("Jul 1, 2017").fiscal_year
+  end
+
+  it "#fiscal_year_yday" do
+    assert_equal 365, Date.parse("Sep 30, 2017").fiscal_year_yday
+    assert_equal   1, Date.parse("Oct 1, 2017").fiscal_year_yday
+    assert_equal  92, Date.parse("Dec 31, 2017").fiscal_year_yday
+
+    BusinessTime::Config.fiscal_month_offset = 7 # Australia
+    assert_equal 365, Date.parse("Jun 30, 2017").fiscal_year_yday
+    assert_equal   1, Date.parse("Jul 1, 2017").fiscal_year_yday
+  end
 end

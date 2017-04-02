@@ -1,3 +1,3 @@
 module BusinessTime
-  VERSION = "0.7.6"
+  VERSION = "0.9.0"
 end
