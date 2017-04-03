@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     business_time (0.9.0)
-      activesupport (~> 4.2.8)
+      activesupport (>= 4.2.8)
       tzinfo
 
 GEM
