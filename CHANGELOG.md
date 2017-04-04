@@ -4,6 +4,9 @@
 
 PR authors, please add entries here.
 
+## 0.9.1 2017-04-04
+- PR#155 - fixes regression on Rails 5.0
+
 ## 0.9.0 2017-04-02
 
 - PR#143 - performance improvements on hour date calculations
