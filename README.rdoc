@@ -42,7 +42,7 @@ I needed this, but taking into account business hours/days and holidays.
     1.business_day.ago
     4.business_days.ago
     8.business_days.ago
-    
+
     Date.today.workday?
     Date.parse("2015-12-09").workday?
     Date.parse("2015-12-12").workday?
@@ -163,32 +163,6 @@ Timezone relative date handling gets more and more complicated every time you lo
     # Implement long weekends if they apply to the region, eg:
     # BusinessTime::Config.holidays << holiday[:date].next_week if !holiday[:date].weekday?
   end
-
-== Releases
-
-0.9.0 - PR#143 - performance improvements on hour date calculations
-        PR#144 - new feature - Fiscal date methods.
-		
-0.8.0 - Ruby 2.4 compatibility 4/1/2017 (yes, this is the same as 0.9.0)
-        I released the 2.4 upgrade separately than the other new features
-		so that people have an upgrade path to 2.4 without mixing in new
-		features.
-        Forces a particular date format for Regex
-		A small change to include the version number in the project itself.
-		
-0.7.6 - Fixed a defect where timezone was not preserved when dealing with beginning_or_workday and end_of_workday.
-        Thanks bazzargh.
-        
-0.7.2 - 0.7.5 - many pull requests from contributors, and a changelog was not adequately kept.  I regret that.
-                git blame is your friend for diagnosing these dark days.
-                
-0.7.1 - fixing a multithreaded issue, upgrading some dependencies, loosening the dependency on TZInfo
-
-0.7.0 - major maintenance upgrade on the process of constructing the gem, testing the gem, and updating dependencies.
-        the api has not changed.
-
-
-0.6.2 - rchady pointed out that issue #14 didn't appear to be released.  This fixes that, as well as confirms that all tests run as expected on Ruby 2.0.0p195
 
 == Contributors
  * David Bock  http://github.com/bokmann
