@@ -3,16 +3,9 @@ require File.expand_path('../helper', __FILE__)
 describe "time extensions" do
   it "know a weekend day is not a workday" do
     assert( Time.parse("April 9, 2010 10:45 am").workday?)
-    assert(!Time.parse("April 9, 2010 10:45 am").non_working_day?)
-
     assert(!Time.parse("April 10, 2010 10:45 am").workday?)
-    assert( Time.parse("April 10, 2010 10:45 am").non_working_day?)
-
     assert(!Time.parse("April 11, 2010 10:45 am").workday?)
-    assert( Time.parse("April 11, 2010 10:45 am").non_working_day?)
-
     assert( Time.parse("April 12, 2010 10:45 am").workday?)
-    assert(!Time.parse("April 12, 2010 10:45 am").non_working_day?)
   end
 
   it "know a weekend day is not a workday (with a configured work week)" do
@@ -28,10 +21,7 @@ describe "time extensions" do
     BusinessTime::Config.holidays << Date.parse("July 5, 2010")
 
     assert(!Time.parse("July 4th, 2010 1:15 pm").workday?)
-    assert( Time.parse("July 4th, 2010 1:15 pm").non_working_day?)
-
     assert(!Time.parse("July 5th, 2010 2:37 pm").workday?)
-    assert( Time.parse("July 5th, 2010 2:37 pm").non_working_day?)
   end
 
 

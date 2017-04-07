@@ -1,9 +1,9 @@
 require File.expand_path('../helper', __FILE__)
 
 describe 'calculating consecutive workdays' do
-  it 'raise an exception if object is not a workday' do
+  it 'return empty array if object is not a workday' do
     sunday = Date.parse("December 26, 2010")
-    lambda { sunday.consecutive_workdays }.must_raise ArgumentError
+    sunday.consecutive_workdays.must_equal []
   end
 
   it 'return array with self if preceded and followed by non-working days' do
@@ -25,9 +25,9 @@ describe 'calculating consecutive workdays' do
 end
 
 describe 'calculating consecutive non-working days' do
-  it 'raise an exception if object is not a non-working day' do
+  it 'return empty array if object is not a non-working day' do
     monday = Date.parse("December 13, 2010")
-    lambda { monday.consecutive_non_working_days }.must_raise ArgumentError
+    monday.consecutive_non_working_days.must_equal []
   end
 
   it 'return array with self if preceded and followed by workdays' do

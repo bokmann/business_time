@@ -15,16 +15,9 @@ describe "TimeWithZone extensions" do
 
     it "know a weekend day is not a workday" do
       assert( Time.zone.parse("April 9, 2010 10:45 am").workday?)
-      assert(!Time.zone.parse("April 9, 2010 10:45 am").non_working_day?)
-
       assert(!Time.zone.parse("April 10, 2010 10:45 am").workday?)
-      assert( Time.zone.parse("April 10, 2010 10:45 am").non_working_day?)
-
       assert(!Time.zone.parse("April 11, 2010 10:45 am").workday?)
-      assert( Time.zone.parse("April 11, 2010 10:45 am").non_working_day?)
-
       assert( Time.zone.parse("April 12, 2010 10:45 am").workday?)
-      assert(!Time.zone.parse("April 12, 2010 10:45 am").non_working_day?)
     end
 
     it "know a holiday is not a workday" do
@@ -32,10 +25,7 @@ describe "TimeWithZone extensions" do
       BusinessTime::Config.holidays << Date.parse("July 5, 2010")
 
       assert(!Time.zone.parse("July 4th, 2010 1:15 pm").workday?)
-      assert( Time.zone.parse("July 4th, 2010 1:15 pm").non_working_day?)
-
       assert(!Time.zone.parse("July 5th, 2010 2:37 pm").workday?)
-      assert( Time.zone.parse("July 5th, 2010 2:37 pm").non_working_day?)
     end
 
 
@@ -66,16 +56,9 @@ describe "TimeWithZone extensions" do
 
     it "know a weekend day is not a workday" do
       assert( Time.zone.parse("April 9, 2010 10:45 am").workday?)
-      assert(!Time.zone.parse("April 9, 2010 10:45 am").non_working_day?)
-
       assert(!Time.zone.parse("April 10, 2010 10:45 am").workday?)
-      assert( Time.zone.parse("April 10, 2010 10:45 am").non_working_day?)
-
       assert(!Time.zone.parse("April 11, 2010 10:45 am").workday?)
-      assert( Time.zone.parse("April 11, 2010 10:45 am").non_working_day?)
-
       assert( Time.zone.parse("April 12, 2010 10:45 am").workday?)
-      assert(!Time.zone.parse("April 12, 2010 10:45 am").non_working_day?)
     end
 
     it "know a holiday is not a workday" do
@@ -83,10 +66,7 @@ describe "TimeWithZone extensions" do
       BusinessTime::Config.holidays << Date.parse("July 5, 2010")
 
       assert(!Time.zone.parse("July 4th, 2010 1:15 pm").workday?)
-      assert( Time.zone.parse("July 4th, 2010 1:15 pm").non_working_day?)
-
       assert(!Time.zone.parse("July 5th, 2010 2:37 pm").workday?)
-      assert( Time.zone.parse("July 5th, 2010 2:37 pm").non_working_day?)
     end
 
 
