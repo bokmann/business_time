@@ -18,9 +18,16 @@ module BusinessTime
 
     def after(time = Time.current)
       days = @days
-      while days > 0 || !time.workday?
-        days -= 1 if time.workday?
-        time += 1.day
+      if days >= 0
+        while days > 0 || !time.workday?
+          days -= 1 if time.workday?
+          time += 1.day
+        end
+      else
+        while days < 0 || !time.workday?
+          days += 1 if time.workday?
+          time -= 1.day
+        end
       end
       # If we have a Time or DateTime object, we can roll_forward to the
       #   beginning of the next business day
@@ -35,9 +42,16 @@ module BusinessTime
 
     def before(time = Time.current)
       days = @days
-      while days > 0 || !time.workday?
-        days -= 1 if time.workday?
-        time -= 1.day
+      if days >= 0
+        while days > 0 || !time.workday?
+          days -= 1 if time.workday?
+          time -= 1.day
+        end
+      else
+        while days < 0 || !time.workday?
+          days += 1 if time.workday?
+          time += 1.day
+        end
       end
       # If we have a Time or DateTime object, we can roll_backward to the
       #   beginning of the previous business day
