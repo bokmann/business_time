@@ -96,7 +96,7 @@ describe "business days" do
       it "should return a business hour when adding one negative business day from before business hours" do
         wednesday = Time.parse("Wednesday October 14th, 2015, 01:54 am")
         before  = -1.business_days.after(wednesday)
-        expected = Time.parse("Tuesday October 13th, 2015, 09:00 am")
+        expected = Time.parse("Monday October 12th, 2015, 09:00 am")
         assert_equal expected, before
       end
 
@@ -110,7 +110,7 @@ describe "business days" do
       it "should return a business hour when adding one negative business day from after business hours" do
         wednesday = Time.parse("Wednesday October 14th, 2015, 21:54 pm")
         before = -1.business_days.after(wednesday)
-        expected = Time.parse("Wednesday October 14th, 2015, 09:00 am")
+        expected = Time.parse("Tuesday October 13th, 2015, 09:00 am")
         assert_equal expected, before
       end
     end
@@ -183,7 +183,7 @@ describe "business days" do
       it "should return a business hour when subtracting one negative business day from before business hours" do
         wednesday = Time.parse("Wednesday October 14th, 2015, 01:54 am")
         later = -1.business_days.before(wednesday)
-        expected = Time.parse("Wednesday October 14th, 2015, 09:00 am")
+        expected = Time.parse("Thurdsay October 15th, 2015, 09:00 am")
         assert later.during_business_hours?
         assert_equal expected, later
       end
@@ -199,7 +199,7 @@ describe "business days" do
       it "should return a business hour when subtracting one negative business day from after business hours" do
         wednesday = Time.parse("Wednesday October 14th, 2015, 21:54 pm")
         after = -1.business_days.before(wednesday)
-        expected = Time.parse("Thursday October 15th, 2015, 09:00 am")
+        expected = Time.parse("Friday October 16th, 2015, 09:00 am")
         assert after.during_business_hours?
         assert_equal expected, after
       end

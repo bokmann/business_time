@@ -17,17 +17,29 @@ module BusinessTime
     end
 
     def after(time = Time.current)
-      days = @days
-      if days >= 0
-        while days > 0 || !time.workday?
-          days -= 1 if time.workday?
-          time += 1.day
-        end
-      else
-        while days < 0 || !time.workday?
-          days += 1 if time.workday?
-          time -= 1.day
-        end
+      positive_days? ? calculate_after(time, @days) : calculate_before(time, -@days)
+    end
+
+    alias_method :from_now, :after
+    alias_method :since, :after
+
+    def before(time = Time.current)
+      positive_days? ? calculate_before(time, @days) : calculate_after(time, -@days)
+    end
+
+    alias_method :ago, :before
+    alias_method :until, :before
+
+    private
+
+    def positive_days?
+      @days > 0
+    end
+
+    def calculate_after(time, days)
+      while days > 0 || !time.workday?
+        days -= 1 if time.workday?
+        time += 1.day
       end
       # If we have a Time or DateTime object, we can roll_forward to the
       #   beginning of the next business day
@@ -37,21 +49,10 @@ module BusinessTime
       time
     end
 
-    alias_method :from_now, :after
-    alias_method :since, :after
-
-    def before(time = Time.current)
-      days = @days
-      if days >= 0
-        while days > 0 || !time.workday?
-          days -= 1 if time.workday?
-          time -= 1.day
-        end
-      else
-        while days < 0 || !time.workday?
-          days += 1 if time.workday?
-          time += 1.day
-        end
+    def calculate_before(time, days)
+      while days > 0 || !time.workday?
+        days -= 1 if time.workday?
+        time -= 1.day
       end
       # If we have a Time or DateTime object, we can roll_backward to the
       #   beginning of the previous business day
@@ -62,8 +63,5 @@ module BusinessTime
       end
       time
     end
-
-    alias_method :ago, :before
-    alias_method :until, :before
   end
 end
