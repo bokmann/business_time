@@ -7,3 +7,11 @@ rvm:
   #- jruby
 before_install:
  - gem update bundler
+gemfile:
+  - gemfiles/active_support_3.gemfile
+  - gemfiles/active_support_4.gemfile
+  - gemfiles/active_support_5.gemfile
+matrix:
+  exclude:
+    - rvm: 2.4.0
+      gemfile: gemfiles/active_support_3.gemfile
