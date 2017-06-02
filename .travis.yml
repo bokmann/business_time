@@ -7,3 +7,6 @@ rvm:
   #- jruby
 before_install:
  - gem update bundler
+gemfile:
+  - gemfiles/active_support_4.gemfile
+  - gemfiles/active_support_5.gemfile
