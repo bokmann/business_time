@@ -1,0 +1,6 @@
+source 'https://rubygems.org'
+gemspec :path => '../'
+
+group :development, :test do
+  gem 'activesupport', '~> 3.0'
+end
