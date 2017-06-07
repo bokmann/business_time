@@ -4,6 +4,11 @@
 
 PR authors, please add entries here.
 
+## 0.9.2 2017-06-07
+- PR#158 - adds support for negative numbers for days
+- PR#161 - gemfile.lock from project
+- PR#163 - retores ActiveSupport 3
+
 ## 0.9.1 2017-04-04
 - PR#155 - fixes regression on Rails 5.0
 
