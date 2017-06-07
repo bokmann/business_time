@@ -21,7 +21,7 @@ pkg
 .rvmrc
 .ruby-version
 .rbenv-gemsets
-
+gemfile.lock
 ## PROJECT::SPECIFIC
 # for binstubs, since this gem has no executables
 bin
