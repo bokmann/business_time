@@ -169,5 +169,30 @@ module BusinessTime
     def during_business_hours?
       self.workday? && self.to_i.between?(Time.beginning_of_workday(self).to_i, Time.end_of_workday(self).to_i)
     end
+
+    def consecutive_workdays
+      workday? ? consecutive_days { |date| date.workday? } : []
+    end
+
+    def consecutive_non_working_days
+      !workday? ? consecutive_days { |date| !date.workday? } : []
+    end
+
+    private
+
+    def consecutive_days
+      days = []
+      date = self + 1.day
+      while yield(date)
+        days << date
+        date += 1.day
+      end
+      date = self - 1.day
+      while yield(date)
+        days << date
+        date -= 1.day
+      end
+      (days << self).sort
+    end
   end
 end
