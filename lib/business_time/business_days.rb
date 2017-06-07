@@ -17,7 +17,26 @@ module BusinessTime
     end
 
     def after(time = Time.current)
-      days = @days
+      positive_days? ? calculate_after(time, @days) : calculate_before(time, -@days)
+    end
+
+    alias_method :from_now, :after
+    alias_method :since, :after
+
+    def before(time = Time.current)
+      positive_days? ? calculate_before(time, @days) : calculate_after(time, -@days)
+    end
+
+    alias_method :ago, :before
+    alias_method :until, :before
+
+    private
+
+    def positive_days?
+      @days > 0
+    end
+
+    def calculate_after(time, days)
       while days > 0 || !time.workday?
         days -= 1 if time.workday?
         time += 1.day
@@ -30,11 +49,7 @@ module BusinessTime
       time
     end
 
-    alias_method :from_now, :after
-    alias_method :since, :after
-
-    def before(time = Time.current)
-      days = @days
+    def calculate_before(time, days)
       while days > 0 || !time.workday?
         days -= 1 if time.workday?
         time -= 1.day
@@ -48,8 +63,5 @@ module BusinessTime
       end
       time
     end
-
-    alias_method :ago, :before
-    alias_method :until, :before
   end
 end
