@@ -17,6 +17,13 @@ describe "business days" do
         assert_equal expected, after
       end
 
+      it "should pick next working day when adding zero days on the weekend" do
+        first = Time.parse("April 10th, 2010, 12:33 pm")
+        after = 0.business_days.after(first)
+        expected = Time.parse("April 12th, 2010, 12:33 pm")
+        assert_equal expected, after
+      end
+
       it "should move forward one week when adding 5 business days" do
         first = Time.parse("April 9th, 2010, 12:33 pm")
         after = 5.business_days.after(first)

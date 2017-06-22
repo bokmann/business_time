@@ -17,14 +17,14 @@ module BusinessTime
     end
 
     def after(time = Time.current)
-      positive_days? ? calculate_after(time, @days) : calculate_before(time, -@days)
+      non_negative_days? ? calculate_after(time, @days) : calculate_before(time, -@days)
     end
 
     alias_method :from_now, :after
     alias_method :since, :after
 
     def before(time = Time.current)
-      positive_days? ? calculate_before(time, @days) : calculate_after(time, -@days)
+      non_negative_days? ? calculate_before(time, @days) : calculate_after(time, -@days)
     end
 
     alias_method :ago, :before
@@ -32,8 +32,8 @@ module BusinessTime
 
     private
 
-    def positive_days?
-      @days > 0
+    def non_negative_days?
+      @days >= 0
     end
 
     def calculate_after(time, days)
