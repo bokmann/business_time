@@ -24,6 +24,13 @@ describe "business hours" do
         assert_equal expected, monday_morning
       end
 
+      it "picks next working day when adding zero hours on weekends" do
+        first = Time.parse("April 10th, 2010, 12:33 pm")
+        after = 0.business_hours.after(first)
+        expected = Time.parse("April 12th, 2010, 9:00 am")
+        assert_equal expected, after
+      end
+
       it "take into account a weekend when adding an hour, using the common interface #since" do
         friday_afternoon = Time.parse("April 9th 2010, 4:50 pm")
         monday_morning = 1.business_hour.since(friday_afternoon)

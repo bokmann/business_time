@@ -24,18 +24,18 @@ module BusinessTime
     end
 
     def after(time)
-      positive_hours? ? calculate_after(time, @hours) : calculate_before(time, -@hours)
+      non_negative_hours? ? calculate_after(time, @hours) : calculate_before(time, -@hours)
     end
     alias_method :since, :after
 
     def before(time)
-      positive_hours? ? calculate_before(time, @hours) : calculate_after(time, -@hours)
+      non_negative_hours? ? calculate_before(time, @hours) : calculate_after(time, -@hours)
     end
 
     private
 
-    def positive_hours?
-      @hours > 0
+    def non_negative_hours?
+      @hours >= 0
     end
 
     def calculate_after(time, hours)
