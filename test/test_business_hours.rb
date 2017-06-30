@@ -31,6 +31,13 @@ describe "business hours" do
         assert_equal expected, after
       end
 
+      it "should pick previous working day when subtracting zero hours on the weekend" do
+        first = Time.parse("January 30th, 2016, 12:33 pm")
+        after = 0.business_hours.before(first)
+        expected = Time.parse("January 29th, 2016, 17:00 pm")
+        assert_equal expected, after
+      end
+
       it "take into account a weekend when adding an hour, using the common interface #since" do
         friday_afternoon = Time.parse("April 9th 2010, 4:50 pm")
         monday_morning = 1.business_hour.since(friday_afternoon)
@@ -274,7 +281,7 @@ describe "business hours" do
         assert_equal monday, -15.business_hours.before(saturday)
       end
     end
-    
+
     it "responds appropriatly to <" do
       assert 5.business_hours < 10.business_hours
       assert !(10.business_hours < 5.business_hours)
@@ -285,7 +292,7 @@ describe "business hours" do
       assert -5.business_hours < 5.business_hours
       assert !(5.business_hours < -5.business_hours)
     end
-    
+
     it "responds appropriatly to >" do
       assert !(5.business_hours > 10.business_hours)
       assert 10.business_hours > 5.business_hours
@@ -296,7 +303,7 @@ describe "business hours" do
       assert !(-5.business_hours > 5.business_hours)
       assert 5.business_hours > -5.business_hours
     end
-    
+
     it "responds appropriatly to ==" do
       assert 5.business_hours == 5.business_hours
       assert 10.business_hours != 5.business_hours
@@ -306,7 +313,7 @@ describe "business hours" do
 
       assert -5.business_hours != 5.business_hours
     end
-    
+
     it "won't compare hours and days" do
       assert_raises ArgumentError do
         5.business_hours < 5.business_days
@@ -315,6 +322,6 @@ describe "business hours" do
         -5.business_hours < -5.business_days
       end
     end
-    
+
   end
 end
