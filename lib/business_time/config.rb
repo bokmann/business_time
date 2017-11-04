@@ -47,15 +47,19 @@ module BusinessTime
       end
 
       def local_config
-        Thread.current[:business_time_local_config]
+        local_config_stack.last
       end
 
       def local_config=(config)
-        Thread.current[:business_time_local_config] = config
+        local_config_stack.last.replace(config)
+      end
+
+      def local_config_stack
+        Thread.current[:business_time_local_config] ||= []
       end
 
       def local_config?
-        !local_config.nil?
+        !local_config_stack.empty?
       end
 
       def threadsafe_cattr_accessor(name)
@@ -173,11 +177,11 @@ module BusinessTime
       end
 
       def with(config)
-        self.local_config = config().dup
+        local_config_stack.push(config().dup)
         config.each { |k,v| send("#{k}=", v) } # calculations are done on setting
         yield
       ensure
-        self.local_config = nil
+        local_config_stack.pop
       end
 
       def default_config
@@ -196,8 +200,8 @@ module BusinessTime
       end
 
       def reset
-        self.config       = default_config
-        self.local_config = nil
+        local_config_stack.clear
+        self.config = default_config
       end
 
       def deep_dup(object)

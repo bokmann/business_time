@@ -138,6 +138,17 @@ describe "config" do
       assert ran
     end
 
+    it "keeps the intermediate config after inherited block" do
+      ran = false
+      BusinessTime::Config.with(:end_of_workday => "2pm") do
+        BusinessTime::Config.with(:beginning_of_workday => "1pm") do
+          ran = true
+        end
+        assert_equal BusinessTime::ParsedTime.new(14, 0), BusinessTime::Config.end_of_workday
+      end
+      assert ran
+    end
+
     it "resets config after the block" do
       ran = false
       BusinessTime::Config.with(:end_of_workday => "2pm") { ran = true }
@@ -152,6 +163,20 @@ describe "config" do
       end
       assert ran
       assert_equal BusinessTime::ParsedTime.new(17, 0), BusinessTime::Config.end_of_workday
+    end
+
+    it "resets local configs after nested errors" do
+      ran = false
+      BusinessTime::Config.with(:end_of_workday => "2pm") do
+        assert_raises RuntimeError do
+          BusinessTime::Config.with(:end_of_workday => "1pm") do
+            ran = true
+            raise
+          end
+        end
+        assert_equal BusinessTime::ParsedTime.new(14, 0), BusinessTime::Config.end_of_workday
+      end
+      assert ran
     end
 
     it 'is threadsafe' do
