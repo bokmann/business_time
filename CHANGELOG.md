@@ -5,7 +5,7 @@
 PR authors, please add entries here.
 
 ## 0.9.3 2017-11-04
-- PR#165 - fies an issue with 0.business_<x> calculations
+- PR#165 - fixes an issue with 0.business_<x> calculations
 - PR#166 - added est for business_days.before edge case
 - PR#172 - added feature for 'stacking' local configs
 
