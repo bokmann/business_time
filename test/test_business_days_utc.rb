@@ -26,6 +26,20 @@ describe "business days" do
         assert_equal expected, after
       end
 
+      it "moves forward correctly when beginning on a weekend, after work hours" do
+        first = Time.zone.parse('2017-01-07 19:55:29.842345')
+        after = 3.business_day.after(first)
+        expected = Time.zone.parse("January 12th, 2017, 9:00 am")
+        assert_equal expected, after
+      end
+
+      it "moves forward correctly when beginning on a weekend, before work hours" do
+        first = Time.zone.parse("January 7th, 2010, 3:30 am")
+        after = 3.business_day.after(first)
+        expected = Time.zone.parse("January 12th, 2010, 9:00 am")
+        assert_equal expected, after
+      end
+
       it "take into account the weekend when subtracting a day" do
         first = Time.zone.parse("April 12th, 2010, 12:33 pm")
         before = 1.business_day.before(first)
