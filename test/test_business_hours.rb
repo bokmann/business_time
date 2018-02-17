@@ -164,6 +164,14 @@ describe "business hours" do
         assert_equal monday, 15.business_hours.after(saturday)
         assert_equal saturday + 3.hours, 15.business_hours.before(monday)
       end
+
+      it "take into account a holiday passed as an option" do
+        three_day_weekend = Date.parse("July 5th, 2010")
+        friday_afternoon = Time.parse("July 2nd 2010, 4:50pm")
+        tuesday_morning = 1.business_hour.after(friday_afternoon, holidays: [three_day_weekend])
+        expected = Time.parse("July 6th 2010, 9:50 am")
+        assert_equal expected, tuesday_morning
+      end
     end
 
     describe "when adding/subtracting negative number of business hours" do
@@ -280,6 +288,16 @@ describe "business hours" do
         assert_equal saturday + 3.hours, -15.business_hours.after(monday)
         assert_equal monday, -15.business_hours.before(saturday)
       end
+
+      it "take into account a holiday passed as an option" do
+        three_day_weekend = Date.parse("July 5th, 2010")
+        tuesday_morning = Time.parse("July 6nd 2010, 9:50 am")
+        friday_afternoon = -1.business_hour.after(tuesday_morning, holidays: [three_day_weekend])
+        expected = Time.parse("July 2th 2010, 4:50 pm")
+        assert_equal expected, friday_afternoon
+      end
+
+
     end
 
     it "responds appropriatly to <" do

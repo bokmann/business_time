@@ -164,6 +164,15 @@ Timezone relative date handling gets more and more complicated every time you lo
     # BusinessTime::Config.holidays << holiday[:date].next_week if !holiday[:date].weekday?
   end
 
+== You can pass holidays as an option
+  In addition to having static holidays in BusinessTime::Config.holidays, you can also pass holidays
+  as an option (date, time, string, or array of dates, times and strings).  If, for example, you are processing calculations for many regions with different holidays,
+  you can pass in the appropriate holidays for the region with each calculation.
+
+  three_day_weekend = Date.parse("July 5th, 2010")
+  friday_afternoon = Time.parse("July 2nd, 2010, 4:50 pm")
+  tuesday_morning = 1.business_hour.after(friday_afternoon, holidays: three_day_weekend)
+
 == Contributors
  * David Bock  http://github.com/bokmann
  * Enrico Bianco  http://github.com/enricob

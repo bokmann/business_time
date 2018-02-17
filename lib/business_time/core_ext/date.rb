@@ -2,15 +2,15 @@
 class Date
   include BusinessTime::TimeExtensions
 
-  def business_days_until(to_date, inclusive = false)
-    business_dates_until(to_date, inclusive).size
+  def business_days_until(to_date, inclusive = false, options={})
+    business_dates_until(to_date, inclusive, options).size
   end
 
-  def business_dates_until(to_date, inclusive = false)
+  def business_dates_until(to_date, inclusive = false, options={})
     if inclusive
-      (self..to_date).select(&:workday?)
+      (self..to_date).select{|this_date| this_date.workday?(options)}
     else
-      (self...to_date).select(&:workday?)
+      (self...to_date).select{|this_date| this_date.workday?(options)}
     end
   end
 
