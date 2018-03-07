@@ -86,4 +86,16 @@ describe "date extensions" do
     assert_equal 365, Date.parse("Jun 30, 2017").fiscal_year_yday
     assert_equal   1, Date.parse("Jul 1, 2017").fiscal_year_yday
   end
+
+  it "know a holiday is not a workday when passed as options" do
+    july_4 = Date.parse("July 4, 2010")
+    july_5 = Date.parse("July 5, 2010")
+
+    assert(!july_4.workday?)
+    assert(july_5.workday?)
+
+    assert(!july_4.workday?(holidays: [july_4]))
+    assert(!july_5.workday?(holidays: [july_5]))
+  end
+
 end

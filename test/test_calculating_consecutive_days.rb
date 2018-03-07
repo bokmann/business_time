@@ -45,4 +45,25 @@ describe 'calculating consecutive non-working days' do
                            sunday]
     assert_equal firday_plus_weekend, sunday.consecutive_non_working_days
   end
+
+  it 'return array with self if preceded and followed by non-working days with holidays as options' do
+    free_thursday = Date.parse("December 16, 2010")
+    friday = Date.parse("December 17, 2010")
+    assert_equal [friday], friday.consecutive_workdays(holidays: [free_thursday])
+  end
+
+  it 'return array with self if preceded and followed by workdays with holidays as options' do
+    free_thursday = Date.parse("December 16, 2010")
+    assert_equal [free_thursday], free_thursday.consecutive_non_working_days(holidays: [free_thursday])
+  end
+
+  it 'return an array of consecutive non-working days sorted by date with holidays as options' do
+    sunday = Date.parse("December 19, 2010")
+    free_friday = Date.parse("December 17, 2010")
+    firday_plus_weekend = [free_friday,
+                           Date.parse("December 18, 2010"),
+                           sunday]
+    assert_equal firday_plus_weekend, sunday.consecutive_non_working_days(holidays: [free_friday])
+  end
+
 end

@@ -152,6 +152,38 @@ describe "business days" do
         expected = Date.parse("April 13th, 2010")
         assert_equal expected, after
       end
+
+      it "take into account a holiday passed as an option when adding a negative day" do
+        three_day_weekend = Date.parse("July 5th, 2010")
+        tuesday_afternoon = Date.parse("July 6th, 2010")
+        friday_afternoon = -1.business_day.after(tuesday_afternoon, holidays: [three_day_weekend])
+        expected = Date.parse("July 2nd, 2010")
+        assert_equal expected, friday_afternoon
+      end
+
+      it "take into account a holiday on a weekend passed as an option" do
+        july_4 = Date.parse("July 4th, 2010")
+        monday_afternoon = Date.parse("July 5nd, 2010")
+        friday_afternoon = -1.business_day.after(monday_afternoon, holidays: [july_4])
+        expected = Date.parse("July 2nd, 2010")
+        assert_equal expected, friday_afternoon
+      end
+
+      it "take into account a holiday passed as an option when adding a day" do
+        three_day_weekend = Date.parse("July 5th, 2010")
+        friday_afternoon = Date.parse("July 2nd, 2010")
+        tuesday_afternoon = 1.business_day.after(friday_afternoon, holidays: [three_day_weekend])
+        expected = Date.parse("July 6th, 2010")
+        assert_equal expected, tuesday_afternoon
+      end
+
+      it "take into account a holiday on a weekend passed as an option" do
+        july_4 = Date.parse("July 4th, 2010")
+        friday_afternoon = Date.parse("July 2nd, 2010")
+        monday_afternoon = 1.business_day.after(friday_afternoon, holidays: [july_4])
+        expected = Date.parse("July 5th, 2010")
+        assert_equal expected, monday_afternoon
+      end
     end
   end
 end

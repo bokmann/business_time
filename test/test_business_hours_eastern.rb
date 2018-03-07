@@ -67,6 +67,15 @@ describe "business hours" do
         monday = Time.zone.parse("Mon Apr 26, 09:00:00, 2010")
         assert_equal 1.business_hour.before(monday), 1.business_hour.before(sunday)
       end
+
+      it "take into account a holiday passed as option" do
+        three_day_weekend = Date.parse("July 5th, 2010")
+        friday_afternoon = Time.zone.parse("July 2nd 2010, 4:50pm")
+        tuesday_morning = 1.business_hour.after(friday_afternoon, holidays: [three_day_weekend])
+        expected = Time.zone.parse("July 6th 2010, 9:50 am")
+        assert_equal expected, tuesday_morning
+      end
+
     end
 
     describe "when adding/subtracting negative business hours" do
@@ -118,6 +127,15 @@ describe "business hours" do
         monday = Time.zone.parse("Mon Apr 26, 09:00:00, 2010")
         assert_equal -1.business_hour.before(monday), -1.business_hour.before(sunday)
       end
+
+      it "take into account a holiday passed as an option" do
+        three_day_weekend = Date.parse("July 5th, 2010")
+        tuesday_morning = Time.zone.parse("July 6th 2010, 9:50 am")
+        friday_afternoon = -1.business_hour.after(tuesday_morning, holidays: [three_day_weekend])
+        expected = Time.zone.parse("July 2nd 2010, 4:50 pm")
+        assert_equal expected, friday_afternoon
+      end
+
     end
   end
 end

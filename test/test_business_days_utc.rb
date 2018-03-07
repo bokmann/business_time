@@ -64,6 +64,22 @@ describe "business days" do
         expected = Time.zone.parse("July 5th, 2010, 4:50 pm")
         assert_equal expected, monday_afternoon
       end
+
+      it "take into account a holiday passed as an option when adding a day" do
+        three_day_weekend = Date.parse("July 5th, 2010")
+        friday_afternoon = Time.zone.parse("July 2nd, 2010, 4:50 pm")
+        tuesday_afternoon = 1.business_day.after(friday_afternoon, holidays: [three_day_weekend])
+        expected = Time.zone.parse("July 6th, 2010, 4:50 pm")
+        assert_equal expected, tuesday_afternoon
+      end
+
+      it "take into account a holiday on a weekend passed as an option" do
+        july_4 = Date.parse("July 4th, 2010")
+        friday_afternoon = Time.zone.parse("July 2nd, 2010, 4:50 pm")
+        monday_afternoon = 1.business_day.after(friday_afternoon, holidays: [july_4])
+        expected = Time.zone.parse("July 5th, 2010, 4:50 pm")
+        assert_equal expected, monday_afternoon
+      end
     end
 
     describe "when adding/subtracting negative number of business days" do
