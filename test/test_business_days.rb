@@ -143,6 +143,22 @@ describe "business days" do
         assert_equal expected, tuesday_afternoon
       end
 
+      it "should take into account a holiday passed as an option when adding a day with from_now" do
+        three_day_weekend = Date.parse("July 5th, 2010")
+        friday_afternoon = Time.parse("July 2nd, 2010, 4:50 pm")
+        tuesday_afternoon = 1.business_day.from_now(friday_afternoon, holidays: [three_day_weekend])
+        expected = Time.parse("July 6th, 2010, 4:50 pm")
+        assert_equal expected, tuesday_afternoon
+      end
+
+      it "should take into account a holiday passed as an option when subtracting a day with ago" do
+        tuesday_afternoon = Time.parse("July 6rd, 2010, 4:50 pm")
+        three_day_weekend = Date.parse("July 5th, 2010")
+        friday_afternoon = 1.business_day.ago(tuesday_afternoon, holidays: [three_day_weekend])
+        expected = Time.parse("July 2nd, 2010, 4:50 pm")
+        assert_equal expected, friday_afternoon
+      end
+
       it "should take into account a holiday on a weekend when passed as an option" do
         july_4 = Date.parse("July 4th, 2010")
         friday_afternoon = Time.parse("July 2nd, 2010, 4:50 pm")
