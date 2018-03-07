@@ -15,12 +15,12 @@ module BusinessTime
       self.hours <=> other.hours
     end
     
-    def ago
-      Time.zone ? before(Time.zone.now) : before(Time.now)
+    def ago(options={})
+      Time.zone ? before(Time.zone.now, options) : before(Time.now, options)
     end
 
-    def from_now
-      Time.zone ?  after(Time.zone.now) : after(Time.now)
+    def from_now(options={})
+      Time.zone ?  after(Time.zone.now, options) : after(Time.now, options)
     end
 
     def after(time, options={})
