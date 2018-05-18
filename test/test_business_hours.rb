@@ -45,10 +45,24 @@ describe "business hours" do
         assert_equal expected, monday_morning
       end
 
+      it "take into account a weekend and being after work hours when adding an hour, using the common interface #since" do
+        friday_afternoon = Time.parse("April 9th 2010, 8:50 pm")
+        monday_morning = 1.business_hour.since(friday_afternoon)
+        expected = Time.parse("April 12th 2010, 10:00 am")
+        assert_equal expected, monday_morning
+      end
+
       it "take into account a weekend when subtracting an hour" do
         monday_morning = Time.parse("April 12th 2010, 9:50 am")
         friday_afternoon = 1.business_hour.before(monday_morning)
         expected = Time.parse("April 9th 2010, 4:50 pm")
+        assert_equal expected, friday_afternoon
+      end
+
+      it "take into account a weekend and being after work hours when subtracting an hour" do
+        monday_morning = Time.parse("April 12th 2010, 6:50 am")
+        friday_afternoon = 1.business_hour.before(monday_morning)
+        expected = Time.parse("April 9th 2010, 4:00 pm")
         assert_equal expected, friday_afternoon
       end
 

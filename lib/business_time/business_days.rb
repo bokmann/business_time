@@ -37,6 +37,10 @@ module BusinessTime
     end
 
     def calculate_after(time, days)
+      if !time.workday? && time > Time.end_of_workday(time)
+        time = Time.beginning_of_workday(time)
+      end
+
       while days > 0 || !time.workday?
         days -= 1 if time.workday?
         time += 1.day
