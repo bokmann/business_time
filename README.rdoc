@@ -61,6 +61,11 @@ We can adjust the start and end time of our business hours
     BusinessTime::Config.beginning_of_workday = "8:30 am"
     BusinessTime::Config.end_of_workday = "5:30 pm"
 
+Or we can temporarily override the configured values
+    BusinessTime::Config.with(beginning_of_workday: "8 am", end_of_workday: "6 pm") do
+      1.business_hour.from_now
+    end
+
 and we can add holidays that don't count as business days
 July 5 in 2010 is a monday that the U.S. takes off because our independence day falls on that Sunday.
     three_day_weekend = Date.parse("July 5th, 2010")
