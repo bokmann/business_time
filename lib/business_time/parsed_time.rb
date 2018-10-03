@@ -23,6 +23,14 @@ module BusinessTime
       "#{hour}:#{min}:#{sec}"
     end
 
+    def to_time
+      Time.parse(to_s)
+    end
+
+    def to_datetime
+      DateTime.parse(to_s)
+    end
+
     def -(other)
       (hour - other.hour) * 3600 + (min - other.min) * 60 + sec - other.sec
     end

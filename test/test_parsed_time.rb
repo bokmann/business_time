@@ -53,6 +53,18 @@ module BusinessTime
       end
     end
 
+   describe "to_time" do
+      it "returns Time class" do
+        assert_equal ParsedTime.new(9, 10, 11).to_time, Time.parse("9:10:11")
+      end
+    end
+
+   describe "to_datetime" do
+      it "returns DateTime class" do
+        assert_equal ParsedTime.new(9, 10, 11).to_datetime, DateTime.parse("9:10:11")
+      end
+    end
+
     describe "-" do
       it "returns the time difference in seconds" do
         parsed_time1 = ParsedTime.new(9, 10, 11)
