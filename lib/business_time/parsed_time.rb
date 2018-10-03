@@ -19,6 +19,10 @@ module BusinessTime
       new(time.hour, time.min, time.sec)
     end
 
+    def strftime(option)
+      to_time.strftime(option)
+    end
+
     def to_s
       "#{hour}:#{min}:#{sec}"
     end
