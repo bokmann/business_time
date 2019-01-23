@@ -7,7 +7,12 @@ module BusinessTime
   # manually, or with a yaml file and the load method.
   class Config
     DEFAULT_CONFIG = {
-      holidays:              SortedSet.new,
+      holidays: {
+        regions: {
+          us: SortedSet.new,
+          pe: SortedSet.new
+        }
+      },
       beginning_of_workday:  ParsedTime.parse('9:00 am'),
       end_of_workday:        ParsedTime.parse('5:00 pm'),
       work_week:             %w(mon tue wed thu fri),
@@ -171,8 +176,12 @@ module BusinessTime
           send("#{var}=", config[var]) if config[var] && respond_to?("#{var}=")
         end
 
-        (config["holidays"] || []).each do |holiday|
-          holidays << Date.parse(holiday)
+        (config["holidays"]["regions"]["us"] || []).each do |holiday|
+          holidays.regions.us << Date.parse(holiday)
+        end
+
+        (config["holidays"]["regions"]["pe"] || []).each do |holiday|
+          holidays.regions.pe << Date.parse(holiday)
         end
       end
 
