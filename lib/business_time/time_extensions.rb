@@ -108,6 +108,16 @@ module BusinessTime
         time
       end
 
+      # Returns the next business day not including the given date
+      def next_business_day(time)
+        loop do
+          time = time + 1.day
+          break if time.workday?
+        end
+
+        time
+      end
+
       def work_hours_total(day)
         return 0 unless day.workday?
 

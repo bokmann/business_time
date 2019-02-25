@@ -134,6 +134,20 @@ describe "business days" do
         expected = Time.parse("April 9th, 2010, 12:33 pm")
         assert_equal expected, before
       end
+
+      it "gets the next business day if it is a work day" do
+        work_day = Time.parse("February 25th, 2019, 12:30 pm")
+        after = Time.next_business_day(work_day)
+        expected = Time.parse("February 26th, 2019, 12:30 pm")
+        assert_equal expected, after
+      end
+
+      it "gets the next business day if it is a weekend" do
+        weekend_day = Time.parse("February 23th, 2019, 12:30 pm")
+        after = Time.next_business_day(weekend_day)
+        expected = Time.parse("February 25th, 2019, 12:30 pm")
+        assert_equal expected, after
+      end
     end
 
     describe "when adding/subtracting negative business days" do
