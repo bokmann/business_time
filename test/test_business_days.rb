@@ -24,6 +24,13 @@ describe "business days" do
         assert_equal expected, after
       end
 
+      it "picks the next working day when adding 1 day on the weekend" do
+        weekend_day = Time.parse("February 24, 2019, 12:12 pm")
+        after = 1.business_days.after(weekend_day)
+        expected = Time.parse("February 25, 2019, 09:00 am")
+        assert_equal expected, after
+      end
+
       it "should pick previous working day when subtracting zero days on the weekend" do
         first = Time.parse("January 30th, 2016, 12:33 pm")
         after = 0.business_days.before(first)
@@ -56,17 +63,17 @@ describe "business days" do
         assert_equal expected, monday_afternoon
       end
 
-      it "should move to tuesday if we add one business day during a weekend" do
+      it "should move to monday if we add one business day during a weekend" do
         saturday = Time.parse("April 10th, 2010, 11:00 am")
         later = 1.business_days.after(saturday)
-        expected = Time.parse("April 13th, 2010, 9:00 am")
+        expected = Time.parse("April 12th, 2010, 9:00 am")
         assert_equal expected, later
       end
 
-      it "should move to tuesday if we add one business day during a weekend outside normal business hours" do
+      it "should move to monday if we add one business day during a weekend outside normal business hours" do
         saturday = Time.parse("April 10th, 2010, 11:55 pm")
         later = 1.business_days.after(saturday)
-        expected = Time.parse("April 13th, 2010, 9:00 am")
+        expected = Time.parse("April 12th, 2010, 9:00 am")
         assert_equal expected, later
       end
 
@@ -77,17 +84,17 @@ describe "business days" do
         assert_equal expected, later
       end
 
-      it "should move to thursday if we subtract one business day during a weekend" do
+      it "should move to friday if we subtract one business day during a weekend" do
         saturday = Time.parse("April 10th, 2010, 11:00 am")
         before = 1.business_days.before(saturday)
-        expected = Time.parse("April 8th, 2010, 9:00 am")
+        expected = Time.parse("April 9th, 2010, 9:00 am")
         assert_equal expected, before
       end
 
-      it "should move to thursday if we subtract one business day during a weekend outside normal business hours" do
+      it "should move to friday if we subtract one business day during a weekend outside normal business hours" do
         saturday = Time.parse("April 10th, 2010, 03:00 am")
         before = 1.business_days.before(saturday)
-        expected = Time.parse("April 8th, 2010, 9:00 am")
+        expected = Time.parse("April 9th, 2010, 9:00 am")
         assert_equal expected, before
       end
 
@@ -167,10 +174,10 @@ describe "business days" do
         assert_equal expected, friday_afternoon
       end
 
-      it "should move to thursday if we add one negative business day during weekend" do
+      it "should move to friday if we add one negative business day during weekend" do
         saturday = Time.parse("April 10th, 2010, 11:00 am")
         before = -1.business_days.after(saturday)
-        expected = Time.parse("April 8th, 2010, 09:00 am")
+        expected = Time.parse("April 9th, 2010, 09:00 am")
         assert_equal expected, before
       end
 
@@ -209,10 +216,10 @@ describe "business days" do
         assert_equal expected, later
       end
 
-      it "should move to tuesday if we subtract one negative business day during a weekend" do
+      it "should move to monday if we subtract one negative business day during a weekend" do
         saturday = Time.parse("April 10th, 2010, 11:00 am")
         later = -1.business_days.before(saturday)
-        expected = Time.parse("April 13th, 2010, 09:00 am")
+        expected = Time.parse("April 12th, 2010, 09:00 am")
         assert_equal expected, later
       end
 
