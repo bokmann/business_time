@@ -124,6 +124,13 @@ You can get the first workday after a time or return itself if it is a workday
     monday = Time.parse("Mon Aug 11, 18:00:00, 2014")
     Time.previous_business_day(saturday) #=> "Fri Aug 8, 18:00:00, 2014"
     Time.previous_business_day(monday) #=> "Mon Aug 11, 18:00:00, 2014"
+
+You can also get the next workday regardless of whether today is a workday
+    saturday = Time.parse("Sat Aug 9, 18:00:00, 2014")
+    monday = Time.parse("Mon Aug 11, 18:00:00, 2014")
+    Time.next_business_day(saturday) #=> "Mon Aug 11, 18:00:00, 2014"
+    Time.next_business_day(monday) #=> "Tue Aug 12, 18:00:00, 2014"
+
 == Rails generator
 
     rails generate business_time:config
