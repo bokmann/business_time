@@ -1,0 +1,32 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby: [2.5, 2.6, 2.7]
+        bundler: [default]
+        gemfile:
+          - active_support_4
+          - active_support_5
+        include:
+          - { ruby: "2.3", gemfile: "active_support_3", bundler: "1" }
+          - { ruby: "2.3", gemfile: "active_support_4", bundler: "1" }
+          - { ruby: "2.4", gemfile: "active_support_4", bundler: "1" }
+
+    env:
+      BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
+    steps:
+      # https://github.com/marketplace/actions/checkout
+      - uses: actions/checkout@v2
+      # https://github.com/marketplace/actions/setup-ruby-jruby-and-truffleruby
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler: ${{ matrix.bundler }}
+          bundler-cache: true # runs `bundle install` and caches gems automatically
+      - name: Run tests
+        run: bundle exec rake
