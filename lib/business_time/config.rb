@@ -80,23 +80,7 @@ module BusinessTime
       end
     end
 
-    # You can set this yourself, either by the load method below, or
-    # by saying
-    #   BusinessTime::Config.beginning_of_workday = "8:30 am"
-    # someplace in the initializers of your application.
-    threadsafe_cattr_reader :beginning_of_workday
-
-    # You can set this yourself, either by the load method below, or
-    # by saying
-    #   BusinessTime::Config.end_of_workday = "5:30 pm"
-    # someplace in the initializers of your application.
-    threadsafe_cattr_reader :end_of_workday
-
-    # You can set this yourself, either by the load method below, or
-    # by saying
-    #   BusinessTime::Config.work_week = [:sun, :mon, :tue, :wed, :thu]
-    # someplace in the initializers of your application.
-    threadsafe_cattr_accessor :work_week
+    threadsafe_cattr_reader :work_week
 
     # You can set this yourself, either by the load method below, or
     # by saying
@@ -118,6 +102,10 @@ module BusinessTime
     threadsafe_cattr_accessor :fiscal_month_offset
 
     class << self
+      # You can set this yourself, either by the load method below, or
+      # by saying
+      #   BusinessTime::Config.end_of_workday = "5:30 pm"
+      # someplace in the initializers of your application.
       def end_of_workday(day=nil)
         if day
           wday = work_hours[int_to_wday(day.wday)]
@@ -127,6 +115,10 @@ module BusinessTime
         end
       end
 
+      # You can set this yourself, either by the load method below, or
+      # by saying
+      #   BusinessTime::Config.beginning_of_workday = "8:30 am"
+      # someplace in the initializers of your application.
       def beginning_of_workday(day=nil)
         if day
           wday = work_hours[int_to_wday(day.wday)]
@@ -136,6 +128,10 @@ module BusinessTime
         end
       end
 
+      # You can set this yourself, either by the load method below, or
+      # by saying
+      #   BusinessTime::Config.work_week = [:sun, :mon, :tue, :wed, :thu]
+      # someplace in the initializers of your application.
       def work_week=(days)
         config[:work_week] = days
         self._weekdays = nil
