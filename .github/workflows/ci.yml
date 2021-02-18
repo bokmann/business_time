@@ -11,10 +11,12 @@ jobs:
         gemfile:
           - active_support_4
           - active_support_5
+          - active_support_6
         include:
           - { ruby: "2.3", gemfile: "active_support_3", bundler: "1" }
           - { ruby: "2.3", gemfile: "active_support_4", bundler: "1" }
           - { ruby: "2.4", gemfile: "active_support_4", bundler: "1" }
+          - { ruby: "2.5", gemfile: "active_support_4", bundler: "1" }
 
     env:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
