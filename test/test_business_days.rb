@@ -237,7 +237,7 @@ describe "business days" do
       assert 5.business_days < 10.business_days
       assert !(10.business_days < 5.business_days)
 
-      assert -1.business_day < 1.business_day
+      assert(-1.business_day < 1.business_day)
       assert !(1.business_day < -1.business_day)
     end
 
@@ -253,8 +253,8 @@ describe "business days" do
       assert 5.business_days == 5.business_days
       assert 10.business_days != 5.business_days
 
-      assert -1.business_day == -1.business_day
-      assert -1.business_day != -5.business_days
+      assert(-1.business_day == -1.business_day)
+      assert(-1.business_day != -5.business_days)
     end
 
     it "won't compare days to hours" do

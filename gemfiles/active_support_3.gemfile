@@ -3,4 +3,5 @@ gemspec :path => '../'
 
 group :development, :test do
   gem 'activesupport', '~> 3.0'
+  gem 'tzinfo', '~> 1.2'
 end

@@ -4,7 +4,7 @@ describe "business hours" do
   describe "with a TimeWithZone object in UTC" do
     before { Time.zone = 'UTC' }
 
-    describe "when adding/subtracting positive business hours" do 
+    describe "when adding/subtracting positive business hours" do
       it "move to tomorrow if we add 8 business hours" do
         first = Time.zone.parse("Aug 4 2010, 9:35 am")
         later = 8.business_hours.after(first)
@@ -114,7 +114,7 @@ describe "business hours" do
       it "consider any time on a weekend as equivalent to monday morning" do
         sunday = Time.zone.parse("Sun Apr 25 12:06:56, 2010")
         monday = Time.zone.parse("Mon Apr 26, 09:00:00, 2010")
-        assert_equal -1.business_hour.before(monday), -1.business_hour.before(sunday)
+        assert_equal(-1.business_hour.before(monday), -1.business_hour.before(sunday))
       end
     end
   end

@@ -220,7 +220,7 @@ describe "business hours" do
       it "consider any time on a weekend as equivalent to monday morning" do
         sunday = Time.parse("Sun Apr 25 12:06:56, 2010")
         monday = Time.parse("Mon Apr 26, 09:00:00, 2010")
-        assert_equal -1.business_hour.before(monday), -1.business_hour.before(sunday)
+        assert_equal(-1.business_hour.before(monday), -1.business_hour.before(sunday))
       end
 
       it "respect work_hours" do
@@ -286,10 +286,10 @@ describe "business hours" do
       assert 5.business_hours < 10.business_hours
       assert !(10.business_hours < 5.business_hours)
 
-      assert -10.business_hours < -5.business_hours
+      assert(-10.business_hours < -5.business_hours)
       assert !(-5.business_hours < -10.business_hours)
 
-      assert -5.business_hours < 5.business_hours
+      assert(-5.business_hours < 5.business_hours)
       assert !(5.business_hours < -5.business_hours)
     end
 
@@ -298,7 +298,7 @@ describe "business hours" do
       assert 10.business_hours > 5.business_hours
 
       assert !(-10.business_hours > -5.business_hours)
-      assert -5.business_hours > -10.business_hours
+      assert(-5.business_hours > -10.business_hours)
 
       assert !(-5.business_hours > 5.business_hours)
       assert 5.business_hours > -5.business_hours
@@ -308,10 +308,10 @@ describe "business hours" do
       assert 5.business_hours == 5.business_hours
       assert 10.business_hours != 5.business_hours
 
-      assert -5.business_hours == -5.business_hours
-      assert -5.business_hours != -10.business_hours
+      assert(-5.business_hours == -5.business_hours)
+      assert(-5.business_hours != -10.business_hours)
 
-      assert -5.business_hours != 5.business_hours
+      assert(-5.business_hours != 5.business_hours)
     end
 
     it "won't compare hours and days" do
