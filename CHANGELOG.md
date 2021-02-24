@@ -1,8 +1,7 @@
 # Changelog
 
-## Unreleased
-
-PR authors, please add entries here.
+See [GitHub Releases](https://github.com/bokmann/business_time/releases) for
+all new releases.
 
 ## 0.9.3 2017-11-04
 - PR#165 - fixes an issue with 0.business_<x> calculations
@@ -54,12 +53,12 @@ No documentation yet, contributions welcome.
 
 ## 0.7.1 2014-02-07
 
-- fixing a multithreaded issue, upgrading some dependencies, loosening the 
+- fixing a multithreaded issue, upgrading some dependencies, loosening the
   dependency on TZInfo
 
 ## 0.7.0 2014-01-27
 
-- major maintenance upgrade on the process of constructing the gem, testing 
+- major maintenance upgrade on the process of constructing the gem, testing
   the gem, and updating dependencies. the api has not changed.
 
 ## 0.6.2 2013-08-12
