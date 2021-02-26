@@ -8,6 +8,7 @@ module BusinessTime
   class Config
     DEFAULT_CONFIG = {
       holidays:              SortedSet.new,
+      forced_workdays:       SortedSet.new,
       beginning_of_workday:  ParsedTime.parse('9:00 am'),
       end_of_workday:        ParsedTime.parse('5:00 pm'),
       work_week:             %w(mon tue wed thu fri),
@@ -87,6 +88,12 @@ module BusinessTime
     #   BusinessTime::Config.holidays << my_holiday_date_object
     # someplace in the initializers of your application.
     threadsafe_cattr_accessor :holidays
+
+    # You can set this yourself, either by the load method below, or
+    # by saying
+    #   BusinessTime::Config.forced_workdays << my_forced_workday_date_object
+    # someplace in the initializers of your application.
+    threadsafe_cattr_accessor :forced_workdays
 
     # working hours for each day - if not set using global variables :beginning_of_workday
     # and end_of_workday. Keys will be added ad weekdays.
@@ -169,6 +176,10 @@ module BusinessTime
 
         (config["holidays"] || []).each do |holiday|
           holidays << Date.parse(holiday)
+        end
+
+        (config["forced_workdays"] || []).each do |forced_workday|
+          forced_workdays << Date.parse(forced_workday)
         end
       end
 

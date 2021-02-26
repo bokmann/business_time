@@ -93,6 +93,17 @@ describe "config" do
     assert !Time.parse('2012-05-07').workday?
   end
 
+  it "include forced workdays read from YAML config file" do
+    yaml = <<-YAML
+      business_time:
+        forced_workdays:
+          - April 28th, 2018
+    YAML
+    config_file = StringIO.new(yaml.gsub!(/^    /, ''))
+    BusinessTime::Config.load(config_file)
+    assert BusinessTime::Config.forced_workdays.to_a == [Date.new(2018, 4, 28)]
+  end
+
   it "use defaults for values missing in YAML file" do
     yaml = <<-YAML
     business_time:
