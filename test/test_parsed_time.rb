@@ -47,9 +47,27 @@ module BusinessTime
       end
     end
 
+    describe "strftime" do
+      it "return hh:mm:ss" do
+        assert_equal ParsedTime.new(9, 8, 7).strftime("%I:%M:%S"), "09:08:07"
+      end
+    end
+
     describe "to_s" do
       it "returns hh:mm:ss" do
         assert_equal ParsedTime.new(9, 10, 11).to_s, "9:10:11"
+      end
+    end
+
+   describe "to_time" do
+      it "returns Time class" do
+        assert_equal ParsedTime.new(9, 10, 11).to_time, Time.parse("9:10:11")
+      end
+    end
+
+   describe "to_datetime" do
+      it "returns DateTime class" do
+        assert_equal ParsedTime.new(9, 10, 11).to_datetime, DateTime.parse("9:10:11")
       end
     end
 
