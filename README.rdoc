@@ -171,6 +171,7 @@ Timezone relative date handling gets more and more complicated every time you lo
 
 == Contributors
  * David Bock  http://github.com/bokmann
+ * Ryan McGeary  http://github.com/rmm5t
  * Enrico Bianco  http://github.com/enricob
  * Arild Shirazi  http://github.com/ashirazi
  * Piotr Jakubowski http://github.com/piotrj
