@@ -186,13 +186,18 @@ module BusinessTime
 
       private
 
+      DAY_NAMES = [
+        'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'
+      ]
+      private_constant :DAY_NAMES
+
       def wday_to_int day_name
-        lowercase_day_names = ::Time::RFC2822_DAY_NAME.map(&:downcase)
+        lowercase_day_names = DAY_NAMES.map(&:downcase)
         lowercase_day_names.find_index(day_name.to_s.downcase)
       end
 
       def int_to_wday num
-        ::Time::RFC2822_DAY_NAME.map(&:downcase).map(&:to_sym)[num]
+        DAY_NAMES.map(&:downcase).map(&:to_sym)[num]
       end
 
       def reset
