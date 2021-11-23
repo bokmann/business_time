@@ -1,7 +1,8 @@
-# Changelog
+----
 
-See [GitHub Releases](https://github.com/bokmann/business_time/releases) for
-all new releases.
+### See [GitHub Releases](https://github.com/bokmann/business_time/releases) for all releases after v0.9.3.
+
+----
 
 ## 0.9.3 2017-11-04
 - PR#165 - fixes an issue with 0.business_<x> calculations
