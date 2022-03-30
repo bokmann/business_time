@@ -191,12 +191,12 @@ module BusinessTime
       private
 
       def wday_to_int day_name
-        lowercase_day_names = ::Time::RFC2822_DAY_NAME.map(&:downcase)
+        lowercase_day_names = ::Date::ABBR_DAYNAMES.map(&:downcase)
         lowercase_day_names.find_index(day_name.to_s.downcase)
       end
 
       def int_to_wday num
-        ::Time::RFC2822_DAY_NAME.map(&:downcase).map(&:to_sym)[num]
+        ::Date::ABBR_DAYNAMES.map(&:downcase).map(&:to_sym)[num]
       end
 
       def reset
