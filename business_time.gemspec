@@ -15,7 +15,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency("activesupport", ">= 3.2.0")
   s.add_dependency("tzinfo")
-  s.add_dependency("sorted_set") # for Ruby 3 support
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rdoc"

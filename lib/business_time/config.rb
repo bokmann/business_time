@@ -7,7 +7,7 @@ module BusinessTime
   # manually, or with a yaml file and the load method.
   class Config
     DEFAULT_CONFIG = {
-      holidays:              SortedSet.new,
+      holidays:              Set.new,
       beginning_of_workday:  ParsedTime.parse('9:00 am'),
       end_of_workday:        ParsedTime.parse('5:00 pm'),
       work_week:             %w(mon tue wed thu fri),
@@ -144,7 +144,7 @@ module BusinessTime
           wday_to_int(day_name)
         end.compact
 
-        self._weekdays = SortedSet.new(days)
+        self._weekdays = Set.new(days.sort)
       end
 
       # loads the config data from a yaml file written as:

@@ -27,11 +27,12 @@ describe "config" do
   end
 
   it "map work week to weekdays" do
-    assert_equal SortedSet.new([1,2,3,4,5]), BusinessTime::Config.weekdays
-    BusinessTime::Config.work_week = %w[sun mon tue wed thu]
-    assert_equal SortedSet.new([0,1,2,3,4]), BusinessTime::Config.weekdays
+    assert_equal Set.new([1,2,3,4,5]), BusinessTime::Config.weekdays
+    BusinessTime::Config.work_week = %w[thu mon sun tue wed]
+    assert_equal Set.new([0,1,2,3,4]), BusinessTime::Config.weekdays
+    assert_equal [0,1,2,3,4], BusinessTime::Config.weekdays.to_a
     BusinessTime::Config.work_week = %w[tue wed] # Hey, we got it made!
-    assert_equal SortedSet.new([2,3]), BusinessTime::Config.weekdays
+    assert_equal Set.new([2,3]), BusinessTime::Config.weekdays
   end
 
   it "keep track of the start of the day using work_hours" do
@@ -78,7 +79,7 @@ describe "config" do
     assert_equal BusinessTime::ParsedTime.new(11, 0), BusinessTime::Config.beginning_of_workday
     assert_equal BusinessTime::ParsedTime.new(14, 0), BusinessTime::Config.end_of_workday
     assert_equal ['mon'], BusinessTime::Config.work_week
-    assert_equal SortedSet.new([Date.parse('2012-12-25')]), BusinessTime::Config.holidays
+    assert_equal Set.new([Date.parse('2012-12-25')]), BusinessTime::Config.holidays
   end
 
   it "include holidays read from YAML config files" do
@@ -103,7 +104,7 @@ describe "config" do
     assert_equal BusinessTime::ParsedTime.new(9, 0), BusinessTime::Config.beginning_of_workday
     assert_equal BusinessTime::ParsedTime.new(17, 0), BusinessTime::Config.end_of_workday
     assert_equal %w[mon tue wed thu fri], BusinessTime::Config.work_week
-    assert_equal SortedSet.new, BusinessTime::Config.holidays
+    assert_equal Set.new, BusinessTime::Config.holidays
   end
 
   it "is threadsafe" do
