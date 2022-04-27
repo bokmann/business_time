@@ -6,38 +6,40 @@ The format is based on [Keep a Changelog](https://keepachangelog.com//), and thi
 
 ## [Unreleased] - TBD
 
+- Update build matrix for ActiveSupport 7 support (#215)
+
 ## [0.11.0] - 2021-11-22
 
-- PR #212: Adds Ruby 3.1 support;
-- PR #184: Adds `BusinessTime::Config.with` docs to README
+- Adds Ruby 3.1 support (#212)
+- Adds `BusinessTime::Config.with` docs to README (#184)
 
 ## [0.10.0] - 2021-02-23
 
-- PR #177: Fixes documentation typo
-- PR #179: Improves the business day calculation for non-business days
-- PR #202: Fixes warnings
-- PR #203: Adds Ruby 3.0 support; Improves build matrix
+- Fixes documentation typo (#177)
+- Improves the business day calculation for non-business days (#179)
+- Fixes warnings (#202)
+- Adds Ruby 3.0 support; Improves build matrix (#203)
 
 ## [0.9.3] - 2017-11-04
 
-- PR #165 - fixes an issue with 0.business_<x> calculations
-- PR #166 - added est for business_days.before edge case
-- PR #172 - added feature for 'stacking' local configs
+- Fixes an issue with 0.business_<x> calculations (#165)
+- Added est for business_days.before edge case (#166)
+- Added feature for 'stacking' local configs (#172)
 
 ## [0.9.2] - 2017-06-07
 
-- PR #158 - adds support for negative numbers for days
-- PR #161 - gemfile.lock from project
-- PR #163 - restores ActiveSupport 3
+- Adds support for negative numbers for days (#158)
+- Remove Gemfile.lock from project (#161)
+- Restores ActiveSupport 3 (#163)
 
 ## [0.9.1] - 2017-04-04
 
-- PR #155 - fixes regression on Rails 5.0
+- Fixes regression on Rails 5.0 (#155)
 
 ## [0.9.0] - 2017-04-02
 
-- PR #143 - performance improvements on hour date calculations
-- PR #144 - new feature - Fiscal date methods.
+- performance improvements on hour date calculations (#143)
+- new feature - Fiscal date methods. (#144)
 
 ## [0.8.0] - 2017-04-01
 
