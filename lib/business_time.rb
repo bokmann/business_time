@@ -1,8 +1,9 @@
-require 'thread'
-require 'active_support'
-require 'active_support/time'
+require 'set'
 require 'time'
 require 'yaml'
+
+require 'active_support'
+require 'active_support/time'
 
 require 'business_time/parsed_time'
 require 'business_time/version'
