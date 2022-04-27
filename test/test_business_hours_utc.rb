@@ -1,4 +1,4 @@
-require File.expand_path('../helper', __FILE__)
+require 'helper'
 
 describe "business hours" do
   describe "with a TimeWithZone object in UTC" do
