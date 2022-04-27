@@ -144,7 +144,7 @@ module BusinessTime
           wday_to_int(day_name)
         end.compact
 
-        self._weekdays = Set.new(days.sort)
+        self._weekdays = days.sort.to_set
       end
 
       # loads the config data from a yaml file written as:
