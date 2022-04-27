@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-gemspec :path => '../'
+gemspec path: '../'
 
 group :development, :test do
   gem 'activesupport', '~> 6.0'

@@ -1,4 +1,4 @@
-require File.expand_path('../helper', __FILE__)
+require 'helper'
 
 describe 'calculating consecutive workdays' do
   it 'return empty array if object is not a workday' do

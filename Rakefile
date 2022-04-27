@@ -3,9 +3,10 @@ require 'bundler/gem_tasks'
 
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
+  test.libs << "lib" << "test"
   test.verbose = true
 end
-task :default => :test
+task default: :test
 
 task :cov do
   ENV["COV"] = "1"
