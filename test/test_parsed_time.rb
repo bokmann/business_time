@@ -1,4 +1,4 @@
-require File.expand_path('../helper', __FILE__)
+require 'helper'
 
 module BusinessTime
   describe ParsedTime do
@@ -86,4 +86,3 @@ module BusinessTime
     end
   end
 end
-

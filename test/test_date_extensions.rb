@@ -1,4 +1,4 @@
-require File.expand_path('../helper', __FILE__)
+require 'helper'
 
 describe "date extensions" do
   it "know a weekend day is not a workday"  do

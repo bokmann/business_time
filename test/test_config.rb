@@ -1,4 +1,4 @@
-require File.expand_path('../helper', __FILE__)
+require 'helper'
 
 describe "config" do
   it "keep track of the start of the day" do

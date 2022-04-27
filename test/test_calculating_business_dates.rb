@@ -1,4 +1,4 @@
-require File.expand_path('../helper', __FILE__)
+require 'helper'
 
 describe "calculating business dates" do
   it "properly calculate business dates over weekends" do
