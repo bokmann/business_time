@@ -30,6 +30,13 @@ describe "date extensions" do
     assert(!july_5.workday?)
   end
 
+  it "know a forced_workday is a workday" do
+    april_28 = Date.parse("April 28, 2018")
+    assert(!april_28.workday?)
+    BusinessTime::Config.forced_workdays << april_28
+    assert(april_28.workday?)
+  end
+
   it "#week" do
     assert_equal  1, Date.parse("Jan 1, 2017").week
     assert_equal  1, Date.parse("Jan 7, 2017").week
