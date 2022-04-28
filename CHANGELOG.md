@@ -7,6 +7,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com//), and thi
 ## [Unreleased] - TBD
 
 - Update build matrix for ActiveSupport 7 support (#215)
+- Remove dependency on sorted_set and rbtree (#214)
+
+Both `BusinessTime::Config.holidays` and `BusinessTime::Config.weekdays` now
+return a `Set` instead of a `SortedSet`.
+
+Warning: `BusinessTime::Config.holidays` no longer keeps holidays in sorted
+order. If you rely on `holidays` returning in sorted order, please be sure to
+load them in sorted order.
 
 ## [0.11.0] - 2021-11-22
 
