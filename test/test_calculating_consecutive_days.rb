@@ -1,9 +1,9 @@
-require File.expand_path('../helper', __FILE__)
+require 'helper'
 
 describe 'calculating consecutive workdays' do
   it 'return empty array if object is not a workday' do
     sunday = Date.parse("December 26, 2010")
-    sunday.consecutive_workdays.must_equal []
+    _(sunday.consecutive_workdays).must_equal []
   end
 
   it 'return array with self if preceded and followed by non-working days' do
@@ -27,7 +27,7 @@ end
 describe 'calculating consecutive non-working days' do
   it 'return empty array if object is not a non-working day' do
     monday = Date.parse("December 13, 2010")
-    monday.consecutive_non_working_days.must_equal []
+    _(monday.consecutive_non_working_days).must_equal []
   end
 
   it 'return array with self if preceded and followed by workdays' do

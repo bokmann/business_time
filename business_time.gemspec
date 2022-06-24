@@ -1,4 +1,4 @@
-$LOAD_PATH.push File.expand_path("../lib", __FILE__)
+$LOAD_PATH.push File.expand_path("lib", __dir__)
 require "business_time/version"
 
 Gem::Specification.new do |s|
@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
 
   s.files = `git ls-files -- {lib,rails_generators,LICENSE,README.rdoc}`.split("\n")
 
-  s.add_dependency('activesupport','>= 3.2.0')
+  s.add_dependency("activesupport", ">= 3.2.0")
   s.add_dependency("tzinfo")
 
   s.add_development_dependency "rake"

@@ -23,6 +23,4 @@ pkg
 .rbenv-gemsets
 gemfile.lock
 ## PROJECT::SPECIFIC
-# for binstubs, since this gem has no executables
-bin
 vendor

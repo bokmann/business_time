@@ -1,4 +1,4 @@
-require File.expand_path('../helper', __FILE__)
+require 'helper'
 
 describe "dixnum extensions" do
   it "respond to business_hours by returning an instance of BusinessHours" do

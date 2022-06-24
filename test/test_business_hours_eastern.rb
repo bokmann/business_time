@@ -1,4 +1,4 @@
-require File.expand_path('../helper', __FILE__)
+require 'helper'
 
 describe "business hours" do
   describe "with a TimeWithZone object in US Eastern" do
@@ -125,7 +125,7 @@ describe "business hours" do
       it "consider any time on a weekend as equivalent to monday morning" do
         sunday = Time.zone.parse("Sun Apr 25 12:06:56, 2010")
         monday = Time.zone.parse("Mon Apr 26, 09:00:00, 2010")
-        assert_equal -1.business_hour.before(monday), -1.business_hour.before(sunday)
+        assert_equal(-1.business_hour.before(monday), -1.business_hour.before(sunday))
       end
 
       it "take into account a holiday passed as an option" do

@@ -1,11 +1,14 @@
 require 'bundler/setup'
 require 'bundler/gem_tasks'
 
+desc "Default: run unit tests."
+task default: :test
+
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
+  test.libs << "test"
   test.verbose = true
 end
-task :default => :test
 
 task :cov do
   ENV["COV"] = "1"

@@ -7,7 +7,7 @@ module BusinessTime
   # manually, or with a yaml file and the load method.
   class Config
     DEFAULT_CONFIG = {
-      holidays:              SortedSet.new,
+      holidays:              Set.new,
       beginning_of_workday:  ParsedTime.parse('9:00 am'),
       end_of_workday:        ParsedTime.parse('5:00 pm'),
       work_week:             %w(mon tue wed thu fri),
@@ -80,23 +80,7 @@ module BusinessTime
       end
     end
 
-    # You can set this yourself, either by the load method below, or
-    # by saying
-    #   BusinessTime::Config.beginning_of_workday = "8:30 am"
-    # someplace in the initializers of your application.
-    threadsafe_cattr_reader :beginning_of_workday
-
-    # You can set this yourself, either by the load method below, or
-    # by saying
-    #   BusinessTime::Config.end_of_workday = "5:30 pm"
-    # someplace in the initializers of your application.
-    threadsafe_cattr_reader :end_of_workday
-
-    # You can set this yourself, either by the load method below, or
-    # by saying
-    #   BusinessTime::Config.work_week = [:sun, :mon, :tue, :wed, :thu]
-    # someplace in the initializers of your application.
-    threadsafe_cattr_accessor :work_week
+    threadsafe_cattr_reader :work_week
 
     # You can set this yourself, either by the load method below, or
     # by saying
@@ -118,6 +102,10 @@ module BusinessTime
     threadsafe_cattr_accessor :fiscal_month_offset
 
     class << self
+      # You can set this yourself, either by the load method below, or
+      # by saying
+      #   BusinessTime::Config.end_of_workday = "5:30 pm"
+      # someplace in the initializers of your application.
       def end_of_workday(day=nil)
         if day
           wday = work_hours[int_to_wday(day.wday)]
@@ -127,6 +115,10 @@ module BusinessTime
         end
       end
 
+      # You can set this yourself, either by the load method below, or
+      # by saying
+      #   BusinessTime::Config.beginning_of_workday = "8:30 am"
+      # someplace in the initializers of your application.
       def beginning_of_workday(day=nil)
         if day
           wday = work_hours[int_to_wday(day.wday)]
@@ -136,6 +128,10 @@ module BusinessTime
         end
       end
 
+      # You can set this yourself, either by the load method below, or
+      # by saying
+      #   BusinessTime::Config.work_week = [:sun, :mon, :tue, :wed, :thu]
+      # someplace in the initializers of your application.
       def work_week=(days)
         config[:work_week] = days
         self._weekdays = nil
@@ -148,7 +144,7 @@ module BusinessTime
           wday_to_int(day_name)
         end.compact
 
-        self._weekdays = SortedSet.new(days)
+        self._weekdays = days.sort.to_set
       end
 
       # loads the config data from a yaml file written as:
@@ -190,13 +186,18 @@ module BusinessTime
 
       private
 
+      DAY_NAMES = [
+        'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'
+      ]
+      private_constant :DAY_NAMES
+
       def wday_to_int day_name
-        lowercase_day_names = ::Date::ABBR_DAYNAMES.map(&:downcase)
+        lowercase_day_names = DAY_NAMES.map(&:downcase)
         lowercase_day_names.find_index(day_name.to_s.downcase)
       end
 
       def int_to_wday num
-        ::Date::ABBR_DAYNAMES.map(&:downcase).map(&:to_sym)[num]
+        DAY_NAMES.map(&:downcase).map(&:to_sym)[num]
       end
 
       def reset
