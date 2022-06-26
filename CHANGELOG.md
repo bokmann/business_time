@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com//), and thi
 
 ## [Unreleased] - TBD
 
+## [0.13.0] - 2022-06-26
+
 - Allow specifying holidays on each invocation.  ([#217], [#180])
 
 ## [0.12.0] - 2022-06-07
@@ -126,7 +128,8 @@ No documentation yet, contributions welcome.
 
 No documentation yet, contributions welcome.
 
-[Unreleased]: https://github.com/bokmann/business_time/compare/v0.12.0..HEAD
+[Unreleased]: https://github.com/bokmann/business_time/compare/v0.13.0..HEAD
+[0.13.0]: https://github.com/bokmann/business_time/compare/v0.12.0..v0.13.0
 [0.12.0]: https://github.com/bokmann/business_time/compare/v0.11.0..v0.12.0
 [0.11.0]: https://github.com/bokmann/business_time/compare/v0.10.0..v0.11.0
 [0.10.0]: https://github.com/bokmann/business_time/compare/v0.9.3..v0.10.0
