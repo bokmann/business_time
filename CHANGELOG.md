@@ -10,8 +10,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com//), and thi
 
 ## [0.12.0] - 2022-06-07
 
-- Update build matrix for ActiveSupport 7 support (#215)
-- Remove dependency on sorted_set and rbtree (#214)
+- Update build matrix for ActiveSupport 7 support ([#215])
+- Remove dependency on sorted_set and rbtree ([#214])
 
 Both `BusinessTime::Config.holidays` and `BusinessTime::Config.weekdays` now
 return a `Set` instead of a `SortedSet`.
@@ -22,36 +22,36 @@ load them in sorted order.
 
 ## [0.11.0] - 2021-11-22
 
-- Adds Ruby 3.1 support (#212)
-- Adds `BusinessTime::Config.with` docs to README (#184)
+- Adds Ruby 3.1 support ([#212])
+- Adds `BusinessTime::Config.with` docs to README ([#184])
 
 ## [0.10.0] - 2021-02-23
 
-- Fixes documentation typo (#177)
-- Improves the business day calculation for non-business days (#179)
-- Fixes warnings (#202)
-- Adds Ruby 3.0 support; Improves build matrix (#203)
+- Fixes documentation typo ([#177])
+- Improves the business day calculation for non-business days ([#179])
+- Fixes warnings ([#202])
+- Adds Ruby 3.0 support; Improves build matrix ([#203])
 
 ## [0.9.3] - 2017-11-04
 
-- Fixes an issue with 0.business_<x> calculations (#165)
-- Added est for business_days.before edge case (#166)
-- Added feature for 'stacking' local configs (#172)
+- Fixes an issue with 0.business_<x> calculations ([#165])
+- Added est for business_days.before edge case ([#166])
+- Added feature for 'stacking' local configs ([#172])
 
 ## [0.9.2] - 2017-06-07
 
-- Adds support for negative numbers for days (#158)
-- Remove Gemfile.lock from project (#161)
-- Restores ActiveSupport 3 (#163)
+- Adds support for negative numbers for days ([#158])
+- Remove Gemfile.lock from project ([#161])
+- Restores ActiveSupport 3 ([#163])
 
 ## [0.9.1] - 2017-04-04
 
-- Fixes regression on Rails 5.0 (#155)
+- Fixes regression on Rails 5.0 ([#155])
 
 ## [0.9.0] - 2017-04-02
 
-- performance improvements on hour date calculations (#143)
-- new feature - Fiscal date methods. (#144)
+- performance improvements on hour date calculations ([#143])
+- new feature - Fiscal date methods. ([#144])
 
 ## [0.8.0] - 2017-04-01
 
@@ -150,5 +150,23 @@ No documentation yet, contributions welcome.
 [0.2.2]: https://github.com/bokmann/business_time/compare/v0.2.1..v0.2.2
 [0.2.1]: https://github.com/bokmann/business_time/compare/v0.2.0..v0.2.1
 [0.2.0]: https://github.com/bokmann/business_time/compare/c71a80f..v0.2.0
+
 [#217]: https://github.com/bokmann/business_time/pull/217
 [#180]: https://github.com/bokmann/business_time/pull/180
+[#215]: https://github.com/bokmann/business_time/pull/215
+[#214]: https://github.com/bokmann/business_time/pull/214
+[#212]: https://github.com/bokmann/business_time/pull/212
+[#184]: https://github.com/bokmann/business_time/pull/184
+[#177]: https://github.com/bokmann/business_time/pull/177
+[#179]: https://github.com/bokmann/business_time/pull/179
+[#202]: https://github.com/bokmann/business_time/pull/202
+[#203]: https://github.com/bokmann/business_time/pull/203
+[#165]: https://github.com/bokmann/business_time/pull/165
+[#166]: https://github.com/bokmann/business_time/pull/166
+[#172]: https://github.com/bokmann/business_time/pull/172
+[#158]: https://github.com/bokmann/business_time/pull/158
+[#161]: https://github.com/bokmann/business_time/pull/161
+[#163]: https://github.com/bokmann/business_time/pull/163
+[#155]: https://github.com/bokmann/business_time/pull/155
+[#143]: https://github.com/bokmann/business_time/pull/143
+[#144]: https://github.com/bokmann/business_time/pull/144
