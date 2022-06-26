@@ -198,8 +198,8 @@ module BusinessTime
       (days << self).sort
     end
 
-    def to_array_of_dates(passed_value)
-      Array.wrap(passed_value).map(&:to_date)
+    def to_array_of_dates(values)
+      Array.wrap(values).map(&:to_date)
     end
   end
 end
