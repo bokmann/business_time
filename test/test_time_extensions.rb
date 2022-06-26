@@ -24,7 +24,6 @@ describe "time extensions" do
     assert(!Time.parse("July 5th, 2010 2:37 pm").workday?)
   end
 
-
   it "know the beginning of the day for an instance" do
     first = Time.parse("August 17th, 2010, 11:50 am")
     expecting = Time.parse("August 17th, 2010, 9:00 am")
@@ -131,4 +130,61 @@ describe "time extensions" do
     }
     assert_equal wednesday, Time.roll_backward(saturday)
   end
+
+  it "know a holiday passed as a Date option is not a workday" do
+    july_4 = Date.parse("July 4, 2010")
+    july_5 = Date.parse("July 5, 2010")
+
+    assert(!Time.parse("July 4th, 2010 1:15 pm").workday?(holidays: july_4))
+    assert(!Time.parse("July 5th, 2010 2:37 pm").workday?(holidays: july_5))
+  end
+
+  # it "know a holiday passed as a Time option is not a workday" do
+  #   july_4 = Date.parse("July 4, 2010").to_time
+  #   july_5 = Date.parse("July 5, 2010").to_time
+
+  #   assert(!Time.parse("July 4th, 2010 1:15 pm").workday?(holidays: july_4))
+  #   assert(!Time.parse("July 5th, 2010 2:37 pm").workday?(holidays: july_5))
+  # end
+
+  # it "know a holiday passed as a String option is not a workday" do
+  #   july_4 = "July 4, 2010"
+  #   july_5 = "July 5, 2010"
+
+  #   assert(!Time.parse("July 4th, 2010 1:15 pm").workday?(holidays: july_4))
+  #   assert(!Time.parse("July 5th, 2010 2:37 pm").workday?(holidays: july_5))
+  # end
+
+  # it "know a holiday passed as an array of dates option is not a workday" do
+  #   july_4 = Date.parse("July 4, 2010")
+  #   july_5 = Date.parse("July 5, 2010")
+
+  #   assert(!Time.parse("July 4th, 2010 1:15 pm").workday?(holidays: [july_4]))
+  #   assert(!Time.parse("July 5th, 2010 2:37 pm").workday?(holidays: [july_5]))
+  # end
+
+  # it "know a holiday passed as an array of times option is not a workday" do
+  #   july_4 = Date.parse("July 4, 2010").to_time
+  #   july_5 = Date.parse("July 5, 2010").to_time
+
+  #   assert(!Time.parse("July 4th, 2010 1:15 pm").workday?(holidays: [july_4]))
+  #   assert(!Time.parse("July 5th, 2010 2:37 pm").workday?(holidays: [july_5]))
+  # end
+
+  # it "know a holiday passed as an array of strings option is not a workday" do
+  #   july_4 = "July 4, 2010"
+  #   july_5 = "July 5, 2010"
+
+  #   assert(!Time.parse("July 4th, 2010 1:15 pm").workday?(holidays: [july_4]))
+  #   assert(!Time.parse("July 5th, 2010 2:37 pm").workday?(holidays: [july_5]))
+  # end
+
+  # it "know a holiday is not a workday when passed with array of strings, dates, and times as an option" do
+  #   july_4 = Date.parse("July 4, 2010")
+  #   july_5 = Date.parse("July 5, 2010").to_time
+  #   july_6 = "July 5, 2010"
+
+  #   assert(!Time.parse("July 4th, 2010 1:15 pm").workday?(holidays: [july_4, july_5, july_6]))
+  #   assert(!Time.parse("July 5th, 2010 2:37 pm").workday?(holidays: [july_4, july_5, july_6]))
+  # end
 end

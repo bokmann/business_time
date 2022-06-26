@@ -34,4 +34,11 @@ describe "calculating business dates" do
     assert_equal [friday, saturday], friday.business_dates_until(monday)
   end
 
+  it "properly calculate business dates with respect to holidays passed as options" do
+    free_friday = Date.parse("December 17, 2010")
+    wednesday = Date.parse("December 15,2010")
+    thursday = Date.parse("December 16,2010")
+    monday = Date.parse("December 20, 2010")
+    assert_equal [wednesday, thursday], wednesday.business_dates_until(monday, false, holidays: [free_friday])
+  end
 end

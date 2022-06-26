@@ -25,6 +25,13 @@ describe "calculating business duration" do
     assert_equal 5, sunday.business_days_until(friday, true)
   end
 
+  it "can calculate inclusive business duration with holidays passed as options" do
+    monday = Date.parse("June 20, 2022")
+    friday = Date.parse("June 24, 2022")
+    tuesday_holiday = Date.parse("June 22, 2022")
+    assert_equal 4, monday.business_days_until(friday, inclusive=true, holidays: [tuesday_holiday])
+  end
+
   it "properly calculate business time with respect to work_hours" do
     friday = Time.parse("December 24, 2010 15:00")
     monday = Time.parse("December 27, 2010 11:00")

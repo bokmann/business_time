@@ -222,17 +222,31 @@ Holidays.between(Date.civil(2013, 1, 1), 2.years.from_now, :ca_on, :observed).ma
 end
 ```
 
+You can pass holidays as an option
+In addition to having static holidays in BusinessTime::Config.holidays, you can also pass holidays
+as an option (date, time, string, or array of dates, times and strings).  If, for example, you are processing calculations for many regions with different holidays,
+you can pass in the appropriate holidays for the region with each calculation.
+
+
+``` ruby
+three_day_weekend = Date.parse("July 5th, 2010")
+friday_afternoon = Time.parse("July 2nd, 2010, 4:50 pm")
+tuesday_morning = 1.business_hour.after(friday_afternoon, holidays: three_day_weekend)
+```
+
 ## Contributors
 
- * David Bock       http://github.com/bokmann
- * Ryan McGeary     http://github.com/rmm5t
- * Enrico Bianco    http://github.com/enricob
- * Arild Shirazi    http://github.com/ashirazi
- * Piotr Jakubowski http://github.com/piotrj
- * Glenn Vanderburg http://github.com/glv
- * Michael Grosser  http://github.com/grosser
- * Michael Curtis   http://github.com/mcurtis
- * Brian Ewins      http://github.com/bazzargh
+ * David Bock         http://github.com/bokmann
+ * Ryan McGeary       http://github.com/rmm5t
+ * Enrico Bianco      http://github.com/enricob
+ * Arild Shirazi      http://github.com/ashirazi
+ * Piotr Jakubowski   http://github.com/piotrj
+ * Glenn Vanderburg   http://github.com/glv
+ * Michael Grosser    http://github.com/grosser
+ * Michael Curtis     http://github.com/mcurtis
+ * Brian Ewins        http://github.com/bazzargh
+ * Mstate             http://github.com/mstate
+ * Caden Westmoreland http://github.com/cadenforrest
 
 (Special thanks for Arild on the complexities of dealing with TimeWithZone)
 
