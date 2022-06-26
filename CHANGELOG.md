@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com//), and thi
 
 ## [Unreleased] - TBD
 
+- Allow specifying holidays on each invocation.  ([#217], [#180])
+
 ## [0.12.0] - 2022-06-07
 
 - Update build matrix for ActiveSupport 7 support (#215)
@@ -148,3 +150,5 @@ No documentation yet, contributions welcome.
 [0.2.2]: https://github.com/bokmann/business_time/compare/v0.2.1..v0.2.2
 [0.2.1]: https://github.com/bokmann/business_time/compare/v0.2.0..v0.2.1
 [0.2.0]: https://github.com/bokmann/business_time/compare/c71a80f..v0.2.0
+[#217]: https://github.com/bokmann/business_time/pull/217
+[#180]: https://github.com/bokmann/business_time/pull/180
