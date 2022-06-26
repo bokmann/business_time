@@ -199,32 +199,7 @@ module BusinessTime
     end
 
     def to_array_of_dates(passed_value)
-      passed_value ||= []
-      array_of_dates = []
-
-      case passed_value
-        when Date
-          array_of_dates = [passed_value]
-        when Time
-          array_of_dates = [passed_value.to_date]
-        when String
-          array_of_dates = [Date.parse(passed_value)]
-        when Array
-          passed_value.each do |holiday|
-            case holiday
-              when String
-                array_of_dates << Date.parse(holiday)
-              when Time
-                array_of_dates << holiday.to_date
-              when Date
-                array_of_dates << holiday
-              else
-                raise ArgumentError.new("Holidays specified must be a Date, Time or String.")
-            end
-          end
-      end
-
-      array_of_dates
+      Array.wrap(passed_value).map(&:to_date)
     end
   end
 end
