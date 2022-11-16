@@ -13,6 +13,7 @@ module BusinessTime
       work_week:             %w(mon tue wed thu fri),
       work_hours:            {},
       work_hours_total:      {},
+      custom_work_hours:     nil,
       _weekdays:             nil,
       fiscal_month_offset:   10,
     }
@@ -32,6 +33,10 @@ module BusinessTime
             ParsedTime.parse(time)
           end
         end
+      end
+
+      def custom_work_hours=(lambda)
+        config[:custom_work_hours] = lambda
       end
 
       private
@@ -94,6 +99,8 @@ module BusinessTime
     #    {:mon => ["9:00","17:00"],:tue => ["9:00","17:00"].....}
     threadsafe_cattr_reader :work_hours
 
+    threadsafe_cattr_reader :custom_work_hours
+
     # total work hours for a day. Never set, always calculated.
     threadsafe_cattr_accessor :work_hours_total
 
@@ -108,6 +115,8 @@ module BusinessTime
       # someplace in the initializers of your application.
       def end_of_workday(day=nil)
         if day
+          return ParsedTime.new(custom_work_hours.call(day).last) if custom_work_hours.respond_to?(:call)
+
           wday = work_hours[int_to_wday(day.wday)]
           wday ? (wday.last == ParsedTime.new(0, 0) ? ParsedTime.new(23, 59, 59) : wday.last) : config[:end_of_workday]
         else
@@ -121,6 +130,8 @@ module BusinessTime
       # someplace in the initializers of your application.
       def beginning_of_workday(day=nil)
         if day
+          return ParsedTime.new(custom_work_hours.call(day).first) if custom_work_hours.respond_to?(:call)
+
           wday = work_hours[int_to_wday(day.wday)]
           wday ? wday.first : config[:beginning_of_workday]
         else
