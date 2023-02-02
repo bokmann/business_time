@@ -3,10 +3,11 @@ class Date
   include BusinessTime::TimeExtensions
 
   def business_days_until(to_date, inclusive = false, options={})
-    business_dates_until(to_date, inclusive, options).size
+    business_dates_until(to_date, inclusive, options)&.size
   end
 
   def business_dates_until(to_date, inclusive = false, options={})
+    return nil if to_date.nil? # So we don't iterate over infinite range
     if inclusive
       (self..to_date).select{|this_date| this_date.workday?(options)}
     else

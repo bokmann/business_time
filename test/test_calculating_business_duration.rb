@@ -1,6 +1,12 @@
 require 'helper'
 
 describe "calculating business duration" do
+
+  it "doesn't run infinitely when nil is passed into business duration" do
+    monday = Date.parse("December 20, 2010")
+    assert_equal nil, monday.business_days_until(nil)
+  end
+
   it "properly calculate business duration" do
     monday = Date.parse("December 20, 2010")
     wednesday = Date.parse("December 22, 2010")
