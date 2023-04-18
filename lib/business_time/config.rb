@@ -115,7 +115,7 @@ module BusinessTime
       # someplace in the initializers of your application.
       def end_of_workday(day=nil)
         if day
-          return ParsedTime.new(custom_work_hours.call(day).last) if custom_work_hours.respond_to?(:call)
+          return ParsedTime.parse(custom_work_hours.call(day).last) if custom_work_hours.respond_to?(:call)
 
           wday = work_hours[int_to_wday(day.wday)]
           wday ? (wday.last == ParsedTime.new(0, 0) ? ParsedTime.new(23, 59, 59) : wday.last) : config[:end_of_workday]
@@ -130,7 +130,7 @@ module BusinessTime
       # someplace in the initializers of your application.
       def beginning_of_workday(day=nil)
         if day
-          return ParsedTime.new(custom_work_hours.call(day).first) if custom_work_hours.respond_to?(:call)
+          return ParsedTime.parse(custom_work_hours.call(day).first) if custom_work_hours.respond_to?(:call)
 
           wday = work_hours[int_to_wday(day.wday)]
           wday ? wday.first : config[:beginning_of_workday]
