@@ -37,7 +37,7 @@ load them in sorted order.
 ## [0.9.3] - 2017-11-04
 
 - Fixes an issue with 0.business_<x> calculations ([#165])
-- Added est for business_days.before edge case ([#166])
+- Added test for business_days.before edge case ([#166])
 - Added feature for 'stacking' local configs ([#172])
 
 ## [0.9.2] - 2017-06-07
