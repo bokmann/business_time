@@ -23,7 +23,7 @@ jobs:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
     steps:
       # https://github.com/marketplace/actions/checkout
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # https://github.com/marketplace/actions/setup-ruby-jruby-and-truffleruby
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
