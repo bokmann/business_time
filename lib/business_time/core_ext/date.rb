@@ -7,6 +7,10 @@ class Date
   end
 
   def business_dates_until(to_date, inclusive = false, options={})
+    unless to_date
+      raise ArgumentError.new("To date must not be nil.")
+    end
+
     if inclusive
       (self..to_date).select{|this_date| this_date.workday?(options)}
     else

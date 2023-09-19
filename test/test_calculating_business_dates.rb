@@ -41,4 +41,10 @@ describe "calculating business dates" do
     monday = Date.parse("December 20, 2010")
     assert_equal [wednesday, thursday], wednesday.business_dates_until(monday, false, holidays: [free_friday])
   end
+
+  it "raises ArgumentError if to date is not provided" do
+    assert_raises ArgumentError do
+      Date.current.business_dates_until(nil)
+    end
+  end
 end
