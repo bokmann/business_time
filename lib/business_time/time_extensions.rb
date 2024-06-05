@@ -51,8 +51,16 @@ module BusinessTime
         time.to_i < beginning_of_workday(time).to_i
       end
 
+      def within_business_hours?(time)
+        !outside_of_business_hours?(time)
+      end
+
       def after_business_hours?(time)
         time.to_i > end_of_workday(time).to_i
+      end
+
+      def outside_of_business_hours?(time)
+        before_business_hours?(time) || after_business_hours?(time)
       end
 
       # Rolls forward to the next beginning_of_workday

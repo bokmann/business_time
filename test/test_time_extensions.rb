@@ -187,4 +187,44 @@ describe "time extensions" do
   #   assert(!Time.parse("July 4th, 2010 1:15 pm").workday?(holidays: [july_4, july_5, july_6]))
   #   assert(!Time.parse("July 5th, 2010 2:37 pm").workday?(holidays: [july_4, july_5, july_6]))
   # end
+
+  it ".before_business_hours?" do
+    BusinessTime::Config.work_hours = {
+      wed: ["9:00", "17:00"]
+    }
+
+    assert Time.before_business_hours?(Time.parse("2024-06-05 07:00"))
+    refute Time.before_business_hours?(Time.parse("2024-06-05 10:00"))
+    refute Time.before_business_hours?(Time.parse("2024-06-05 20:00"))
+  end
+
+  it ".within_business_hours?" do
+    BusinessTime::Config.work_hours = {
+      wed: ["9:00", "17:00"]
+    }
+
+    refute Time.within_business_hours?(Time.parse("2024-06-05 07:00"))
+    assert Time.within_business_hours?(Time.parse("2024-06-05 10:00"))
+    refute Time.within_business_hours?(Time.parse("2024-06-05 20:00"))
+  end
+
+  it ".after_business_hours?" do
+    BusinessTime::Config.work_hours = {
+      wed: ["9:00", "17:00"]
+    }
+
+    refute Time.after_business_hours?(Time.parse("2024-06-05 07:00"))
+    refute Time.after_business_hours?(Time.parse("2024-06-05 10:00"))
+    assert Time.after_business_hours?(Time.parse("2024-06-05 20:00"))
+  end
+
+  it ".outside_of_business_hours?" do
+    BusinessTime::Config.work_hours = {
+      wed: ["9:00", "17:00"]
+    }
+
+    assert Time.outside_of_business_hours?(Time.parse("2024-06-05 07:00"))
+    refute Time.outside_of_business_hours?(Time.parse("2024-06-05 10:00"))
+    assert Time.outside_of_business_hours?(Time.parse("2024-06-05 20:00"))
+  end
 end
