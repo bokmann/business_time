@@ -41,8 +41,8 @@ module BusinessTime
         time = Time.beginning_of_workday(time)
       end
       while days > 0 || !time.workday?(options)
-        days -= 1 if time.workday?(options)
         time += 1.day
+        days -= 1 if time.workday?(options)
       end
       # If we have a Time or DateTime object, we can roll_forward to the
       #   beginning of the next business day
@@ -57,8 +57,8 @@ module BusinessTime
         time = Time.beginning_of_workday(time)
       end
       while days > 0 || !time.workday?(options)
-        days -= 1 if time.workday?(options)
         time -= 1.day
+        days -= 1 if time.workday?(options)
       end
       # If we have a Time or DateTime object, we can roll_backward to the
       #   beginning of the previous business day
