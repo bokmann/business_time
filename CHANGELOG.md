@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com//), and thi
 
 ## [Unreleased] - TBD
 
+- Add Ruby 4.0 to build matrix ([#238])
+
 ## [0.13.0] - 2022-06-26
 
 - Allow specifying holidays on each invocation.  ([#217], [#180])
@@ -154,6 +156,7 @@ No documentation yet, contributions welcome.
 [0.2.1]: https://github.com/bokmann/business_time/compare/v0.2.0..v0.2.1
 [0.2.0]: https://github.com/bokmann/business_time/compare/c71a80f..v0.2.0
 
+[#238]: https://github.com/bokmann/business_time/pull/238
 [#217]: https://github.com/bokmann/business_time/pull/217
 [#180]: https://github.com/bokmann/business_time/pull/180
 [#215]: https://github.com/bokmann/business_time/pull/215
