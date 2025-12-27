@@ -1,12 +1,16 @@
 name: CI
-on: [push, pull_request]
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [develop]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby: ["3.2", "3.3", "3.4"]
+        ruby: ["3.2", "3.3", "3.4", "4.0"]
         bundler: [default]
         gemfile:
           - active_support_7
