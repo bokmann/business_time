@@ -63,10 +63,10 @@ describe "business days" do
         assert_equal expected, monday_afternoon
       end
 
-      it "move to tuesday if we add one business day during a weekend" do
+      it "move to Monday if we add one business day during a weekend" do
         saturday = Date.parse("April 10th, 2010")
         later = 1.business_days.after(saturday)
-        expected = Date.parse("April 13th, 2010")
+        expected = Date.parse("April 12th, 2010")
         assert_equal expected, later
       end
 
@@ -146,10 +146,10 @@ describe "business days" do
         assert_equal expected, before
       end
 
-      it "move to tuesday if we subtract one negative business day during a weekend" do
+      it "move to Monday if we subtract one negative business day during a weekend" do
         saturday = Date.parse("April 10th, 2010")
         after = -1.business_days.before(saturday)
-        expected = Date.parse("April 13th, 2010")
+        expected = Date.parse("April 12th, 2010")
         assert_equal expected, after
       end
 
