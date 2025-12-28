@@ -40,6 +40,7 @@ module BusinessTime
       if (time.is_a?(Time) || time.is_a?(DateTime)) && !time.workday?(options)
         time = Time.beginning_of_workday(time)
       end
+      time += 1.day  # This ensures we never count the start date itself
       while days > 0 || !time.workday?(options)
         days -= 1 if time.workday?(options)
         time += 1.day
@@ -56,6 +57,7 @@ module BusinessTime
       if (time.is_a?(Time) || time.is_a?(DateTime)) && !time.workday?(options)
         time = Time.beginning_of_workday(time)
       end
+      time -= 1.day  # This ensures we never count the start date itself
       while days > 0 || !time.workday?(options)
         days -= 1 if time.workday?(options)
         time -= 1.day
