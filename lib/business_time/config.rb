@@ -107,12 +107,13 @@ module BusinessTime
       #   BusinessTime::Config.end_of_workday = "5:30 pm"
       # someplace in the initializers of your application.
       def end_of_workday(day=nil)
+        eod = config[:end_of_workday]
         if day
           wday = work_hours[int_to_wday(day.wday)]
-          wday ? (wday.last == ParsedTime.new(0, 0) ? ParsedTime.new(23, 59, 59) : wday.last) : config[:end_of_workday]
-        else
-          config[:end_of_workday]
+          eod = wday.last if wday
         end
+
+        eod == ParsedTime.new(0, 0) ? ParsedTime.new(23, 59, 59) : eod
       end
 
       # You can set this yourself, either by the load method below, or

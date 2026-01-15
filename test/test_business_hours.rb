@@ -172,6 +172,17 @@ describe "business hours" do
         expected = Time.parse("July 6th 2010, 9:50 am")
         assert_equal expected, tuesday_morning
       end
+
+      it "respect end_of_workday with 12am closing time" do
+        two_before_close = Time.parse("2024-11-04 22:00")
+        two_after_open = Time.parse("2024-11-05 17:00")
+
+        BusinessTime::Config.beginning_of_workday = "3pm"
+        BusinessTime::Config.end_of_workday = "12am"
+
+        assert_equal two_after_open, 4.business_hours.after(two_before_close)
+        assert_equal two_before_close, 4.business_hours.before(two_after_open)
+      end
     end
 
     describe "when adding/subtracting negative number of business hours" do
