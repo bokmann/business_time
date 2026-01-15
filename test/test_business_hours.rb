@@ -143,6 +143,19 @@ describe "business hours" do
         assert_equal friday, 24.business_hours.before(monday)
       end
 
+      it "respect work_hours with 11pm closing time" do
+        two_before_close = Time.parse("2024-09-30 21:00")
+        two_after_open = Time.parse("2024-10-01 16:00")
+
+        BusinessTime::Config.work_hours = {
+          mon: ["14:00", "23:00"],
+          tue: ["14:00", "23:00"],
+        }
+
+        assert_equal two_after_open, 4.business_hours.after(two_before_close)
+        assert_equal two_before_close, 4.business_hours.before(two_after_open)
+      end
+
       it "respect work_hours within same day" do
         friday_start = Time.parse("December 24, 2010 8:00")
         friday_end   = Time.parse("December 24, 2010 17:00")

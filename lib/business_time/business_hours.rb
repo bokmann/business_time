@@ -42,13 +42,16 @@ module BusinessTime
       after_time = Time.roll_forward(time, options)
       # Step through the hours, skipping over non-business hours
       hours.times do
+        eod = Time.end_of_workday(after_time)
         after_time = after_time + 1.hour
 
-        if after_time.hour == 0 && after_time.min == 0 && after_time.sec == 0
-          after_time = Time.roll_forward(after_time, options)
-        elsif (after_time > Time.end_of_workday(after_time))
-          # Ignore hours before opening and after closing
-          delta = after_time - Time.end_of_workday(after_time)
+        # Ignore hours before opening and after closing
+        if after_time > eod
+          delta = after_time - eod
+
+          # Handle errors due to XX:59:59 exceptions
+          delta = 0 if delta == 1.second
+
           after_time = Time.roll_forward(after_time, options) + delta
         end
 
@@ -64,13 +67,12 @@ module BusinessTime
       before_time = Time.roll_backward(time)
       # Step through the hours, skipping over non-business hours
       hours.times do
+        bod = Time.beginning_of_workday(before_time)
         before_time = before_time - 1.hour
 
-        if before_time.hour == 0 && before_time.min == 0 && before_time.sec == 0
-          before_time = Time.roll_backward(before_time - 1.second, options)
-        elsif (before_time <= Time.beginning_of_workday(before_time))
-          # Ignore hours before opening and after closing
-          delta = Time.beginning_of_workday(before_time) - before_time
+        # Ignore hours before opening and after closing
+        if before_time <= bod
+          delta = bod - before_time
 
           # Due to the 23:59:59 end-of-workday exception
           time_roll_backward = Time.roll_backward(before_time, options)
