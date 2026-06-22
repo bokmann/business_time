@@ -13,6 +13,13 @@ describe "TimeWithZone extensions" do
       assert( Time.zone.parse("April 12, 2010 10:30am").weekday?)
     end
 
+    it "know a weekday is not a weekend" do
+      assert(!Time.zone.parse("April 9, 2010 10:30am").weekend?)
+      assert( Time.zone.parse("April 10, 2010 10:30am").weekend?)
+      assert( Time.zone.parse("April 11, 2010 10:30am").weekend?)
+      assert(!Time.zone.parse("April 12, 2010 10:30am").weekend?)
+    end
+
     it "know a weekend day is not a workday" do
       assert( Time.zone.parse("April 9, 2010 10:45 am").workday?)
       assert(!Time.zone.parse("April 10, 2010 10:45 am").workday?)
@@ -59,6 +66,13 @@ describe "TimeWithZone extensions" do
       assert(!Time.zone.parse("April 10, 2010 10:30am").weekday?)
       assert(!Time.zone.parse("April 11, 2010 10:30am").weekday?)
       assert( Time.zone.parse("April 12, 2010 10:30am").weekday?)
+    end
+
+    it "know a weekday is not a weekend" do
+      assert(!Time.zone.parse("April 9, 2010 10:30am").weekend?)
+      assert( Time.zone.parse("April 10, 2010 10:30am").weekend?)
+      assert( Time.zone.parse("April 11, 2010 10:30am").weekend?)
+      assert(!Time.zone.parse("April 12, 2010 10:30am").weekend?)
     end
 
     it "know a weekend day is not a workday" do
