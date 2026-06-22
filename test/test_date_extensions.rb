@@ -16,6 +16,21 @@ describe "date extensions" do
     assert(Date.parse("April 12, 2010").weekday?)
   end
 
+  it "know a weekday is not a weekend" do
+    assert(!Date.parse("April 9, 2010").weekend?)   # Friday
+    assert( Date.parse("April 10, 2010").weekend?)  # Saturday
+    assert( Date.parse("April 11, 2010").weekend?)  # Sunday
+    assert(!Date.parse("April 12, 2010").weekend?)  # Monday
+  end
+
+  it "know a weekend is relative to the configured work week" do
+    BusinessTime::Config.work_week = %w[sun mon tue wed thu]
+    assert(!Date.parse("April 8, 2010").weekend?)   # Thursday
+    assert( Date.parse("April 9, 2010").weekend?)   # Friday — weekend under this config
+    assert( Date.parse("April 10, 2010").weekend?)  # Saturday
+    assert(!Date.parse("April 11, 2010").weekend?)  # Sunday — weekday under this config
+  end
+
   it "know a holiday is not a workday" do
     july_4 = Date.parse("July 4, 2010")
     july_5 = Date.parse("July 5, 2010")

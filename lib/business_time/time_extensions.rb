@@ -15,6 +15,11 @@ module BusinessTime
       BusinessTime::Config.weekdays.include?(wday)
     end
 
+    # True if this time falls on a weekend
+    def weekend?
+      !weekday?
+    end
+
     module ClassMethods
       # Gives the time at the end of the workday, assuming that this time falls on a
       # workday.

@@ -16,6 +16,26 @@ describe "time extensions" do
     assert( Time.parse("April 11, 2010 10:30am").weekday?)
   end
 
+  it "know a weekday is not a weekend" do
+    assert(!Time.parse("April 9, 2010 10:45 am").weekend?)   # Friday
+    assert( Time.parse("April 10, 2010 10:45 am").weekend?)  # Saturday
+    assert( Time.parse("April 11, 2010 10:45 am").weekend?)  # Sunday
+    assert(!Time.parse("April 12, 2010 10:45 am").weekend?)  # Monday
+  end
+
+  it "know a weekend is relative to the configured work week" do
+    BusinessTime::Config.work_week = %w[sun mon tue wed thu]
+    assert(!Time.parse("April 8, 2010 10:30am").weekend?)   # Thursday
+    assert( Time.parse("April 9, 2010 10:30am").weekend?)   # Friday — weekend under this config
+    assert( Time.parse("April 10, 2010 10:30am").weekend?)  # Saturday
+    assert(!Time.parse("April 11, 2010 10:30am").weekend?)  # Sunday — weekday under this config
+  end
+
+  it "does not consider a holiday a weekend day" do
+    BusinessTime::Config.holidays << Date.parse("July 5, 2010")  # Monday
+    assert(!Time.parse("July 5th, 2010 2:37 pm").weekend?)
+  end
+
   it "know a holiday is not a workday" do
     BusinessTime::Config.holidays << Date.parse("July 4, 2010")
     BusinessTime::Config.holidays << Date.parse("July 5, 2010")
